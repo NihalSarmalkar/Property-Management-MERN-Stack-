@@ -6,11 +6,19 @@ import { Orders } from './pages/orders';
 import { Reports } from './pages/reports';
 import { Settings } from './pages/settings';
 import { Theme } from './pages/theme';
+import { SignIn } from './pages/SignIn';
+import { SignUp } from './pages/SignUp';
 
 export const routes = [
   {
     path: '/',
-    element: <Navigate to="/dashboard" />
+    children: [
+      { path: 'signin', element: <SignIn /> },
+      { path: 'signup', element: <SignUp /> },
+      { path: '404', element: <NotFound /> },
+      { path: '/', element: <Navigate to="/signin" /> },
+      { path: '*', element: <Navigate to="/404" /> }
+    ]
   },
   {
     path: 'dashboard',

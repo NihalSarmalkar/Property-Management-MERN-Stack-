@@ -32,6 +32,7 @@
     "react/jsx-props-no-spreading": "off",
     "react/prop-types": "error",
     "react/react-in-jsx-scope": "off",
-    "react/require-default-props": "off"
+    "react/require-default-props": "off",
+    "linebreak-style": 0
   }
 }

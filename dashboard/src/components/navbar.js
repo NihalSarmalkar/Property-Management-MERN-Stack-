@@ -1,5 +1,5 @@
 import { Link as RouterLink } from 'react-router-dom';
-import { AppBar, Avatar, Box, Link, Toolbar } from '@material-ui/core';
+import { AppBar, Avatar, Box, Toolbar } from '@material-ui/core';
 import { Logo } from './logo';
 
 export const Navbar = () => (
@@ -29,15 +29,6 @@ export const Navbar = () => (
         <Logo />
       </Box>
       <Box sx={{ flexGrow: 1 }} />
-      <Link
-        color="#ffffff"
-        href="https://material-ui.com/store/items/carpatin-dashboard"
-        sx={{ mr: 1.25 }}
-        target="_blank"
-        variant="body2"
-      >
-        See Pro Version
-      </Link>
       <Avatar
         alt="User"
         src="/static/user-chen_simmons.png"

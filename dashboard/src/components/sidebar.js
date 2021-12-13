@@ -26,12 +26,12 @@ const items = [
   {
     href: '/dashboard/theme',
     icon: DocumentTextIcon,
-    label: 'Theme'
+    label: 'Applications'
   },
   {
     href: '/dashboard/icons',
     icon: StarIcon,
-    label: 'Icons'
+    label: 'Shortlisted'
   },
   {
     href: '/404',

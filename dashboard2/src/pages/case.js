@@ -56,12 +56,24 @@ const casepage = () => {
         setOpen2(false);
     };
 
+    const goBack = () => {
+        handleCloseNext();
+        handleClickOpen();
+    };
+
 
     const files = acceptedFiles.map((file) => (
         <li key={file.path}>
         {file.path} - {file.size} bytes
         </li>
     ));
+
+
+    const changeEmployeeType = (type) => {
+        settype(type);
+        setsubcategory("");
+    }
+
 
     
 
@@ -98,10 +110,12 @@ const casepage = () => {
                                 <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                                     <div >
                                         <input {...getInputProps()} />
-                                        <p>Please Upload Title</p>
+                                        <p>Please upload title</p>
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -109,10 +123,12 @@ const casepage = () => {
                                 <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                                     <div >
                                         <input {...getInputProps()} />
-                                        <p>Please Booking form</p>
+                                        <p>Please upload booking form</p>
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -122,10 +138,12 @@ const casepage = () => {
                                 <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                                     <div >
                                         <input {...getInputProps()} />
-                                        <p>Please Upload Title</p>
+                                        <p>Please upload booking form</p>
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -135,6 +153,7 @@ const casepage = () => {
                 </DialogContent>
                 <DialogActions>
                 <Button onClick={handleCloseNext}>Close</Button>
+                <Button onClick={goBack}>Back</Button>
                 <Button onClick={handleCloseNext} autoFocus>
                     Submit
                 </Button>
@@ -162,7 +181,7 @@ const casepage = () => {
                         border: '1px solid #000000',
                         borderRadius: '10px'
                     }}
-                    onChange={(e) => settype(e.target.value)}
+                    onChange={(e) => changeEmployeeType(e.target.value)}
                     >
                         <option disabled selected>Select the Type</option>
                         <option value="Employee">Employee</option>
@@ -224,6 +243,7 @@ const casepage = () => {
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -235,6 +255,7 @@ const casepage = () => {
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -246,6 +267,7 @@ const casepage = () => {
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -257,6 +279,7 @@ const casepage = () => {
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -269,6 +292,7 @@ const casepage = () => {
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -280,6 +304,7 @@ const casepage = () => {
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -297,6 +322,7 @@ const casepage = () => {
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -308,6 +334,7 @@ const casepage = () => {
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -319,6 +346,7 @@ const casepage = () => {
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -330,6 +358,7 @@ const casepage = () => {
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -342,6 +371,7 @@ const casepage = () => {
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -353,6 +383,7 @@ const casepage = () => {
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -370,6 +401,7 @@ const casepage = () => {
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -381,6 +413,7 @@ const casepage = () => {
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -392,6 +425,7 @@ const casepage = () => {
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -403,6 +437,7 @@ const casepage = () => {
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -414,6 +449,7 @@ const casepage = () => {
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -425,6 +461,7 @@ const casepage = () => {
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -442,6 +479,7 @@ const casepage = () => {
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -453,6 +491,7 @@ const casepage = () => {
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -464,6 +503,7 @@ const casepage = () => {
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -475,6 +515,7 @@ const casepage = () => {
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -486,6 +527,7 @@ const casepage = () => {
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -497,6 +539,7 @@ const casepage = () => {
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -508,6 +551,7 @@ const casepage = () => {
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -525,6 +569,7 @@ const casepage = () => {
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -536,6 +581,7 @@ const casepage = () => {
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -547,6 +593,7 @@ const casepage = () => {
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -558,6 +605,7 @@ const casepage = () => {
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -569,6 +617,7 @@ const casepage = () => {
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
@@ -580,6 +629,7 @@ const casepage = () => {
                                     </div>
                                     <aside>
                                         <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>

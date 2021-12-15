@@ -28,8 +28,8 @@ export const TotalProfit = (props) => (
           <Avatar
             sx={{
               backgroundColor: 'primary.main',
-              height: 56,
-              width: 56
+              height: 40,
+              width: 40
             }}
           >
             <AttachMoneyIcon />

@@ -32,8 +32,8 @@ export const Budget = (props) => (
           <Avatar
             sx={{
               backgroundColor: 'error.main',
-              height: 56,
-              width: 56
+              height: 40,
+              width: 40
             }}
           >
             <MoneyIcon />

@@ -29,8 +29,8 @@ export const TotalCustomers = (props) => (
           <Avatar
             sx={{
               backgroundColor: 'success.main',
-              height: 56,
-              width: 56
+              height: 40,
+              width: 40
             }}
           >
             <PeopleIcon />

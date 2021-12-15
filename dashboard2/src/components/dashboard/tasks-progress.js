@@ -31,8 +31,8 @@ export const TasksProgress = (props) => (
           <Avatar
             sx={{
               backgroundColor: 'warning.main',
-              height: 56,
-              width: 56
+              height: 40,
+              width: 40
             }}
           >
             <InsertChartIcon />

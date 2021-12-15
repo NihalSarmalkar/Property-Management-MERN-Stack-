@@ -24,7 +24,13 @@ const casepage = () => {
     const {acceptedFiles, getRootProps, getInputProps} = useDropzone();
     const [open, setOpen] = React.useState(false);
 
+    const [open2, setOpen2] = React.useState(false);
+
+
     const [type, settype] = React.useState("");
+
+    const [projecttype, setprojecttype] = React.useState("");
+
     const [subcategory, setsubcategory] = React.useState("");
 
     const handleClickOpen = () => {
@@ -32,6 +38,22 @@ const casepage = () => {
     };
     const handleClose = () => {
       setOpen(false);
+    };
+
+    const handleClose2 = () => {
+      setOpen(false);
+      handleClickOpenNext();
+    }
+
+
+
+
+    const handleClickOpenNext = () => {
+        setOpen2(true);
+    };
+    
+    const handleCloseNext = () => {
+        setOpen2(false);
     };
 
 
@@ -45,6 +67,81 @@ const casepage = () => {
 
     return (
         <>
+            <Dialog
+                open={open2}
+                onClose={handleCloseNext}
+                aria-labelledby="alert-dialog-title"
+                fullWidth
+                maxWidth="md"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                Create Case
+                </DialogTitle>
+                <DialogContent>
+                    <select
+                        style={{
+                            width: '100%',
+                            padding: '12px',
+                            border: '1px solid #000000',
+                            borderRadius: '10px'
+                        }}
+                    onChange={(e) => setprojecttype(e.target.value)}
+                    >
+                        <option disabled selected>Select the Type</option>
+                        <option value="Sub-sales">Sub-sales</option>
+                        <option value="Project">Project</option>
+                    </select>
+                    {
+                        projecttype === "Sub-sales" ? (
+                            <>
+                                <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
+                                    <div >
+                                        <input {...getInputProps()} />
+                                        <p>Please Upload Title</p>
+                                    </div>
+                                    <aside>
+                                        <h4>Files</h4>
+                                        <ul>{files}</ul>
+                                    </aside>
+                                </section>
+
+                                <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
+                                    <div >
+                                        <input {...getInputProps()} />
+                                        <p>Please Booking form</p>
+                                    </div>
+                                    <aside>
+                                        <h4>Files</h4>
+                                        <ul>{files}</ul>
+                                    </aside>
+                                </section>
+                            </>
+                        ) : projecttype === "Project" ? (
+                            <>
+                                <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
+                                    <div >
+                                        <input {...getInputProps()} />
+                                        <p>Please Upload Title</p>
+                                    </div>
+                                    <aside>
+                                        <h4>Files</h4>
+                                        <ul>{files}</ul>
+                                    </aside>
+                                </section>
+                            </>
+                        ) : null
+                    }
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={handleCloseNext}>Close</Button>
+                <Button onClick={handleCloseNext} autoFocus>
+                    Submit
+                </Button>
+                </DialogActions>
+            </Dialog>
+
+
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -489,17 +586,11 @@ const casepage = () => {
                             </>
                         ) : null
                     }
-
-
-
-
-
-                    
                 </DialogContent>
                 <DialogActions>
                 <Button onClick={handleClose}>Close</Button>
-                <Button onClick={handleClose} autoFocus>
-                    Submit
+                <Button onClick={handleClose2} autoFocus>
+                    Next
                 </Button>
                 </DialogActions>
             </Dialog>

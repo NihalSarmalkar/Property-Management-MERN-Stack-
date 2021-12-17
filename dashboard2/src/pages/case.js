@@ -32,6 +32,7 @@ const casepage = () => {
     const [projecttype, setprojecttype] = React.useState("");
 
     const [subcategory, setsubcategory] = React.useState("");
+    const [employementyear, setemployementyear] = React.useState("");
 
     const handleClickOpen = () => {
       setOpen(true);
@@ -72,6 +73,7 @@ const casepage = () => {
     const changeEmployeeType = (type) => {
         settype(type);
         setsubcategory("");
+        setemployementyear("");
     }
 
 
@@ -219,6 +221,31 @@ const casepage = () => {
                                     <option value="Basic salary">Basic salary</option>
                                     <option value="Basic + Commission / Allowance">Basic + Commission / Allowance</option>
                                     <option value="Full commission earner">Full commission earner</option>
+                                </select>
+
+                                <select
+                                style={{
+                                    width: '100%',
+                                    padding: '12px',
+                                    border: '1px solid #000000',
+                                    marginTop: '20px',
+                                    borderRadius: '10px'
+                                }}
+                                onChange={(e) => setemployementyear(e.target.value)}
+                                >
+                                    <option disabled selected>Select employement year</option>
+                                    <option value="Less than 1 Year">Less than 1 Year</option>
+                                    <option value="1 Year">1 Year</option>
+                                    <option value="2 Year">2 Year</option>
+                                    <option value="3 Year">3 Year</option>
+                                    <option value="4 Year">4 Year</option>
+                                    <option value="5 Year">5 Year</option>
+                                    <option value="6 Year">6 Year</option>
+                                    <option value="7 Year">7 Year</option>
+                                    <option value="8 Year">8 Year</option>
+                                    <option value="9 Year">9 Year</option>
+                                    <option value="10 Year">10 Year</option>
+                                    <option value="More than 10 Years">More than 10 Years</option>
                                 </select>
                             </>
                         ) : null
@@ -631,6 +658,35 @@ const casepage = () => {
                                     </aside>
                                 </section>
                             </>
+                        ) : null
+                    }
+
+
+                    {
+                        employementyear === "Less than 1 Year" ? (
+                            <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
+                                <div >
+                                    <input {...getInputProps()} />
+                                    <p>Please upload Employment letter</p>
+                                </div>
+                                <aside>
+                                    <h4>Files</h4>
+                                    <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
+                                    <ul>{files}</ul>
+                                </aside>
+                            </section>
+                        ) : employementyear === "1 Year" ? (
+                            <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
+                                <div >
+                                    <input {...getInputProps()} />
+                                    <p>Please upload Employment letter</p>
+                                </div>
+                                <aside>
+                                    <h4>Files</h4>
+                                    <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
+                                    <ul>{files}</ul>
+                                </aside>
+                            </section>
                         ) : null
                     }
                 </DialogContent>

@@ -1,6 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
-import { Box, Container, Button, Dialog } from '@mui/material';
+import { Box, Container, Button, Dialog, IconButton, Tooltip } from '@mui/material';
 import { DashboardLayout } from '../components/dashboard-layout';
 
 
@@ -10,7 +10,14 @@ import DialogContent from '@mui/material/DialogContent';
 import TextField from '@mui/material/TextField';
 import DialogTitle from '@mui/material/DialogTitle';
 import {useDropzone} from "react-dropzone";
-
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 const Financeconsultant = () => {
     const [open, setOpen] = React.useState(false);
@@ -207,6 +214,40 @@ const Financeconsultant = () => {
             >
                 Submit new case
             </Button>
+
+            <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead>
+                    <TableRow>
+                        <TableCell>Sl No.</TableCell>
+                        <TableCell align="center">Case Name</TableCell>
+                        <TableCell align="center">Submitted On</TableCell>
+                        <TableCell align="center">Type</TableCell>
+                        <TableCell align="center">Action</TableCell>
+                    </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        <TableRow
+                        key={1}
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        >
+                        <TableCell component="th" scope="row">
+                            1
+                        </TableCell>
+                        <TableCell align="center">Test Case</TableCell>
+                        <TableCell align="center">22-12-2021</TableCell>
+                        <TableCell align="center">Self Employed</TableCell>
+                        <TableCell align="center">
+                            <Tooltip title="Review Case">
+                                <IconButton color="primary" aria-label="upload picture" component="span">
+                                    <RemoveRedEyeIcon />
+                                </IconButton>
+                            </Tooltip>
+                        </TableCell>
+                        </TableRow>
+                    </TableBody>
+                </Table>
+            </TableContainer>
 
             
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
-import { Box, Container, Button, Dialog, IconButton, Tooltip } from '@mui/material';
+import { Box, Container, Button, Dialog, IconButton, Tooltip, Typography } from '@mui/material';
 import { DashboardLayout } from '../components/dashboard-layout';
 
 
@@ -21,6 +21,17 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 const Financeconsultant = () => {
     const [open, setOpen] = React.useState(false);
+
+    const [openreview, setOpenreview] = React.useState(false);
+
+    const handleClickOpenreview = () => {
+        setOpenreview(true);
+    };
+    
+    const handleClosereview = () => {
+        setOpenreview(false);
+    };
+
     const {acceptedFiles, getRootProps, getInputProps} = useDropzone();
     const [type, settype] = React.useState("Refinance");
 
@@ -38,8 +49,135 @@ const Financeconsultant = () => {
         </li>
     ));
 
+    const [name, setname] = React.useState("Test Name")
+    const [contact, setcontact] = React.useState("46256273990")
+    const [email, setemail] = React.useState("test@gmail.com")
+
     return (
     <>
+            <Dialog
+                open={openreview}
+                onClose={handleClosereview}
+                aria-labelledby="alert-dialog-title"
+                fullWidth
+                maxWidth="md"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    Submitted Case
+                </DialogTitle>
+                <DialogContent>
+
+                    <Typography sx={{ mt: 2 }} variant='h6' >Type: Employee</Typography>
+                    <Typography sx={{ mt: 2 }} variant='h6' >Category: Basic Salary</Typography>
+                    <Typography sx={{ mt: 2 }} variant='h6' >Employement Year: 1 Year</Typography>
+
+                    <TextField onChange={(e) => setname(e.target.value)} sx={{ mt: 4 }} value={name} type="text" label="Name" fullWidth variant="outlined" />
+                    <TextField onChange={(e) => setcontact(e.target.value)} sx={{ mt: 4 }} value={contact} type="text" label="Contact Number" fullWidth variant="outlined" />
+                    <TextField onChange={(e) => setemail(e.target.value)} sx={{ mt: 4 }} value={email} type="email" label="Email Address" fullWidth variant="outlined" />
+
+                    <center>
+                        <Button sx={{ mt: 4 }}>Download IC Front & Back</Button>
+                    </center>
+                    <section style={{ marginTop: '10px' }} className="dropzone" {...getRootProps()}>
+                        <div >
+                            <input {...getInputProps()} />
+                            <p>Re-Upload IC Front & Back</p>
+                        </div>
+                        <aside>
+                            <h4>Files</h4>
+                            <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
+                            <ul>{files}</ul>
+                        </aside>
+                    </section>
+
+                    <center>
+                        <Button sx={{ mt: 4 }}>Download 3 months bank statement</Button>
+                    </center>
+                    <section style={{ marginTop: '10px' }} className="dropzone" {...getRootProps()}>
+                        <div >
+                            <input {...getInputProps()} />
+                            <p>Re-Upload 3 months bank statement</p>
+                        </div>
+                        <aside>
+                            <h4>Files</h4>
+                            <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
+                            <ul>{files}</ul>
+                        </aside>
+                    </section>
+
+                    <center>
+                        <Button sx={{ mt: 4 }}>Download 3 months payslip</Button>
+                    </center>
+                    <section style={{ marginTop: '10px' }} className="dropzone" {...getRootProps()}>
+                        <div >
+                            <input {...getInputProps()} />
+                            <p>Re-Upload 3 months payslip</p>
+                        </div>
+                        <aside>
+                            <h4>Files</h4>
+                            <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
+                            <ul>{files}</ul>
+                        </aside>
+                    </section>
+
+                    <center>
+                        <Button sx={{ mt: 4 }}>Download Latest EPF details statement 2020 & 2019</Button>
+                    </center>
+                    <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
+                        <div >
+                            <input {...getInputProps()} />
+                            <p>Re-Upload Latest EPF details statement 2020 & 2019</p>
+                        </div>
+                        <aside>
+                            <h4>Files</h4>
+                            <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
+                            <ul>{files}</ul>
+                        </aside>
+                    </section>
+
+                    <center>
+                        <Button sx={{ mt: 4 }}>Download latest 2 years Borang BE Full set</Button>
+                    </center>
+                    <section style={{ marginTop: '10px' }} className="dropzone" {...getRootProps()}>
+                        <div >
+                            <input {...getInputProps()} />
+                            <p>Re-Upload latest 2 years Borang BE Full set</p>
+                        </div>
+                        <aside>
+                            <h4>Files</h4>
+                            <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
+                            <ul>{files}</ul>
+                        </aside>
+                    </section>
+
+                    <center>
+                        <Button sx={{ mt: 4 }}>Download Bonus/savings/fixed deposit/Unit Trust/Shares/Gold/ASB/Tabung Haji</Button>
+                    </center>
+                    <section style={{ marginTop: '10px' }} className="dropzone" {...getRootProps()}>
+                        <div >
+                            <input {...getInputProps()} />
+                            <p>Re-Upload Bonus/savings/fixed deposit/Unit Trust/Shares/Gold/ASB/Tabung Haji</p>
+                        </div>
+                        <aside>
+                            <h4>Files</h4>
+                            <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
+                            <ul>{files}</ul>
+                        </aside>
+                    </section>
+
+
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={handleClosereview}>Close</Button>
+                <Button onClick={handleClosereview} autoFocus>
+                    Approve & Submit
+                </Button>
+                </DialogActions>
+            </Dialog>
+
+
+
 
             <Dialog
                 open={open}
@@ -239,7 +377,7 @@ const Financeconsultant = () => {
                         <TableCell align="center">Self Employed</TableCell>
                         <TableCell align="center">
                             <Tooltip title="Review Case">
-                                <IconButton color="primary" aria-label="upload picture" component="span">
+                                <IconButton onClick={handleClickOpenreview} color="primary" aria-label="upload picture" component="span">
                                     <RemoveRedEyeIcon />
                                 </IconButton>
                             </Tooltip>

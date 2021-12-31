@@ -19,6 +19,39 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
+
+
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import ListItemText from '@mui/material/ListItemText';
+import Select from '@mui/material/Select';
+import Checkbox from '@mui/material/Checkbox';
+
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+const names = [
+    'Bank 1',
+    'Bank 2',
+    'Bank 3',
+    'Bank 4',
+    'Bank 5',
+    'Bank 6',
+    'Bank 7',
+    'Bank 8',
+];
+
 const Financeconsultant = () => {
     const [open, setOpen] = React.useState(false);
 
@@ -52,6 +85,18 @@ const Financeconsultant = () => {
     const [name, setname] = React.useState("Test Name")
     const [contact, setcontact] = React.useState("46256273990")
     const [email, setemail] = React.useState("test@gmail.com")
+    const [dsr, setdsr] = React.useState(0);
+
+    const [personName, setPersonName] = React.useState([]);
+    const handleChange = (event) => {
+        const {
+        target: { value },
+        } = event;
+        setPersonName(
+        // On autofill we get a stringified value.
+        typeof value === 'string' ? value.split(',') : value,
+        );
+    };
 
     return (
     <>
@@ -75,6 +120,47 @@ const Financeconsultant = () => {
                     <TextField onChange={(e) => setname(e.target.value)} sx={{ mt: 4 }} value={name} type="text" label="Name" fullWidth variant="outlined" />
                     <TextField onChange={(e) => setcontact(e.target.value)} sx={{ mt: 4 }} value={contact} type="text" label="Contact Number" fullWidth variant="outlined" />
                     <TextField onChange={(e) => setemail(e.target.value)} sx={{ mt: 4 }} value={email} type="email" label="Email Address" fullWidth variant="outlined" />
+
+                    <TextField sx={{ mt: 4 }} onChange={(e) => setdsr(e.target.value)} type="text" value={dsr} label="DSR %" fullWidth variant="outlined" />
+
+                    <FormControl sx={{ mt: 4, width: "100%" }}>
+                            <InputLabel id="demo-multiple-checkbox-label">Select the Bank</InputLabel>
+                            <Select
+                                labelId="demo-multiple-checkbox-label"
+                                id="demo-multiple-checkbox"
+                                multiple
+                                value={personName}
+                                onChange={handleChange}
+                                input={<OutlinedInput label="Tag" />}
+                                renderValue={(selected) => selected.join(', ')}
+                                MenuProps={MenuProps}
+                            >
+                                {names.map((name) => (
+                                    <MenuItem key={name} value={name}>
+                                    <Checkbox checked={personName.indexOf(name) > -1} />
+                                    <ListItemText primary={name} />
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                    </FormControl>
+
+                <TextField sx={{ mt: 4 }} type="text" label="Insurance Amount" fullWidth variant="outlined" value="" />
+                <select
+                    style={{
+                        width: '100%',
+                        padding: '12px',
+                        border: '1px solid #000000',
+                        borderRadius: '10px',
+                        marginTop: '40px'
+                    }}
+                    onChange={(e) => settype(e.target.value)}
+                >
+                    <option disabled selected>Select Type</option>
+                    <option value="Type 1">Type 1</option>
+                    <option value="Type 2">Type 2</option>
+                    <option value="Type 3">Type 3</option>
+                    <option value="Type 4">Type 4</option>
+                </select>
 
                     <center>
                         <Button sx={{ mt: 4 }}>Download IC Front & Back</Button>
@@ -169,9 +255,12 @@ const Financeconsultant = () => {
 
                 </DialogContent>
                 <DialogActions>
-                <Button onClick={handleClosereview}>Close</Button>
+                <Button color="inherit" onClick={handleClosereview}>Close</Button>
+                <Button color="error" onClick={handleClosereview} autoFocus>
+                    Not Approve
+                </Button>
                 <Button onClick={handleClosereview} autoFocus>
-                    Approve & Submit
+                    Approve
                 </Button>
                 </DialogActions>
             </Dialog>
@@ -206,7 +295,7 @@ const Financeconsultant = () => {
                     <TextField sx={{ mt: 4 }} type="text" label="Name" fullWidth variant="outlined" value="" />
                     <TextField sx={{ mt: 4 }} type="text" label="Contact Number" fullWidth variant="outlined" value="" />
                     <TextField sx={{ mt: 4 }} type="email" label="Email Address" fullWidth variant="outlined" value="" />
-                    <TextField sx={{ mt: 4 }} type="text" label="Title" fullWidth variant="outlined" value="" />
+                    
 
                     <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                         <div >
@@ -319,7 +408,7 @@ const Financeconsultant = () => {
                     
                 </DialogContent>
                 <DialogActions>
-                <Button onClick={handleClose}>Close</Button>
+                <Button color="inherit" onClick={handleClose}>Close</Button>
                 <Button onClick={handleClose} autoFocus>
                     Submit
                 </Button>

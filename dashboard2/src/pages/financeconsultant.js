@@ -330,9 +330,6 @@ const Financeconsultant = () => {
                 </DialogContent>
                 <DialogActions>
                 <Button color="inherit" onClick={handleClosereview}>Close</Button>
-                <Button color="error" onClick={handleClosereview} autoFocus>
-                    Close
-                </Button>
                 <Button onClick={handleClosereview} autoFocus>
                     Submit
                 </Button>

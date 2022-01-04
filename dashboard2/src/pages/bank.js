@@ -49,34 +49,93 @@ const Bank = () => {
                     <Typography sx={{ mt: 2 }} variant='h6' >Email Address: test@gmail.com</Typography>
                     <Typography sx={{ mt: 2 }} variant='h6' >DSR: 20%</Typography>
 
-                    <center>
-                        <Button sx={{ mt: 4 }}>Download IC Front & Back</Button>
-                    </center>
+                    <TableContainer sx={{ mt: 2 }} component={Paper}>
+                        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                            <TableHead>
+                            <TableRow>
+                                <TableCell>Title</TableCell>
+                                <TableCell align="center">
+                                    Download
+                                </TableCell>
+                            </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                <TableRow
+                                key={1}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                >
+                                    <TableCell component="th" scope="row">
+                                        IC Front & Back
+                                    </TableCell>
+                                    <TableCell align="center">
+                                        <Button color='primary' size='small'>Download</Button>
+                                    </TableCell>
+                                </TableRow>
 
-                    <center>
-                        <Button sx={{ mt: 4 }}>Download 3 months bank statement</Button>
-                    </center>
+                                <TableRow
+                                key={1}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                >
+                                    <TableCell component="th" scope="row">
+                                        3 months bank statement
+                                    </TableCell>
+                                    <TableCell align="center">
+                                        <Button color='primary' size='small'>Download</Button>
+                                    </TableCell>
+                                </TableRow>
+
+                                <TableRow
+                                key={1}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                >
+                                    <TableCell component="th" scope="row">
+                                        3 months payslip
+                                    </TableCell>
+                                    <TableCell align="center">
+                                        <Button color='primary' size='small'>Download</Button>
+                                    </TableCell>
+                                </TableRow>
+
+                                <TableRow
+                                key={1}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                >
+                                    <TableCell component="th" scope="row">
+                                        Latest EPF details statement 2020 & 2019
+                                    </TableCell>
+                                    <TableCell align="center">
+                                        <Button color='primary' size='small'>Download</Button>
+                                    </TableCell>
+                                </TableRow>
+
+                                <TableRow
+                                key={1}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                >
+                                    <TableCell component="th" scope="row">
+                                        Latest 2 years Borang BE Full set
+                                    </TableCell>
+                                    <TableCell align="center">
+                                        <Button color='primary' size='small'>Download</Button>
+                                    </TableCell>
+                                </TableRow>
+
+                                <TableRow
+                                key={1}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                >
+                                    <TableCell component="th" scope="row">
+                                        Bonus/savings/fixed deposit/Unit Trust/Shares/Gold/ASB/Tabung Haji
+                                    </TableCell>
+                                    <TableCell align="center">
+                                        <Button color='primary' size='small'>Download</Button>
+                                    </TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+
                     
-
-                    <center>
-                        <Button sx={{ mt: 4 }}>Download 3 months payslip</Button>
-                    </center>
-                    
-
-                    <center>
-                        <Button sx={{ mt: 4 }}>Download Latest EPF details statement 2020 & 2019</Button>
-                    </center>
-                    
-
-                    <center>
-                        <Button sx={{ mt: 4 }}>Download latest 2 years Borang BE Full set</Button>
-                    </center>
-                    
-
-                    <center>
-                        <Button sx={{ mt: 4 }}>Download Bonus/savings/fixed deposit/Unit Trust/Shares/Gold/ASB/Tabung Haji</Button>
-                    </center>
-
                 </DialogContent>
                 <DialogActions>
                 <Button color="inherit" onClick={handleClosereview}>Close</Button>
@@ -108,7 +167,7 @@ const Bank = () => {
                 >
                 Bank
                 </Typography>
-
+{/* 
                 <Button
                     sx={{
                         float: 'right',
@@ -119,7 +178,7 @@ const Bank = () => {
                     onClick={handleClickOpenreview}
                 >
                     Add Banker
-                </Button>
+                </Button> */}
 
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">

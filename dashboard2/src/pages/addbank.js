@@ -41,8 +41,29 @@ const AddBank = () => {
         </DialogTitle>
         <DialogContent>
           <TextField sx={{ mt: 4 }} type="text" label="Name" fullWidth variant="outlined" />
+
+          <select
+              style={{
+                  width: '100%',
+                  padding: '12px',
+                  border: '1px solid #000000',
+                  borderRadius: '10px',
+                  marginTop: '40px'
+              }}
+          >
+              <option disabled selected>Select Bank Type</option>
+              <option value="Bank Type 1">Bank Type 1</option>
+              <option value="Bank Type 2">Bank Type 2</option>
+              <option value="Bank Type 3">Bank Type 3</option>
+              <option value="Bank Type 4">Bank Type 4</option>
+          </select>
+
           <TextField sx={{ mt: 4 }} type="text" label="DSR%" fullWidth variant="outlined" />
           <TextField sx={{ mt: 4 }} value="3" type="text" label="Maximum Case Request Quota" fullWidth variant="outlined" />
+
+          <TextField sx={{ mt: 4 }} type="text" label="Email Address" fullWidth variant="outlined" />
+          <TextField sx={{ mt: 4 }} type="text" label="Password" fullWidth variant="outlined" />
+
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>
@@ -55,7 +76,7 @@ const AddBank = () => {
   
     <Head>
       <title>
-        Admin | Add Bank
+        Admin | Add Banker
       </title>
     </Head>
     <Box
@@ -70,7 +91,7 @@ const AddBank = () => {
           sx={{ mb: 3 }}
           variant="h4"
         >
-          Admin | Add Bank
+          Admin | Add Banker
         </Typography>
 
         <Button

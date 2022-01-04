@@ -98,8 +98,62 @@ const Financeconsultant = () => {
         );
     };
 
+    const [confirmation, setconfirmation] = React.useState(false);
+    const handleClickconfirmation = () => {
+        setconfirmation(true);
+    };
+    const handleClosereconfirmation = () => {
+        setconfirmation(false);
+    };
+
+    const [downloadBackup, setdownloadBackup] = React.useState(false);
+    const downloadbackup = () => {
+        setdownloadBackup(true);
+    }
+
+    const continueEditing = () => {
+        window.location = "/newcasefinanceconsultant.html";
+    }
+
     return (
     <>
+            <Dialog
+                open={confirmation}
+                onClose={handleClosereconfirmation}
+                aria-labelledby="alert-dialog-title"
+                fullWidth
+                maxWidth="md"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    Confirm
+                </DialogTitle>
+
+                <DialogContent>
+                    <h4>
+                        Editing this will effect the change in the data below, if you wish to continue please download the
+                        data backup first then try editing this.
+                    </h4>
+                </DialogContent>
+
+                <DialogActions>
+                    <Button color="error" onClick={handleClosereconfirmation} autoFocus>
+                        Cancel
+                    </Button>
+                    <Button color='inherit' onClick={downloadbackup} autoFocus>
+                        Download Data Backup
+                    </Button>
+                    {
+                        downloadBackup ? (
+                            <Button onClick={continueEditing} autoFocus>
+                                Continue Editing
+                            </Button>
+                        ) : null
+                    }
+                </DialogActions>
+            </Dialog>
+
+
             <Dialog
                 open={openreview}
                 onClose={handleClosereview}
@@ -112,10 +166,15 @@ const Financeconsultant = () => {
                     Submitted Case
                 </DialogTitle>
                 <DialogContent>
+                    <div style={{ border: '1px solid #000', padding: '10px' }}>
+                        <Button onClick={handleClickconfirmation} sx={{ float: 'right' }}>Edit This</Button>
+                        <Typography variant='h6' >Type: Employee</Typography>
+                        <Typography sx={{ mt: 2 }} variant='h6' >Category: Basic Salary</Typography>
+                        <Typography sx={{ mt: 2 }} variant='h6' >Employement Year: 1 Year</Typography>
+                    </div>
 
-                    <Typography sx={{ mt: 2 }} variant='h6' >Type: Employee</Typography>
-                    <Typography sx={{ mt: 2 }} variant='h6' >Category: Basic Salary</Typography>
-                    <Typography sx={{ mt: 2 }} variant='h6' >Employement Year: 1 Year</Typography>
+                    
+
 
                     <TextField onChange={(e) => setname(e.target.value)} sx={{ mt: 4 }} value={name} type="text" label="Name" fullWidth variant="outlined" />
                     <TextField onChange={(e) => setcontact(e.target.value)} sx={{ mt: 4 }} value={contact} type="text" label="Contact Number" fullWidth variant="outlined" />
@@ -155,11 +214,11 @@ const Financeconsultant = () => {
                     }}
                     onChange={(e) => settype(e.target.value)}
                 >
-                    <option disabled selected>Select Type</option>
-                    <option value="Type 1">Type 1</option>
-                    <option value="Type 2">Type 2</option>
-                    <option value="Type 3">Type 3</option>
-                    <option value="Type 4">Type 4</option>
+                    <option disabled selected>Select Insurance Type</option>
+                    <option value="Insurance Type 1">Insurance Type 1</option>
+                    <option value="Insurance Type 2">Insurance Type 2</option>
+                    <option value="Insurance Type 3">Insurance Type 3</option>
+                    <option value="Insurance Type 4">Insurance Type 4</option>
                 </select>
 
                     <center>
@@ -252,15 +311,30 @@ const Financeconsultant = () => {
                         </aside>
                     </section>
 
+                    <select
+                        style={{
+                            width: '100%',
+                            padding: '12px',
+                            border: '1px solid #000000',
+                            borderRadius: '10px',
+                            marginTop: '40px'
+                        }}
+                    >
+                        <option disabled selected>Select Status</option>
+                        <option value="Stuck">Stuck</option>
+                        <option value="DSR Burst">DSR Burst</option>
+                        <option value="Reject">Reject</option>
+                    </select>
+
 
                 </DialogContent>
                 <DialogActions>
                 <Button color="inherit" onClick={handleClosereview}>Close</Button>
                 <Button color="error" onClick={handleClosereview} autoFocus>
-                    Not Approve
+                    Close
                 </Button>
                 <Button onClick={handleClosereview} autoFocus>
-                    Approve
+                    Submit
                 </Button>
                 </DialogActions>
             </Dialog>

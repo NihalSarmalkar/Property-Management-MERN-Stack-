@@ -321,10 +321,10 @@ const Financeconsultant = () => {
                         }}
                     >
                         <option disabled selected>Select Status</option>
-                        <option value="Approve">Approve</option>
-                        <option value="Stuck">Stuck</option>
-                        <option value="DSR Burst">DSR Burst</option>
+                        <option value="Submit">Submit</option>
                         <option value="Reject">Reject</option>
+                        <option value="DSR Burst">DSR Burst</option>
+                        <option value="Stuck">Stuck</option>
                     </select>
 
 

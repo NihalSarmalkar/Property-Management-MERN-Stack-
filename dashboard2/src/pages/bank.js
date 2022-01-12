@@ -50,8 +50,8 @@ const Bank = () => {
   const [status, setStatus] = React.useState("");
   const [lawyer, setLawyer] = React.useState("");
   const [LawyersDialog, setLawyersDialog] = React.useState(false);
-  const [insuranceDialog, setInsuranceDialog] = React.useState(false);
-  const [insuranceType,setInsuranceType]=React.useState("");
+
+
   const handleClickOpenreview = () => {
     setOpenreview(true);
   };
@@ -61,16 +61,14 @@ const Bank = () => {
   const handleSubmit = () => {
     setLawyersDialog(false);
     setOpenreview(false);
-    setInsuranceDialog(false);
     setStatus("");
-    setInsuranceType("");
+
   };
   const handleCancel=()=>{
     setLawyersDialog(false);
     setOpenreview(false);
-    setInsuranceDialog(false);
     setStatus("");
-    setInsuranceType("");
+
   }
   return (
     <>
@@ -313,7 +311,6 @@ const Bank = () => {
             onClick={() => {
               if (status === "Approved") {
                 setLawyersDialog(false);
-                setInsuranceDialog(true);
               } else {
                 handleSubmit();
               }
@@ -325,56 +322,7 @@ const Bank = () => {
         </DialogActions>
       </Dialog>
 
-      <Dialog
-        open={insuranceDialog}
-        onClose={handleCancel}
-        aria-labelledby="alert-dialog-title"
-        fullWidth
-        maxWidth="md"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">Insurance</DialogTitle>
-        <DialogContent>
-        <TextField
-            sx={{ mt: 4,mb:5 }}
-            type="text"
-            label="Insurance Amount"
-            fullWidth
-            variant="outlined"
-            value=""
-          />
-         
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Select Insurance Type</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={insuranceType}
-              label="Select Status"
-              onChange={(e) => setInsuranceType(e.target.value)}
-            >
-              <MenuItem value={""}>Select Insurance Type</MenuItem>
-              <MenuItem value={"Insurance Type 1"}>Insurance Type 1</MenuItem>
-              <MenuItem value={"Insurance Type 2"}>Insurance Type 2</MenuItem>
-              <MenuItem value={"Insurance Type 3"}>Insurance Type 3</MenuItem>
-              <MenuItem value={"Insurance Type 4"}>Insurance Type 4</MenuItem>
-             
-            </Select>
-          </FormControl>
-       
-        </DialogContent>
-
-        <DialogActions>
-          <Button
-            onClick={() => {
-              handleSubmit();
-            }}
-            autoFocus
-          >
-            Submit
-          </Button>
-        </DialogActions>
-      </Dialog>
+     
       <Head>
         <title>Bank</title>
       </Head>

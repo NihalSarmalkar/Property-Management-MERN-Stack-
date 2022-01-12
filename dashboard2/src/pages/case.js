@@ -146,6 +146,17 @@ const casepage = () => {
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
+                                <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
+                                    <div >
+                                        <input {...getInputProps()} />
+                                        <p>Please upload the Title</p>
+                                    </div>
+                                    <aside>
+                                        <h4>Files</h4>
+                                        <img style={{ marginTop: '10px', marginBottom: '10px' }} alt="Upload" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"/>
+                                        <ul>{files}</ul>
+                                    </aside>
+                                </section>
                             </>
                         ) : null
                     }

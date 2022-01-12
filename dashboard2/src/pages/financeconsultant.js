@@ -12,6 +12,7 @@ import {
   FormLabel,
   FormControlLabel,
   Radio,
+  Autocomplete,
 } from "@mui/material";
 import { DashboardLayout } from "../components/dashboard-layout";
 import LinkIcon from "@mui/icons-material/Link";
@@ -28,7 +29,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -49,12 +49,13 @@ const MenuProps = {
 };
 
 const names = ["Bank 1", "Bank 2", "Bank 3", "Bank 4", "Bank 5", "Bank 6", "Bank 7", "Bank 8"];
-
+const BankersArray = ["Banker1", "Banker2", "Banker3", "Banker4"];
 const Financeconsultant = () => {
   const [open, setOpen] = React.useState(false);
   const [LawyersDialog, setLawyersDialog] = React.useState(false);
   const [openreview, setOpenreview] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
+  const [status, setStatus] = React.useState("Select Status");
   const handleClickOpenreview = () => {
     setOpenreview(true);
   };
@@ -91,6 +92,7 @@ const Financeconsultant = () => {
   const [PAC, setPAC] = React.useState("Not See");
   const [showSelect, setShowSelect] = React.useState(false);
   const [dsr, setdsr] = React.useState(0);
+  const [insuranceType, setInsuranceType] = React.useState("");
 
   const [personName, setPersonName] = React.useState([]);
   const handleChange = (event) => {
@@ -352,23 +354,21 @@ const Financeconsultant = () => {
             </aside>
           </section>
 
-          <select
-            style={{
-              width: "100%",
-              padding: "12px",
-              border: "1px solid #000000",
-              borderRadius: "10px",
-              marginTop: "40px",
-            }}
-          >
-            <option disabled selected>
-              Select Status
-            </option>
-            <option value="Submit">Submit</option>
-            <option value="Reject">Reject</option>
-            <option value="DSR Burst">DSR Burst</option>
-            <option value="Stuck">Stuck</option>
-          </select>
+          <FormControl fullWidth>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              label="Select Status"
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+            >
+              <MenuItem value={"Select Status"}>Select Status</MenuItem>
+              <MenuItem value={"Submit"}>Submit</MenuItem>
+              <MenuItem value={"Reject"}>Reject</MenuItem>
+              <MenuItem value={"DSR Burst"}>DSR Burst</MenuItem>
+              <MenuItem value={"Stuck"}>Stuck</MenuItem>
+            </Select>
+          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button color="inherit" onClick={handleClosereview}>
@@ -377,7 +377,9 @@ const Financeconsultant = () => {
           <Button
             onClick={() => {
               handleClosereview();
-              setOpen2(true);
+              if (status !== "Submit") {
+                setOpen2(true);
+              }
             }}
             autoFocus
           >
@@ -410,21 +412,23 @@ const Financeconsultant = () => {
             >
               Bank 1
             </Typography>
-
-            <FormControl component="fieldset">
-              <FormLabel component="legend">Bankers</FormLabel>
-              <RadioGroup
-                aria-label="gender"
-                name="controlled-radio-buttons-group"
-                value={bankers1}
-                onChange={(e) => setBankers1(e.target.value)}
-              >
-                <FormControlLabel value="Banker1" control={<Radio />} label="Banker1" />
-                <FormControlLabel value="Banker2" control={<Radio />} label="Banker2" />
-                <FormControlLabel value="Banker3" control={<Radio />} label="Banker3" />
-                <FormControlLabel value="Banker4" control={<Radio />} label="Banker4" />
-              </RadioGroup>
-            </FormControl>
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              options={BankersArray}
+              renderInput={(params) => {
+                setBankers1(params.inputProps.value);
+                return <TextField {...params} label="Bankers" />;
+              }}
+            />
+            {bankers1 !== "" ? (
+              <Button sx={{ m: 2 }} variant="outlined">
+                <Radio checked />
+                {bankers1}
+              </Button>
+            ) : (
+              <Box sx={{ mb: 11.5 }}></Box>
+            )}
           </div>
           <div style={{ border: "1px solid #E0E0E0", padding: "5px", marginTop: "20px" }}>
             <Typography
@@ -440,22 +444,27 @@ const Financeconsultant = () => {
             >
               Bank 2
             </Typography>
-
-            <FormControl component="fieldset">
-              <FormLabel component="legend">Bankers</FormLabel>
-              <RadioGroup
-                aria-label="gender"
-                name="controlled-radio-buttons-group"
-                value={bankers2}
-                onChange={(e) => setBankers2(e.target.value)}
-              >
-                <FormControlLabel value="Banker1" control={<Radio />} label="Banker1" />
-                <FormControlLabel value="Banker2" control={<Radio />} label="Banker2" />
-                <FormControlLabel value="Banker3" control={<Radio />} label="Banker3" />
-                <FormControlLabel value="Banker4" control={<Radio />} label="Banker4" />
-              </RadioGroup>
-            </FormControl>
+            <Autocomplete
+              disablePortal
+              
+              id="combo-box-demo"
+              options={BankersArray}
+             
+              renderInput={(params) => {
+                setBankers2(params.inputProps.value);
+                return <TextField {...params} label="Bankers" />;
+              }}
+            />
+            {bankers2 !== "" ? (
+              <Button sx={{ m: 2 }} variant="outlined">
+                <Radio checked />
+                {bankers2}
+              </Button>
+            ) : (
+              <Box sx={{ mb: 11.5 }}></Box>
+            )}
           </div>
+         
         </DialogContent>
         <DialogActions>
           <Button color="inherit" onClick={handleCloseOpen2}>
@@ -676,10 +685,10 @@ const Financeconsultant = () => {
         fullWidth
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title" >Property Agent can</DialogTitle>
+        <DialogTitle id="alert-dialog-title"></DialogTitle>
         <DialogContent>
           <FormControl fullWidth>
-          
+            <Typography sx={{ mb: 2 }}>Property Agent can</Typography>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -693,9 +702,34 @@ const Financeconsultant = () => {
               <MenuItem value={"Not See"}>Not See</MenuItem>
             </Select>
           </FormControl>
+          <TextField
+            sx={{ mt: 4, mb: 5 }}
+            type="text"
+            label="Insurance Amount"
+            fullWidth
+            variant="outlined"
+            value=""
+          />
+
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Select Insurance Type</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={insuranceType}
+              label="Select Status"
+              onChange={(e) => setInsuranceType(e.target.value)}
+            >
+              <MenuItem value={""}>Select Insurance Type</MenuItem>
+              <MenuItem value={"Insurance Type 1"}>Insurance Type 1</MenuItem>
+              <MenuItem value={"Insurance Type 2"}>Insurance Type 2</MenuItem>
+              <MenuItem value={"Insurance Type 3"}>Insurance Type 3</MenuItem>
+              <MenuItem value={"Insurance Type 4"}>Insurance Type 4</MenuItem>
+            </Select>
+          </FormControl>
         </DialogContent>
         <DialogActions>
-        <Button color="primary" onClick={()=>setShowSelect(false)}>
+          <Button color="primary" onClick={() => setShowSelect(false)}>
             Save
           </Button>
         </DialogActions>
@@ -731,9 +765,7 @@ const Financeconsultant = () => {
                   <TableCell align="center">Case Name</TableCell>
                   <TableCell align="center">Submitted On</TableCell>
                   <TableCell align="center">Type</TableCell>
-                  <TableCell align="center">
-                    Action
-                  </TableCell>
+                  <TableCell align="center">Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -747,7 +779,6 @@ const Financeconsultant = () => {
                   <TableCell align="center">
                     <Tooltip title="Review Case">
                       <IconButton
-                     
                         onClick={handleClickOpenreview}
                         color="primary"
                         aria-label="upload picture"
@@ -759,7 +790,6 @@ const Financeconsultant = () => {
 
                     <Tooltip title="Property Agent can">
                       <IconButton
-                    
                         onClick={() => setShowSelect(!showSelect)}
                         color="primary"
                         aria-label="upload picture"

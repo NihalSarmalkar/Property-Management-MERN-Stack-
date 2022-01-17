@@ -149,7 +149,7 @@ const casepage = () => {
                                 <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                                     <div >
                                         <input {...getInputProps()} />
-                                        <p>Please upload the Title</p>
+                                        <p>Please upload the title</p>
                                     </div>
                                     <aside>
                                         <h4>Files</h4>

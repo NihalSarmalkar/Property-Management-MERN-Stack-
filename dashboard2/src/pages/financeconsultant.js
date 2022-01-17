@@ -29,6 +29,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import ChatIcon from "@mui/icons-material/Chat";
+import FeedIcon from "@mui/icons-material/Feed";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -36,6 +38,7 @@ import FormControl from "@mui/material/FormControl";
 import ListItemText from "@mui/material/ListItemText";
 import Select from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
+import { Send } from "@mui/icons-material";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -54,8 +57,11 @@ const Financeconsultant = () => {
   const [open, setOpen] = React.useState(false);
   const [LawyersDialog, setLawyersDialog] = React.useState(false);
   const [openreview, setOpenreview] = React.useState(false);
+  const [openlogs, setOpenlogs] = React.useState(false);
+  const [openchats, setOpenchats] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
   const [status, setStatus] = React.useState("Select Status");
+
   const handleClickOpenreview = () => {
     setOpenreview(true);
   };
@@ -63,8 +69,24 @@ const Financeconsultant = () => {
   const handleClosereview = () => {
     setOpenreview(false);
   };
+
+  const handleClickOpenlogs = () => {
+    setOpenlogs(true);
+  };
+  const handleCloselogs = () => {
+    setOpenlogs(false);
+  };
+
   const handleCloseOpen2 = () => {
     setOpen2(false);
+  };
+
+  const handleClickOpenchats = () => {
+    setOpenchats(true);
+  };
+
+  const handleClosechats = () => {
+    setOpenchats(false);
   };
 
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
@@ -120,6 +142,13 @@ const Financeconsultant = () => {
 
   const continueEditing = () => {
     window.location = "/newcasefinanceconsultant.html";
+  };
+
+  const getDate = (time) => {
+    var d = new Date(time);
+    var formattedDate = "";
+    formattedDate += d.getDate() + "-" + d.getMonth() + 1 + "-" + d.getFullYear();
+    return formattedDate;
   };
 
   return (
@@ -387,6 +416,85 @@ const Financeconsultant = () => {
           </Button>
         </DialogActions>
       </Dialog>
+      <Dialog
+        open={openlogs}
+        onClose={handleCloselogs}
+        aria-labelledby="alert-dialog-title"
+        fullWidth
+        maxWidth="md"
+        aria-describedby="alert-dialog-description"
+      >
+        <div className="container">
+          <DialogTitle id="alert-dialog-title" sx={{ float: "left" }}>
+            Logs
+          </DialogTitle>
+          <DialogActions>
+            <Button color="inherit" onClick={setOpenchats}>
+              <ChatIcon />
+            </Button>
+          </DialogActions>
+        </div>
+
+        <DialogContent>
+          <TableContainer component={Paper}>
+            <Table sx={{ Width: "100%" }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Sl No.</TableCell>
+                  <TableCell align="left">Action</TableCell>
+                  <TableCell align="left">Date</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow key={1} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                  <TableCell component="th" scope="row">
+                    1
+                  </TableCell>
+                  <TableCell align="left">Created Logs Dialog</TableCell>
+                  <TableCell align="left">{getDate(Date.now())}</TableCell>
+                </TableRow>
+                <TableRow key={1} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                  <TableCell component="th" scope="row">
+                    2
+                  </TableCell>
+                  <TableCell align="left">Added multiple table rows</TableCell>
+                  <TableCell align="left">{getDate(Date.now())}</TableCell>
+                </TableRow>
+                <TableRow key={1} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                  <TableCell component="th" scope="row">
+                    3
+                  </TableCell>
+                  <TableCell align="left">Created chat dialog</TableCell>
+                  <TableCell align="left">{getDate(Date.now())}</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </DialogContent>
+        <DialogActions>
+          <Button color="inherit" onClick={handleCloselogs}>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={openchats}
+        onClose={handleClosechats}
+        aria-labelledby="alert-dialog-title"
+        fullWidth
+        maxWidth="sm"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogContent>
+          <TextField fullWidth multiline rows={8} />
+        </DialogContent>
+        <DialogActions>
+          <Button color="inherit" onClick={handleClosechats}>
+            <Send />
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       <Dialog
         open={open2}
@@ -446,10 +554,8 @@ const Financeconsultant = () => {
             </Typography>
             <Autocomplete
               disablePortal
-              
               id="combo-box-demo"
               options={BankersArray}
-             
               renderInput={(params) => {
                 setBankers2(params.inputProps.value);
                 return <TextField {...params} label="Bankers" />;
@@ -464,7 +570,6 @@ const Financeconsultant = () => {
               <Box sx={{ mb: 11.5 }}></Box>
             )}
           </div>
-         
         </DialogContent>
         <DialogActions>
           <Button color="inherit" onClick={handleCloseOpen2}>
@@ -683,6 +788,7 @@ const Financeconsultant = () => {
         onClose={() => setShowSelect(false)}
         aria-labelledby="alert-dialog-title"
         fullWidth
+        maxWidth="md"
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title"></DialogTitle>
@@ -693,7 +799,7 @@ const Financeconsultant = () => {
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={PAC}
-              sx={{ textAlign: "center" }}
+              sx={{ textAlign: "left" }}
               onChange={(e) => {
                 setPAC(e.target.value);
               }}
@@ -727,6 +833,129 @@ const Financeconsultant = () => {
               <MenuItem value={"Insurance Type 4"}>Insurance Type 4</MenuItem>
             </Select>
           </FormControl>
+
+          {/*  */}
+          {/* <DialogContent> */}
+          <Typography sx={{ mt: 2 }} variant="h6">
+            Type: Employee
+          </Typography>
+          <Typography sx={{ mt: 2 }} variant="h6">
+            Category: Basic Salary
+          </Typography>
+          <Typography sx={{ mt: 2 }} variant="h6">
+            Employement Year: 1 Year
+          </Typography>
+          <Typography sx={{ mt: 2 }} variant="h6">
+            Name: Test Name
+          </Typography>
+          <Typography sx={{ mt: 2 }} variant="h6">
+            Contact Number: +1 42009382438
+          </Typography>
+          <Typography sx={{ mt: 2 }} variant="h6">
+            Email Address: test@gmail.com
+          </Typography>
+          <Typography sx={{ mt: 2 }} variant="h6">
+            DSR: 20%
+          </Typography>
+          <Typography sx={{ mt: 2 }} variant="h6">
+            Status: KIV
+          </Typography>
+
+          <TableContainer sx={{ mt: 2, mb: 3 }} component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Title</TableCell>
+                  <TableCell align="center">Download</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow key={1} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                  <TableCell component="th" scope="row">
+                    IC Front & Back
+                  </TableCell>
+                  <TableCell align="center">
+                    <Button color="primary" size="small">
+                      Download
+                    </Button>
+                  </TableCell>
+                </TableRow>
+
+                <TableRow key={1} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                  <TableCell component="th" scope="row">
+                    3 months bank statement
+                  </TableCell>
+                  <TableCell align="center">
+                    <Button color="primary" size="small">
+                      Download
+                    </Button>
+                  </TableCell>
+                </TableRow>
+
+                <TableRow key={1} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                  <TableCell component="th" scope="row">
+                    3 months payslip
+                  </TableCell>
+                  <TableCell align="center">
+                    <Button color="primary" size="small">
+                      Download
+                    </Button>
+                  </TableCell>
+                </TableRow>
+
+                <TableRow key={1} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                  <TableCell component="th" scope="row">
+                    Latest EPF details statement 2020 & 2019
+                  </TableCell>
+                  <TableCell align="center">
+                    <Button color="primary" size="small">
+                      Download
+                    </Button>
+                  </TableCell>
+                </TableRow>
+
+                <TableRow key={1} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                  <TableCell component="th" scope="row">
+                    Latest 2 years Borang BE Full set
+                  </TableCell>
+                  <TableCell align="center">
+                    <Button color="primary" size="small">
+                      Download
+                    </Button>
+                  </TableCell>
+                </TableRow>
+
+                <TableRow key={1} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                  <TableCell component="th" scope="row">
+                    Bonus/savings/fixed deposit/Unit Trust/Shares/Gold/ASB/Tabung Haji
+                  </TableCell>
+                  <TableCell align="center">
+                    <Button color="primary" size="small">
+                      Download
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Select Status</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={status}
+              label="Select Status"
+              onChange={(e) => setStatus(e.target.value)}
+            >
+              <MenuItem value={""}>Select Status</MenuItem>
+              <MenuItem value={"Missing document"}>Missing document</MenuItem>
+              <MenuItem value={"KIV"}>KIV</MenuItem>
+              <MenuItem value={"Approved"}>Approved </MenuItem>
+              <MenuItem value={"Reject"}>Reject </MenuItem>
+              <MenuItem value={"Submitted"}>Submitted </MenuItem>
+            </Select>
+          </FormControl>
+          {/* </DialogContent> */}
         </DialogContent>
         <DialogActions>
           <Button color="primary" onClick={() => setShowSelect(false)}>
@@ -796,6 +1025,16 @@ const Financeconsultant = () => {
                         component="span"
                       >
                         <LinkIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="View Logs">
+                      <IconButton
+                        onClick={handleClickOpenlogs}
+                        color="primary"
+                        aria-label="upload picture"
+                        component="span"
+                      >
+                        <FeedIcon />
                       </IconButton>
                     </Tooltip>
                   </TableCell>

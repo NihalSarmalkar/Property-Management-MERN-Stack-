@@ -123,9 +123,9 @@ const FinanceConsultantAwards = () => {
             }}
             variant="h5"
           >
-            Total Award Points Claimed: <span>{awardsClaimed}</span>
+            Total Award Points Collected: <span>{awardsClaimed}</span>
           </Typography>
-          <Button
+          {/* <Button
             sx={{
               float: "right",
               mb: 5,
@@ -135,15 +135,17 @@ const FinanceConsultantAwards = () => {
             onClick={handleClickOpen}
           >
             Claim Now
-          </Button>
+          </Button> */}
 
           <TableContainer component={Paper}>
             <Table sx={{ Width: 650 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
                   <TableCell>Sl No.</TableCell>
+                  <TableCell align="center">Reward Title</TableCell>
                   <TableCell align="center">Awards Points</TableCell>
-                  <TableCell align="center">Expiry Status</TableCell>
+                  <TableCell align="center">Claim Awards Points</TableCell>
+                  {/* <TableCell align="center">Expiry Status</TableCell> */}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -155,8 +157,22 @@ const FinanceConsultantAwards = () => {
                     <TableCell component="th" scope="row">
                       {e.sl}
                     </TableCell>
+                    <TableCell align="center">Task Completion Rewards</TableCell>
                     <TableCell align="center">{e.awardPoints}</TableCell>
-                    <TableCell align="center">{e.status}</TableCell>
+                    {/* <TableCell align="center">{e.status}</TableCell> */}
+                    <TableCell align="center">
+                      <Button
+                        sx={{
+                          // float: "right",
+                          mb: 5,
+                        }}
+                        variant="contained"
+                        color="primary"
+                        onClick={handleClickOpen}
+                      >
+                        Claim Now
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

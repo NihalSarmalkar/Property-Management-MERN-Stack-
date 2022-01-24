@@ -89,15 +89,8 @@ const AdminAwards = () => {
         <DialogTitle>Assign Awards</DialogTitle>
         <DialogContent>
           <TextField
-            id="Email-Address-basic"
-            label="Email Address"
-            variant="outlined"
-            fullWidth
-            sx={{ marginTop: "1rem" }}
-          />
-          <TextField
-            id="Awards-Points-basic"
-            label="Awards Points"
+            id="Reward-point-basic"
+            label="Reward point"
             variant="outlined"
             fullWidth
             type={"number"}
@@ -121,6 +114,15 @@ const AdminAwards = () => {
               </option>
             ))}
           </TextField>
+          <TextField
+            id="description-basic"
+            label="Description"
+            variant="outlined"
+            fullWidth
+            multiline
+            rows={2}
+            sx={{ marginTop: "1rem" }}
+          />
         </DialogContent>
 
         <DialogActions>
@@ -153,7 +155,7 @@ const AdminAwards = () => {
             color="primary"
             onClick={handleClickOpen}
           >
-            Assign Awards
+            Post Awards Offer
           </Button>
 
           <TableContainer component={Paper}>

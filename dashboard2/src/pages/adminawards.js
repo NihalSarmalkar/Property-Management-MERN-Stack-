@@ -90,6 +90,14 @@ const AdminAwards = () => {
         <DialogContent>
           <TextField
             id="Reward-point-basic"
+            label="Reward title"
+            variant="outlined"
+            fullWidth
+            type={"number"}
+            sx={{ marginTop: "1rem" }}
+          />
+          <TextField
+            id="Reward-point-basic"
             label="Reward point"
             variant="outlined"
             fullWidth

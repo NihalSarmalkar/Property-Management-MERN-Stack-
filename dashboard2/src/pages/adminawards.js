@@ -101,7 +101,7 @@ const AdminAwards = () => {
             label="Reward point"
             variant="outlined"
             fullWidth
-            type={"number"}
+            type={"text"}
             sx={{ marginTop: "1rem" }}
           />
           <TextField

@@ -1016,8 +1016,7 @@ const Financeconsultant = () => {
                         <RemoveRedEyeIcon />
                       </IconButton>
                     </Tooltip>
-
-                    <Tooltip title="Property Agent can">
+                    {/* <Tooltip title="Property Agent can">
                       <IconButton
                         onClick={() => setShowSelect(!showSelect)}
                         color="primary"
@@ -1036,7 +1035,7 @@ const Financeconsultant = () => {
                       >
                         <FeedIcon />
                       </IconButton>
-                    </Tooltip>
+                    </Tooltip> */}
                   </TableCell>
                 </TableRow>
               </TableBody>

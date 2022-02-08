@@ -15,6 +15,7 @@ import {
   Radio,
   InputLabel,
   Select,
+  Grid,
   Autocomplete,
 } from "@mui/material";
 import { DashboardLayout } from "../components/dashboard-layout";
@@ -165,6 +166,7 @@ const AdminAwardsReports = () => {
         }}
       >
         <Container maxWidth="xl">
+<<<<<<< HEAD
           <DateRangePicker
             startText="Check-in"
             endText="Check-out"
@@ -180,7 +182,30 @@ const AdminAwardsReports = () => {
               </React.Fragment>
             )}
           />
+=======
+          <Grid container sx={{ mt: 4, mb: 4 }} rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+            <Grid item xs={6}>
+              <Paper sx={{ p: 4 }}>
+                <center>
+                  <h4>Total Cases</h4>
+                  <h4>1,000</h4>
+                </center>
+              </Paper>
+            </Grid>
+            <Grid item xs={6}>
+              <Paper sx={{ p: 4 }}>
+                <center>
+                  <h4>Total Inviestment</h4>
+                  <h4>1,000 MYR</h4>
+                </center>
+              </Paper>
+            </Grid>
+          </Grid>
+>>>>>>> 839eeefd2759e75c8ea91e5c21ef33e0f0ccb24e
           <Container fullWidth sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+          
+
+
             <FormControl sx={{ width: "50%" }}>
               <InputLabel id="demo-simple-select-label">Month</InputLabel>
               <Select

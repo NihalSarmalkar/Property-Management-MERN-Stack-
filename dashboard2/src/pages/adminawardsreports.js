@@ -31,6 +31,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import MenuItem from "@mui/material/MenuItem";
 import DownloadIcon from "@mui/icons-material/Download";
+import { DateRangePicker } from "@mui/lab";
 
 const statusArray = [
   {
@@ -45,6 +46,7 @@ const AdminAwardsReports = () => {
   const [open, setOpen] = React.useState(false);
   const [awards, setAwards] = React.useState(0);
   const [awardsClaimed, setAwardsClaimed] = React.useState(0);
+  const [value, setValue] = React.useState([null, null]);
 
   const [status, setstatus] = React.useState("Enable the award");
 
@@ -163,6 +165,21 @@ const AdminAwardsReports = () => {
         }}
       >
         <Container maxWidth="xl">
+          <DateRangePicker
+            startText="Check-in"
+            endText="Check-out"
+            value={value}
+            onChange={(newValue) => {
+              setValue(newValue);
+            }}
+            renderInput={(startProps, endProps) => (
+              <React.Fragment>
+                <TextField {...startProps} />
+                <Box sx={{ mx: 2 }}> to </Box>
+                <TextField {...endProps} />
+              </React.Fragment>
+            )}
+          />
           <Container fullWidth sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
             <FormControl sx={{ width: "50%" }}>
               <InputLabel id="demo-simple-select-label">Month</InputLabel>
@@ -187,6 +204,7 @@ const AdminAwardsReports = () => {
                 <MenuItem value={"December"}>December</MenuItem>
               </Select>
             </FormControl>
+
             <Button
               sx={{
                 float: "right",
@@ -208,6 +226,38 @@ const AdminAwardsReports = () => {
                   <TableCell align="center">Submitted On</TableCell>
                   <TableCell align="center">Type</TableCell>
                   <TableCell align="center">Action</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {demoEntries.map((entry) => (
+                  <TableRow key={1} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                    <TableCell component="th" scope="row">
+                      {entry.id}
+                    </TableCell>
+                    <TableCell align="center">{entry.name}</TableCell>
+                    <TableCell align="center">{entry.date}a</TableCell>
+                    <TableCell align="center">{entry.type}</TableCell>
+                    <TableCell align="center">
+                      <IconButton color="primary">
+                        <DownloadIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+
+          <TableContainer component={Paper} sx={{ my: 5 }}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Total Amount</TableCell>
+                  <TableCell align="center">Project Type</TableCell>
+                  <TableCell align="center">Transaction Date</TableCell>
+                  <TableCell align="center">Transaction Amount</TableCell>
+                  <TableCell align="center">Case ID</TableCell>
+                  <TableCell align="center">View More</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

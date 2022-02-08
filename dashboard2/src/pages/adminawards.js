@@ -15,6 +15,7 @@ import {
   Autocomplete,
 } from "@mui/material";
 import { DashboardLayout } from "../components/dashboard-layout";
+
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import TextField from "@mui/material/TextField";
@@ -27,6 +28,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import MenuItem from "@mui/material/MenuItem";
+import { TrafficByDevice } from "src/components/dashboard/traffic-by-device";
 
 const statusArray = [
   {
@@ -37,15 +39,31 @@ const statusArray = [
   },
 ];
 
+const typesArray = [
+  {
+    value: "Finance Consultant",
+  },
+  {
+    value: "Property Agent",
+  },
+  {
+    value: "All",
+  },
+];
+
 const AdminAwards = () => {
   const [open, setOpen] = React.useState(false);
   const [awards, setAwards] = React.useState(0);
   const [awardsClaimed, setAwardsClaimed] = React.useState(0);
 
   const [status, setstatus] = React.useState("Enable the award");
+  const [type, settype] = React.useState("Finance Consultant");
 
   const handleChange = (event) => {
     setstatus(event.target.value);
+  };
+  const handleTypeChange = (event) => {
+    settype(event.target.value);
   };
   const handleClickOpen = () => {
     setOpen(true);
@@ -93,7 +111,6 @@ const AdminAwards = () => {
             label="Reward title"
             variant="outlined"
             fullWidth
-            type={"number"}
             sx={{ marginTop: "1rem" }}
           />
           <TextField
@@ -101,9 +118,27 @@ const AdminAwards = () => {
             label="Reward point"
             variant="outlined"
             fullWidth
-            type={"text"}
+            type={"number"}
             sx={{ marginTop: "1rem" }}
           />
+          <TextField
+            id="outlined-select-status"
+            select
+            label="Type"
+            value={type}
+            onChange={handleTypeChange}
+            SelectProps={{
+              native: true,
+            }}
+            fullWidth
+            sx={{ marginTop: "1rem" }}
+          >
+            {typesArray.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.value}
+              </option>
+            ))}
+          </TextField>
           <TextField
             id="outlined-select-status"
             select
@@ -122,6 +157,7 @@ const AdminAwards = () => {
               </option>
             ))}
           </TextField>
+
           <TextField
             id="description-basic"
             label="Description"
@@ -131,6 +167,14 @@ const AdminAwards = () => {
             rows={2}
             sx={{ marginTop: "1rem" }}
           />
+          <Button
+            color="primary"
+            variant="contained"
+            autoFocus
+            sx={{ marginX: "auto", marginY: "10px" }}
+          >
+            Upload Image
+          </Button>
         </DialogContent>
 
         <DialogActions>
@@ -165,13 +209,15 @@ const AdminAwards = () => {
           >
             Post Awards Offer
           </Button>
+          <TrafficByDevice />
 
           <TableContainer component={Paper}>
             <Table sx={{ Width: "100%" }} aria-label="simple table">
               <TableHead>
                 <TableRow>
                   <TableCell align="left">Sl No.</TableCell>
-                  <TableCell align="left">Email Address</TableCell>
+                  <TableCell align="left">Award Type</TableCell>
+                  <TableCell align="left">Full Name</TableCell>
                   <TableCell align="left">Awards Points</TableCell>
                   <TableCell align="left">Status</TableCell>
                   <TableCell align="left">Award Claimed</TableCell>
@@ -182,7 +228,8 @@ const AdminAwards = () => {
               <TableBody>
                 <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                   <TableCell>1</TableCell>
-                  <TableCell align="left">johndoe@gmail.com</TableCell>
+                  <TableCell align="left">Finance Consultant</TableCell>
+                  <TableCell align="left">Prathmesh Sebastian</TableCell>
                   <TableCell align="left">150</TableCell>
                   <TableCell align="left">
                     <TextField

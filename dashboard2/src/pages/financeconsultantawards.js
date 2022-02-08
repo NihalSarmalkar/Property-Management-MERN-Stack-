@@ -80,10 +80,15 @@ const FinanceConsultantAwards = () => {
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         fullWidth
-        maxWidth="xs"
+        maxWidth="sm"
         aria-describedby="alert-dialog-description"
       >
         <DialogContent>
+          <img
+            src="https://previews.123rf.com/images/alhovik/alhovik1708/alhovik170800009/84049519-weekend-sale-banner-this-weekend-special-offer-banner-template.jpg"
+            width={"100%"}
+            alt=""
+          />
           <Typography
             sx={{
               float: "left",
@@ -117,13 +122,20 @@ const FinanceConsultantAwards = () => {
       >
         <Container maxWidth="lg">
           <Typography
+            variant="h5"
             sx={{
-              float: "left",
-              mb: 5,
+              mb: 2,
+            }}
+          >
+            Total Award Points Collected: <span>{awardsClaimed}</span>
+          </Typography>
+          <Typography
+            sx={{
+              mb: 3,
             }}
             variant="h5"
           >
-            Total Award Points Collected: <span>{awardsClaimed}</span>
+            Total Award Points Spent: <span>{awardsClaimed}</span>
           </Typography>
           {/* <Button
             sx={{

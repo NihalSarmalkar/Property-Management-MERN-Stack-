@@ -12,7 +12,7 @@ import {
   FormLabel,
   FormControlLabel,
   Radio,
-  Autocomplete,
+  Grid,
 } from "@mui/material";
 import { DashboardLayout } from "../components/dashboard-layout";
 
@@ -29,6 +29,8 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import MenuItem from "@mui/material/MenuItem";
 import { TrafficByDevice } from "src/components/dashboard/traffic-by-device";
+import { Sales } from "src/components/dashboard/sales";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const statusArray = [
   {
@@ -49,6 +51,14 @@ const typesArray = [
   {
     value: "All",
   },
+];
+
+const demoTransaction = [
+  { id: 1, name: "Finance Consultant", date: "27-10-22", type: "Expired", transactionAmt: 1200 },
+  { id: 2, name: "Finance Consultant", date: "27-10-22", type: "Expired", transactionAmt: 1200 },
+  { id: 3, name: "Finance Consultant", date: "27-10-22", type: "Expired", transactionAmt: 1200 },
+  { id: 4, name: "Bank Consultant", date: "27-10-22", type: "Expired", transactionAmt: 1200 },
+  { id: 5, name: "Admin", date: "27-10-22", type: "Expired", transactionAmt: 1200 },
 ];
 
 const AdminAwards = () => {
@@ -209,9 +219,17 @@ const AdminAwards = () => {
           >
             Post Awards Offer
           </Button>
-          <TrafficByDevice />
+          <Grid container spacing={3}>
+            <Grid item sm={6}>
+              <Sales />
+            </Grid>
+            <Grid item sm={6}>
+              <TrafficByDevice sx={{ height: "100%" }} />
+            </Grid>
+          </Grid>
+          {/* <TrafficByDevice /> */}
 
-          <TableContainer component={Paper}>
+          <TableContainer component={Paper} sx={{ marginY: "50px" }}>
             <Table sx={{ Width: "100%" }} aria-label="simple table">
               <TableHead>
                 <TableRow>
@@ -252,6 +270,42 @@ const AdminAwards = () => {
                   <TableCell align="left">1500</TableCell>
                   <TableCell align="left">Jan 20 2022</TableCell>
                 </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+
+          <Typography variant="h5" sx={{ my: 2 }}>
+            Transaction Table
+          </Typography>
+          <TableContainer component={Paper} sx={{ my: 2 }}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Total Amount</TableCell>
+                  <TableCell align="center">Project Type</TableCell>
+                  <TableCell align="center">Transaction Date</TableCell>
+                  <TableCell align="center">Transaction Amount</TableCell>
+                  <TableCell align="center">Case ID</TableCell>
+                  <TableCell align="center">View More</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {demoTransaction.map((entry) => (
+                  <TableRow key={1} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                    <TableCell component="th" scope="row">
+                      {entry.id}
+                    </TableCell>
+                    <TableCell align="center">{entry.name}</TableCell>
+                    <TableCell align="center">{entry.date}</TableCell>
+                    <TableCell align="center">{entry.transactionAmt}</TableCell>
+                    <TableCell align="center">{entry.id}</TableCell>
+                    <TableCell align="center">
+                      <IconButton color="primary">
+                        <VisibilityIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </TableContainer>

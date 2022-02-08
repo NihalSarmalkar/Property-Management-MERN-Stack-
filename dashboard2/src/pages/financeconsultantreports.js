@@ -17,6 +17,8 @@ import {
   InputLabel,
   Autocomplete,
 } from "@mui/material";
+import { DateRangePicker } from "@mui/lab";
+
 import { DashboardLayout } from "../components/dashboard-layout";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -45,6 +47,9 @@ const AdminAwardsReports = () => {
   const [open, setOpen] = React.useState(false);
   const [awards, setAwards] = React.useState(0);
   const [awardsClaimed, setAwardsClaimed] = React.useState(0);
+  const [value, setValue] = React.useState([null, null]);
+  const [projecttype, setprojecttype] = React.useState("");
+  const [projectsubtype, setprojectsubtype] = React.useState("");
 
   const [status, setstatus] = React.useState("Enable the award");
 
@@ -91,13 +96,19 @@ const AdminAwardsReports = () => {
   const handleInputChange = (e) => {
     setMonth(e.target.value);
   };
+  const handleProjectInputChange = (e) => {
+    setprojecttype(e.target.value);
+  };
+  const handleSubInputChange = (e) => {
+    setprojectsubtype(e.target.value);
+  };
   return (
     <>
       <Dialog
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
-        fullWidth
+        fullwidth="true"
         maxWidth="sm"
         aria-describedby="alert-dialog-description"
       >
@@ -107,7 +118,7 @@ const AdminAwardsReports = () => {
             id="Reward-point-basic"
             label="Reward point"
             variant="outlined"
-            fullWidth
+            fullwidth="true"
             type={"number"}
             sx={{ marginTop: "1rem" }}
           />
@@ -120,7 +131,7 @@ const AdminAwardsReports = () => {
             SelectProps={{
               native: true,
             }}
-            fullWidth
+            fullwidth="true"
             sx={{ marginTop: "1rem" }}
           >
             {statusArray.map((option) => (
@@ -133,7 +144,7 @@ const AdminAwardsReports = () => {
             id="description-basic"
             label="Description"
             variant="outlined"
-            fullWidth
+            fullwidth="true"
             multiline
             rows={2}
             sx={{ marginTop: "1rem" }}
@@ -161,8 +172,11 @@ const AdminAwardsReports = () => {
         }}
       >
         <Container maxWidth="xl">
-          <Container fullWidth sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
-            <FormControl sx={{ width: "50%" }}>
+          <Container
+            fullwidth="true"
+            sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}
+          >
+            <FormControl sx={{ width: "30%" }}>
               <InputLabel id="demo-simple-select-label">Month</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
@@ -185,6 +199,21 @@ const AdminAwardsReports = () => {
                 <MenuItem value={"December"}>December</MenuItem>
               </Select>
             </FormControl>
+            <DateRangePicker
+              startText="Start Date"
+              endText="End Date"
+              value={value}
+              onChange={(newValue) => {
+                setValue(newValue);
+              }}
+              renderInput={(startProps, endProps) => (
+                <React.Fragment>
+                  <TextField {...startProps} />
+                  <Box sx={{ mx: 2 }}> to </Box>
+                  <TextField {...endProps} />
+                </React.Fragment>
+              )}
+            />
             <Button
               sx={{
                 float: "right",
@@ -196,6 +225,40 @@ const AdminAwardsReports = () => {
               Download CSV Report
             </Button>
           </Container>
+          <Container
+            fullwidth="true"
+            sx={{ display: "flex", justifyContent: "space-around", mb: 2 }}
+          >
+            <FormControl sx={{ width: "45%" }}>
+              <InputLabel id="demo-simple-select-label">Project Type</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={projecttype}
+                label="Project Type"
+                onChange={handleProjectInputChange}
+              >
+                <MenuItem value={"Finance Consultant"}>Finance Consultant</MenuItem>
+                <MenuItem value={"Property Agent"}>Property Agent</MenuItem>
+                <MenuItem value={"All"}>All</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl sx={{ width: "45%" }}>
+              <InputLabel id="demo-simple-select-label">Project Sub Type</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={projectsubtype}
+                label="Project Sub Type"
+                onChange={handleSubInputChange}
+              >
+                <MenuItem value={"Finance Consultant"}>Finance Consultant</MenuItem>
+                <MenuItem value={"Property Agent"}>Property Agent</MenuItem>
+                <MenuItem value={"All"}>All</MenuItem>
+              </Select>
+            </FormControl>
+          </Container>
+
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
@@ -209,7 +272,10 @@ const AdminAwardsReports = () => {
               </TableHead>
               <TableBody>
                 {demoEntries.map((entry) => (
-                  <TableRow key={1} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                  <TableRow
+                    key={entry.id}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
                     <TableCell component="th" scope="row">
                       {entry.id}
                     </TableCell>

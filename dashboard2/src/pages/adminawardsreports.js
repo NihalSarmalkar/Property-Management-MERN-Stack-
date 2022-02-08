@@ -33,6 +33,7 @@ import Paper from "@mui/material/Paper";
 import MenuItem from "@mui/material/MenuItem";
 import DownloadIcon from "@mui/icons-material/Download";
 import { DateRangePicker } from "@mui/lab";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const statusArray = [
   {
@@ -82,6 +83,13 @@ const AdminAwardsReports = () => {
     { id: 3, name: "Download", date: "27-10-22", type: "Expired" },
     { id: 4, name: "Completed", date: "27-10-22", type: "Expired" },
     { id: 5, name: "Completed", date: "27-10-22", type: "Expired" },
+  ];
+  const demoTransaction = [
+    { id: 1, name: "Finance Consultant", date: "27-10-22", type: "Expired", transactionAmt: 1200 },
+    { id: 2, name: "Finance Consultant", date: "27-10-22", type: "Expired", transactionAmt: 1200 },
+    { id: 3, name: "Finance Consultant", date: "27-10-22", type: "Expired", transactionAmt: 1200 },
+    { id: 4, name: "Bank Consultant", date: "27-10-22", type: "Expired", transactionAmt: 1200 },
+    { id: 5, name: "Admin", date: "27-10-22", type: "Expired", transactionAmt: 1200 },
   ];
 
   React.useEffect(() => {
@@ -166,47 +174,11 @@ const AdminAwardsReports = () => {
         }}
       >
         <Container maxWidth="xl">
-<<<<<<< HEAD
-          <DateRangePicker
-            startText="Check-in"
-            endText="Check-out"
-            value={value}
-            onChange={(newValue) => {
-              setValue(newValue);
-            }}
-            renderInput={(startProps, endProps) => (
-              <React.Fragment>
-                <TextField {...startProps} />
-                <Box sx={{ mx: 2 }}> to </Box>
-                <TextField {...endProps} />
-              </React.Fragment>
-            )}
-          />
-=======
-          <Grid container sx={{ mt: 4, mb: 4 }} rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-            <Grid item xs={6}>
-              <Paper sx={{ p: 4 }}>
-                <center>
-                  <h4>Total Cases</h4>
-                  <h4>1,000</h4>
-                </center>
-              </Paper>
-            </Grid>
-            <Grid item xs={6}>
-              <Paper sx={{ p: 4 }}>
-                <center>
-                  <h4>Total Inviestment</h4>
-                  <h4>1,000 MYR</h4>
-                </center>
-              </Paper>
-            </Grid>
-          </Grid>
->>>>>>> 839eeefd2759e75c8ea91e5c21ef33e0f0ccb24e
-          <Container fullWidth sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
-          
-
-
-            <FormControl sx={{ width: "50%" }}>
+          <Container
+            fullWidth
+            sx={{ display: "flex", justifyContent: "space-between", mb: 2, alignItems: "center" }}
+          >
+            <FormControl sx={{ width: "30%" }}>
               <InputLabel id="demo-simple-select-label">Month</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
@@ -229,7 +201,21 @@ const AdminAwardsReports = () => {
                 <MenuItem value={"December"}>December</MenuItem>
               </Select>
             </FormControl>
-
+            <DateRangePicker
+              startText="Start Date"
+              endText="End Date"
+              value={value}
+              onChange={(newValue) => {
+                setValue(newValue);
+              }}
+              renderInput={(startProps, endProps) => (
+                <React.Fragment>
+                  <TextField {...startProps} />
+                  <Box sx={{ mx: 2 }}> to </Box>
+                  <TextField {...endProps} />
+                </React.Fragment>
+              )}
+            />
             <Button
               sx={{
                 float: "right",
@@ -242,6 +228,31 @@ const AdminAwardsReports = () => {
               Download CSV Report
             </Button>
           </Container>
+
+          <Grid
+            container
+            sx={{ mt: 4, mb: 4 }}
+            rowSpacing={1}
+            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+          >
+            <Grid item xs={6}>
+              <Paper sx={{ p: 4 }}>
+                <center>
+                  <h4>Total Cases</h4>
+                  <h4>1,000</h4>
+                </center>
+              </Paper>
+            </Grid>
+            <Grid item xs={6}>
+              <Paper sx={{ p: 4 }}>
+                <center>
+                  <h4>Total Inviestment</h4>
+                  <h4>1,000 MYR</h4>
+                </center>
+              </Paper>
+            </Grid>
+          </Grid>
+
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
@@ -260,7 +271,7 @@ const AdminAwardsReports = () => {
                       {entry.id}
                     </TableCell>
                     <TableCell align="center">{entry.name}</TableCell>
-                    <TableCell align="center">{entry.date}a</TableCell>
+                    <TableCell align="center">{entry.date}</TableCell>
                     <TableCell align="center">{entry.type}</TableCell>
                     <TableCell align="center">
                       <IconButton color="primary">
@@ -273,7 +284,10 @@ const AdminAwardsReports = () => {
             </Table>
           </TableContainer>
 
-          <TableContainer component={Paper} sx={{ my: 5 }}>
+          <Typography variant="h5" sx={{ my: 2 }}>
+            Transaction Table
+          </Typography>
+          <TableContainer component={Paper} sx={{ my: 2 }}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
@@ -286,17 +300,18 @@ const AdminAwardsReports = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {demoEntries.map((entry) => (
+                {demoTransaction.map((entry) => (
                   <TableRow key={1} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                     <TableCell component="th" scope="row">
                       {entry.id}
                     </TableCell>
                     <TableCell align="center">{entry.name}</TableCell>
-                    <TableCell align="center">{entry.date}a</TableCell>
-                    <TableCell align="center">{entry.type}</TableCell>
+                    <TableCell align="center">{entry.date}</TableCell>
+                    <TableCell align="center">{entry.transactionAmt}</TableCell>
+                    <TableCell align="center">{entry.id}</TableCell>
                     <TableCell align="center">
                       <IconButton color="primary">
-                        <DownloadIcon />
+                        <VisibilityIcon />
                       </IconButton>
                     </TableCell>
                   </TableRow>

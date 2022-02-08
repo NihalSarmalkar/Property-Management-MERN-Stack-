@@ -83,7 +83,7 @@ export const Sales = (props) => {
 
   return (
     <Card {...props}>
-      <CardHeader
+      {/* <CardHeader
         action={(
           <Button
             endIcon={<ArrowDropDownIcon fontSize="small" />}
@@ -94,7 +94,7 @@ export const Sales = (props) => {
         )}
         title="Latest Sales"
       />
-      <Divider />
+      <Divider /> */}
       <CardContent>
         <Box
           sx={{

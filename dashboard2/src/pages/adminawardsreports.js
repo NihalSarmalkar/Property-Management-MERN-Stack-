@@ -49,6 +49,8 @@ const AdminAwardsReports = () => {
   const [awards, setAwards] = React.useState(0);
   const [awardsClaimed, setAwardsClaimed] = React.useState(0);
   const [value, setValue] = React.useState([null, null]);
+  const [projecttype, setprojecttype] = React.useState("");
+  const [projectsubtype, setprojectsubtype] = React.useState("");
 
   const [status, setstatus] = React.useState("Enable the award");
 
@@ -103,6 +105,13 @@ const AdminAwardsReports = () => {
   const [month, setMonth] = React.useState("January");
   const handleInputChange = (e) => {
     setMonth(e.target.value);
+  };
+
+  const handleProjectInputChange = (e) => {
+    setprojecttype(e.target.value);
+  };
+  const handleSubInputChange = (e) => {
+    setprojectsubtype(e.target.value);
   };
   return (
     <>
@@ -228,7 +237,39 @@ const AdminAwardsReports = () => {
               Download CSV Report
             </Button>
           </Container>
-
+          <Container
+            fullwidth="true"
+            sx={{ display: "flex", justifyContent: "space-around", mb: 2 }}
+          >
+            <FormControl sx={{ width: "45%" }}>
+              <InputLabel id="demo-simple-select-label">Project Type</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={projecttype}
+                label="Project Type"
+                onChange={handleProjectInputChange}
+              >
+                <MenuItem value={"Finance Consultant"}>Finance Consultant</MenuItem>
+                <MenuItem value={"Property Agent"}>Property Agent</MenuItem>
+                <MenuItem value={"All"}>All</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl sx={{ width: "45%" }}>
+              <InputLabel id="demo-simple-select-label">Project Sub Type</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={projectsubtype}
+                label="Project Sub Type"
+                onChange={handleSubInputChange}
+              >
+                <MenuItem value={"Finance Consultant"}>Finance Consultant</MenuItem>
+                <MenuItem value={"Property Agent"}>Property Agent</MenuItem>
+                <MenuItem value={"All"}>All</MenuItem>
+              </Select>
+            </FormControl>
+          </Container>
           <Grid
             container
             sx={{ mt: 4, mb: 4 }}

@@ -1,5 +1,5 @@
-import React from "react";
-import Head from "next/head";
+import React from 'react';
+
 import {
   Box,
   Container,
@@ -15,43 +15,42 @@ import {
   Radio,
   Select,
   InputLabel,
-  Autocomplete,
-} from "@mui/material";
-import { DateRangePicker } from "@mui/lab";
+  Autocomplete
+} from '@mui/material';
+import { DateRangePicker } from '@mui/lab';
 
-import { DashboardLayout } from "../components/dashboard-layout";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import TextField from "@mui/material/TextField";
-import DialogTitle from "@mui/material/DialogTitle";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import MenuItem from "@mui/material/MenuItem";
-import DownloadIcon from "@mui/icons-material/Download";
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import TextField from '@mui/material/TextField';
+import DialogTitle from '@mui/material/DialogTitle';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import MenuItem from '@mui/material/MenuItem';
+import DownloadIcon from '@mui/icons-material/Download';
 
 const statusArray = [
   {
-    value: "Enable the award",
+    value: 'Enable the award'
   },
   {
-    value: "Expire the award",
-  },
+    value: 'Expire the award'
+  }
 ];
 
-const AdminAwardsReports = () => {
+const FinanceConsultantReports = () => {
   const [open, setOpen] = React.useState(false);
   const [awards, setAwards] = React.useState(0);
   const [awardsClaimed, setAwardsClaimed] = React.useState(0);
   const [value, setValue] = React.useState([null, null]);
-  const [projecttype, setprojecttype] = React.useState("Refinance");
-  const [projectsubtype, setprojectsubtype] = React.useState("");
+  const [projecttype, setprojecttype] = React.useState('Refinance');
+  const [projectsubtype, setprojectsubtype] = React.useState('');
 
-  const [status, setstatus] = React.useState("Enable the award");
+  const [status, setstatus] = React.useState('Enable the award');
 
   const handleChange = (event) => {
     setstatus(event.target.value);
@@ -73,16 +72,16 @@ const AdminAwardsReports = () => {
   };
 
   const awardsList = [
-    { sl: 1, awardPoints: 2500, status: "Not Expired" },
-    { sl: 2, awardPoints: 500, status: "Not Expired" },
-    { sl: 3, awardPoints: 850, status: "Not Expired" },
+    { sl: 1, awardPoints: 2500, status: 'Not Expired' },
+    { sl: 2, awardPoints: 500, status: 'Not Expired' },
+    { sl: 3, awardPoints: 850, status: 'Not Expired' }
   ];
   const demoEntries = [
-    { id: 1, name: "Testing", date: "27-10-22", type: "Expired" },
-    { id: 2, name: "Completed", date: "27-10-22", type: "Expired" },
-    { id: 3, name: "Download", date: "27-10-22", type: "Expired" },
-    { id: 4, name: "Completed", date: "27-10-22", type: "Expired" },
-    { id: 5, name: "Completed", date: "27-10-22", type: "Expired" },
+    { id: 1, name: 'Testing', date: '27-10-22', type: 'Expired' },
+    { id: 2, name: 'Completed', date: '27-10-22', type: 'Expired' },
+    { id: 3, name: 'Download', date: '27-10-22', type: 'Expired' },
+    { id: 4, name: 'Completed', date: '27-10-22', type: 'Expired' },
+    { id: 5, name: 'Completed', date: '27-10-22', type: 'Expired' }
   ];
   React.useEffect(() => {
     let total = 0;
@@ -92,7 +91,7 @@ const AdminAwardsReports = () => {
     setAwards(total);
   }, []);
 
-  const [month, setMonth] = React.useState("January");
+  const [month, setMonth] = React.useState('January');
   const handleInputChange = (e) => {
     setMonth(e.target.value);
   };
@@ -119,8 +118,8 @@ const AdminAwardsReports = () => {
             label="Reward point"
             variant="outlined"
             fullwidth="true"
-            type={"number"}
-            sx={{ marginTop: "1rem" }}
+            type={'number'}
+            sx={{ marginTop: '1rem' }}
           />
           <TextField
             id="outlined-select-status"
@@ -129,10 +128,10 @@ const AdminAwardsReports = () => {
             value={status}
             onChange={handleChange}
             SelectProps={{
-              native: true,
+              native: true
             }}
             fullwidth="true"
-            sx={{ marginTop: "1rem" }}
+            sx={{ marginTop: '1rem' }}
           >
             {statusArray.map((option) => (
               <option key={option.value} value={option.value}>
@@ -147,7 +146,7 @@ const AdminAwardsReports = () => {
             fullwidth="true"
             multiline
             rows={2}
-            sx={{ marginTop: "1rem" }}
+            sx={{ marginTop: '1rem' }}
           />
         </DialogContent>
 
@@ -161,22 +160,20 @@ const AdminAwardsReports = () => {
         </DialogActions>
       </Dialog>
 
-      <Head>
-        <title>Finance Consultant Reports</title>
-      </Head>
+     
       <Box
         component="main"
         sx={{
           flexGrow: 1,
-          py: 8,
+          py: 8
         }}
       >
         <Container maxWidth="xl">
           <Container
             fullwidth="true"
-            sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}
+            sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}
           >
-            <FormControl sx={{ width: "30%" }}>
+            <FormControl sx={{ width: '30%' }}>
               <InputLabel id="demo-simple-select-label">Month</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
@@ -185,18 +182,18 @@ const AdminAwardsReports = () => {
                 label="Month"
                 onChange={handleInputChange}
               >
-                <MenuItem value={"January"}>January</MenuItem>
-                <MenuItem value={"February"}>February</MenuItem>
-                <MenuItem value={"March"}>March</MenuItem>
-                <MenuItem value={"April"}>April</MenuItem>
-                <MenuItem value={"May"}>May</MenuItem>
-                <MenuItem value={"June"}>June</MenuItem>
-                <MenuItem value={"July"}>July</MenuItem>
-                <MenuItem value={"August"}>August</MenuItem>
-                <MenuItem value={"September"}>September</MenuItem>
-                <MenuItem value={"October"}>October</MenuItem>
-                <MenuItem value={"November"}>November</MenuItem>
-                <MenuItem value={"December"}>December</MenuItem>
+                <MenuItem value={'January'}>January</MenuItem>
+                <MenuItem value={'February'}>February</MenuItem>
+                <MenuItem value={'March'}>March</MenuItem>
+                <MenuItem value={'April'}>April</MenuItem>
+                <MenuItem value={'May'}>May</MenuItem>
+                <MenuItem value={'June'}>June</MenuItem>
+                <MenuItem value={'July'}>July</MenuItem>
+                <MenuItem value={'August'}>August</MenuItem>
+                <MenuItem value={'September'}>September</MenuItem>
+                <MenuItem value={'October'}>October</MenuItem>
+                <MenuItem value={'November'}>November</MenuItem>
+                <MenuItem value={'December'}>December</MenuItem>
               </Select>
             </FormControl>
             <DateRangePicker
@@ -216,7 +213,7 @@ const AdminAwardsReports = () => {
             />
             <Button
               sx={{
-                float: "right",
+                float: 'right'
               }}
               variant="contained"
               color="primary"
@@ -225,8 +222,8 @@ const AdminAwardsReports = () => {
               Download CSV Report
             </Button>
           </Container>
-          <Container fullwidth="true" sx={{ display: "flex", justifyContent: "flex-start", mb: 2 }}>
-            <FormControl sx={{ width: "45%" }}>
+          <Container fullwidth="true" sx={{ display: 'flex', justifyContent: 'flex-start', mb: 2 }}>
+            <FormControl sx={{ width: '45%' }}>
               <InputLabel id="demo-simple-select-label">Project Type</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
@@ -235,7 +232,7 @@ const AdminAwardsReports = () => {
                 label="Project Type"
                 onChange={handleProjectInputChange}
               >
-                <MenuItem value={"Refinance"}>Refinance</MenuItem>
+                <MenuItem value={'Refinance'}>Refinance</MenuItem>
                 {/* <MenuItem value={"Property Agent"}>Property Agent</MenuItem> */}
                 {/* <MenuItem value={"All"}>All</MenuItem> */}
               </Select>
@@ -271,7 +268,7 @@ const AdminAwardsReports = () => {
                 {demoEntries.map((entry) => (
                   <TableRow
                     key={entry.id}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
                       {entry.id}
@@ -295,5 +292,4 @@ const AdminAwardsReports = () => {
   );
 };
 
-AdminAwardsReports.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
-export default AdminAwardsReports;
+export default FinanceConsultantReports;

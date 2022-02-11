@@ -48,7 +48,7 @@ const AdminAwardsReports = () => {
   const [awards, setAwards] = React.useState(0);
   const [awardsClaimed, setAwardsClaimed] = React.useState(0);
   const [value, setValue] = React.useState([null, null]);
-  const [projecttype, setprojecttype] = React.useState("Refinance");
+  const [projecttype, setprojecttype] = React.useState("");
   const [projectsubtype, setprojectsubtype] = React.useState("");
 
   const [status, setstatus] = React.useState("Enable the award");
@@ -96,12 +96,16 @@ const AdminAwardsReports = () => {
   const handleInputChange = (e) => {
     setMonth(e.target.value);
   };
+  const [type, settype] = React.useState("");
+  const [subtype, setsubtype] = React.useState("");
+
   const handleProjectInputChange = (e) => {
-    setprojecttype(e.target.value);
+    settype(e.target.value);
+    // console.log(e.target.value);
   };
-  // const handleSubInputChange = (e) => {
-  //   setprojectsubtype(e.target.value);
-  // };
+  const handleSubProjectInputChange = (e) => {
+    setsubtype(e.target.value);
+  };
   return (
     <>
       <Dialog
@@ -225,35 +229,58 @@ const AdminAwardsReports = () => {
               Download CSV Report
             </Button>
           </Container>
-          <Container fullwidth="true" sx={{ display: "flex", justifyContent: "flex-start", mb: 2 }}>
+          <Container
+            fullwidth="true"
+            sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}
+          >
             <FormControl sx={{ width: "45%" }}>
               <InputLabel id="demo-simple-select-label">Project Type</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={projecttype}
+                value={type}
                 label="Project Type"
                 onChange={handleProjectInputChange}
               >
-                <MenuItem value={"Refinance"}>Refinance</MenuItem>
+                <MenuItem value={"Employee"}>Employee</MenuItem>
+                <MenuItem value={"Self-Employed"}>Self-Employed</MenuItem>
                 {/* <MenuItem value={"Property Agent"}>Property Agent</MenuItem> */}
-                {/* <MenuItem value={"All"}>All</MenuItem> */}
               </Select>
             </FormControl>
-            {/* <FormControl sx={{ width: "45%" }}>
-              <InputLabel id="demo-simple-select-label">Project Sub Type</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={projectsubtype}
-                label="Project Sub Type"
-                onChange={handleSubInputChange}
-              >
-                <MenuItem value={"Finance Consultant"}>Finance Consultant</MenuItem>
-                <MenuItem value={"Property Agent"}>Property Agent</MenuItem>
-                <MenuItem value={"All"}>All</MenuItem>
-              </Select>
-            </FormControl> */}
+            {type === "Employee" ? (
+              <FormControl sx={{ width: "45%" }}>
+                <InputLabel id="demo-simple-select-label">Project Sub Type</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={subtype}
+                  disabled={type.length < 1}
+                  label="Project Sub Type"
+                  onChange={handleSubProjectInputChange}
+                >
+                  <MenuItem value={"Basic Salary"}>Basic Salary</MenuItem>
+                  <MenuItem value={"Basic + Commission / Allowance"}>
+                    Basic + Commission / Allowance
+                  </MenuItem>
+                  <MenuItem value={"Full Commission earner"}>Full Commission earner</MenuItem>
+                </Select>
+              </FormControl>
+            ) : (
+              <FormControl sx={{ width: "45%" }}>
+                <InputLabel id="demo-simple-select-label">Project Sub Type</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={subtype}
+                  disabled={type.length < 1}
+                  label="Project Sub Type"
+                  onChange={handleSubProjectInputChange}
+                >
+                  <MenuItem value={"SDN BHD"}>SDN BHD</MenuItem>
+                  <MenuItem value={"Sole Proprietorship"}>Sole Proprietorship</MenuItem>
+                </Select>
+              </FormControl>
+            )}
           </Container>
 
           <TableContainer component={Paper}>

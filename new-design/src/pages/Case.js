@@ -104,7 +104,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>Please upload title</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -120,7 +120,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>Please upload booking form</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -138,7 +138,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>Please upload booking form</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -153,7 +153,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>Please upload the title</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -304,7 +304,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>Please Upload IC Front & Back</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -320,7 +320,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>Please Upload 3 months bank statement</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -336,7 +336,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>Please Upload 3 months payslip</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -352,7 +352,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>Please Upload Latest EPF details statement 2020 & 2019</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -368,7 +368,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>Please Upload latest 2 years Borang BE Full set</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -384,7 +384,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>Upload Bonus/savings/fixed deposit/Unit Trust/Shares/Gold/ASB/Tabung Haji</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -427,7 +427,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>Please Upload IC Front & Back</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -443,7 +443,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>Please Upload 6 months bank statement</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -459,7 +459,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>Please Upload 6 months payslip</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -475,7 +475,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>Please Upload Latest EPF details statement 2020 & 2019</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -491,7 +491,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>Please Upload latest 2 years Borang BE Full set</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -507,7 +507,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>Upload Bonus/savings/fixed deposit/Unit Trust/Shares/Gold/ASB/Tabung Haji</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -550,7 +550,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>Please Upload IC Front & Back</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -566,7 +566,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>Please Upload 6 months bank statement</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -582,7 +582,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>6 months commission statement</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -598,7 +598,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>Please Upload latest 2 years Borang B Full set</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -614,7 +614,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>Upload 2 years CP 58</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -630,7 +630,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>Upload Bonus/savings/fixed deposit/Unit Trust/Shares/Gold/ASB/Tabung Haji</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -673,7 +673,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>Please Upload IC Front & Back</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -689,7 +689,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>Please Upload 6 months bank statement</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -705,7 +705,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>SSM cert</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -721,7 +721,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>Form (24,44,49,M&A),</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -737,7 +737,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>2 years borang B full set</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -753,7 +753,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>Upload Bonus/savings/fixed deposit/Unit Trust/Shares/Gold/ASB/Tabung Haji</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -769,7 +769,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>Annual report (3 years)</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -812,7 +812,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>Please Upload IC Front & Back</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -828,7 +828,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>Please Upload 6 months bank statement</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -844,7 +844,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>SSM cert</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -860,7 +860,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>2 years borang B full set</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -876,7 +876,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>Upload Bonus/savings/fixed deposit/Unit Trust/Shares/Gold/ASB/Tabung Haji</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -892,7 +892,7 @@ const CasePage = () => {
                   <input {...getInputProps()} />
                   <p>2 years management account</p>
                 </div>
-                <aside>
+                <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
                   <img
                     style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -911,7 +911,7 @@ const CasePage = () => {
                 <input {...getInputProps()} />
                 <p>Please upload Employment letter</p>
               </div>
-              <aside>
+              <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <h4>Files</h4>
                 <img
                   style={{ marginTop: '10px', marginBottom: '10px' }}
@@ -927,7 +927,7 @@ const CasePage = () => {
                 <input {...getInputProps()} />
                 <p>Please upload Employment letter</p>
               </div>
-              <aside>
+              <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <h4>Files</h4>
                 <img
                   style={{ marginTop: '10px', marginBottom: '10px' }}

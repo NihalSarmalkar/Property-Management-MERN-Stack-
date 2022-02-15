@@ -11,6 +11,7 @@ import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import ArticleIcon from '@mui/icons-material/Article';
+import { Person } from '@mui/icons-material';
 // ----------------------------------------------------------------------
 
 const getIcon = (name) => <Icon icon={name} width={22} height={22} />;
@@ -60,6 +61,16 @@ const sidebarConfig = [
     title: 'case',
     path: '/dashboard/case',
     icon: <ArticleIcon />
+  },
+  {
+    title: 'viewcase',
+    path: '/dashboard/viewcase',
+    icon: <ArticleIcon />
+  },
+  {
+    title: 'user management',
+    path: '/dashboard/user-management',
+    icon: <Person />
   },
   {
     title: 'property agent',

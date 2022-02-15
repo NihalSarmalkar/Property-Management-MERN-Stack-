@@ -17,6 +17,7 @@ import {
   Select,
   Autocomplete
 } from '@mui/material';
+import { DateRangePicker } from '@mui/lab';
 
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -53,6 +54,7 @@ const BankReports = () => {
   const [open, setOpen] = React.useState(false);
   const [awards, setAwards] = React.useState(0);
   const [awardsClaimed, setAwardsClaimed] = React.useState(0);
+  const [value, setValue] = React.useState([null, null]);
 
   const [status, setstatus] = React.useState('Enable the award');
 
@@ -104,63 +106,6 @@ const BankReports = () => {
 
   return (
     <>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        fullWidth
-        maxWidth="sm"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle>Assign Awards</DialogTitle>
-        <DialogContent>
-          <TextField
-            id="Reward-point-basic"
-            label="Reward point"
-            variant="outlined"
-            fullWidth
-            type={'number'}
-            sx={{ marginTop: '1rem' }}
-          />
-          <TextField
-            id="outlined-select-status"
-            select
-            label="Status"
-            value={status}
-            onChange={handleChange}
-            SelectProps={{
-              native: true
-            }}
-            fullWidth
-            sx={{ marginTop: '1rem' }}
-          >
-            {statusArray.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.value}
-              </option>
-            ))}
-          </TextField>
-          <TextField
-            id="description-basic"
-            label="Description"
-            variant="outlined"
-            fullWidth
-            multiline
-            rows={2}
-            sx={{ marginTop: '1rem' }}
-          />
-        </DialogContent>
-
-        <DialogActions>
-          <Button color="error" onClick={handleClose} autoFocus>
-            Cancel
-          </Button>
-          <Button color="primary" onClick={handleClaim} autoFocus>
-            Assign
-          </Button>
-        </DialogActions>
-      </Dialog>
-
       <Box
         component="main"
         sx={{
@@ -173,7 +118,7 @@ const BankReports = () => {
             Bank Reports
           </Typography>
           <Container fullWidth sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-            <FormControl sx={{ width: '50%' }}>
+            <FormControl sx={{ width: '30%' }}>
               <InputLabel id="demo-simple-select-label">Month</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
@@ -196,6 +141,22 @@ const BankReports = () => {
                 <MenuItem value={'December'}>December</MenuItem>
               </Select>
             </FormControl>
+            <DateRangePicker
+              startText="Start Date"
+              sx={{ width: '30%' }}
+              endText="End Date"
+              value={value}
+              onChange={(newValue) => {
+                setValue(newValue);
+              }}
+              renderInput={(startProps, endProps) => (
+                <React.Fragment>
+                  <TextField {...startProps} />
+                  <Box sx={{ mx: 2 }}> to </Box>
+                  <TextField {...endProps} />
+                </React.Fragment>
+              )}
+            />
             <Button
               sx={{
                 float: 'right',

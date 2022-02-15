@@ -19,6 +19,8 @@ import FinanceConsultantAwards from './pages/financeconsultant/FinanceConsultant
 import FinanceConsultantReports from './pages/financeconsultant/FinanceConsultantReports';
 import CasePage from './pages/Case';
 import PropertyAgent from './pages/propertyagent/PropertyAgent';
+import UserManagement from './pages/UserManagement';
+import ViewCase from './pages/ViewCase';
 
 // ----------------------------------------------------------------------
 
@@ -42,10 +44,13 @@ export default function Router() {
         { path: 'finance-consultant-reports', element: <FinanceConsultantReports /> },
 
         { path: 'case', element: <CasePage /> },
+        { path: 'viewcase', element: <ViewCase /> },
 
         { path: 'property-agent', element: <PropertyAgent /> },
 
         { path: 'user', element: <User /> },
+        { path: 'user-management', element: <UserManagement /> },
+
         { path: 'products', element: <Products /> },
         { path: 'blog', element: <Blog /> }
       ]

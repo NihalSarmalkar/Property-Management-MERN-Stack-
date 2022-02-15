@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 import {
   Box,
@@ -12,32 +12,32 @@ import {
   FormLabel,
   FormControlLabel,
   Radio,
-  Autocomplete,
-} from "@mui/material";
-import LinkIcon from "@mui/icons-material/Link";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import TextField from "@mui/material/TextField";
-import DialogTitle from "@mui/material/DialogTitle";
-import { useDropzone } from "react-dropzone";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import ChatIcon from "@mui/icons-material/Chat";
-import FeedIcon from "@mui/icons-material/Feed";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import ListItemText from "@mui/material/ListItemText";
-import Select from "@mui/material/Select";
-import Checkbox from "@mui/material/Checkbox";
-import { Send } from "@mui/icons-material";
+  Autocomplete
+} from '@mui/material';
+import LinkIcon from '@mui/icons-material/Link';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import TextField from '@mui/material/TextField';
+import DialogTitle from '@mui/material/DialogTitle';
+import { useDropzone } from 'react-dropzone';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import ChatIcon from '@mui/icons-material/Chat';
+import FeedIcon from '@mui/icons-material/Feed';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import ListItemText from '@mui/material/ListItemText';
+import Select from '@mui/material/Select';
+import Checkbox from '@mui/material/Checkbox';
+import { Send } from '@mui/icons-material';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -45,13 +45,13 @@ const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
+      width: 250
+    }
+  }
 };
 
-const names = ["Bank 1", "Bank 2", "Bank 3", "Bank 4", "Bank 5", "Bank 6", "Bank 7", "Bank 8"];
-const BankersArray = ["Banker1", "Banker2", "Banker3", "Banker4"];
+const names = ['Bank 1', 'Bank 2', 'Bank 3', 'Bank 4', 'Bank 5', 'Bank 6', 'Bank 7', 'Bank 8'];
+const BankersArray = ['Banker1', 'Banker2', 'Banker3', 'Banker4'];
 const Financeconsultant = () => {
   const [open, setOpen] = React.useState(false);
   const [LawyersDialog, setLawyersDialog] = React.useState(false);
@@ -59,7 +59,7 @@ const Financeconsultant = () => {
   const [openlogs, setOpenlogs] = React.useState(false);
   const [openchats, setOpenchats] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
-  const [status, setStatus] = React.useState("Select Status");
+  const [status, setStatus] = React.useState('Select Status');
 
   const handleClickOpenreview = () => {
     setOpenreview(true);
@@ -89,7 +89,7 @@ const Financeconsultant = () => {
   };
 
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
-  const [type, settype] = React.useState("Refinance");
+  const [type, settype] = React.useState('Refinance');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -105,24 +105,24 @@ const Financeconsultant = () => {
     </li>
   ));
 
-  const [name, setname] = React.useState("Test Name");
-  const [contact, setcontact] = React.useState("46256273990");
-  const [email, setemail] = React.useState("test@gmail.com");
-  const [bankers1, setBankers1] = React.useState("Banker1");
-  const [bankers2, setBankers2] = React.useState("Banker1");
-  const [PAC, setPAC] = React.useState("Not See");
+  const [name, setname] = React.useState('Test Name');
+  const [contact, setcontact] = React.useState('46256273990');
+  const [email, setemail] = React.useState('test@gmail.com');
+  const [bankers1, setBankers1] = React.useState('Banker1');
+  const [bankers2, setBankers2] = React.useState('Banker1');
+  const [PAC, setPAC] = React.useState('Not See');
   const [showSelect, setShowSelect] = React.useState(false);
   const [dsr, setdsr] = React.useState(0);
-  const [insuranceType, setInsuranceType] = React.useState("");
+  const [insuranceType, setInsuranceType] = React.useState('');
 
   const [personName, setPersonName] = React.useState([]);
   const handleChange = (event) => {
     const {
-      target: { value },
+      target: { value }
     } = event;
     setPersonName(
       // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
+      typeof value === 'string' ? value.split(',') : value
     );
   };
 
@@ -140,13 +140,13 @@ const Financeconsultant = () => {
   };
 
   const continueEditing = () => {
-    window.location = "/newcasefinanceconsultant.html";
+    window.location = '/newcasefinanceconsultant.html';
   };
 
   const getDate = (time) => {
     var d = new Date(time);
-    var formattedDate = "";
-    formattedDate += d.getDate() + "-" + d.getMonth() + 1 + "-" + d.getFullYear();
+    var formattedDate = '';
+    formattedDate += d.getDate() + '-' + d.getMonth() + 1 + '-' + d.getFullYear();
     return formattedDate;
   };
 
@@ -194,8 +194,8 @@ const Financeconsultant = () => {
       >
         <DialogTitle id="alert-dialog-title">Submitted Case</DialogTitle>
         <DialogContent>
-          <div style={{ border: "1px solid #000", padding: "10px" }}>
-            <Button onClick={handleClickconfirmation} sx={{ float: "right" }}>
+          <div style={{ border: '1px solid #000', padding: '10px' }}>
+            <Button onClick={handleClickconfirmation} sx={{ float: 'right' }}>
               Edit This
             </Button>
             <Typography variant="h6">Type: Employee</Typography>
@@ -245,7 +245,7 @@ const Financeconsultant = () => {
             variant="outlined"
           />
 
-          <FormControl sx={{ mt: 4, width: "100%" }}>
+          <FormControl sx={{ mt: 4, width: '100%' }}>
             <InputLabel id="demo-multiple-checkbox-label">Select the Bank</InputLabel>
             <Select
               labelId="demo-multiple-checkbox-label"
@@ -254,7 +254,7 @@ const Financeconsultant = () => {
               value={personName}
               onChange={handleChange}
               input={<OutlinedInput label="Tag" />}
-              renderValue={(selected) => selected.join(", ")}
+              renderValue={(selected) => selected.join(', ')}
               MenuProps={MenuProps}
             >
               {names.map((name) => (
@@ -269,15 +269,15 @@ const Financeconsultant = () => {
           <center>
             <Button sx={{ mt: 4 }}>Download IC Front & Back</Button>
           </center>
-          <section style={{ marginTop: "10px" }} className="dropzone" {...getRootProps()}>
+          <section style={{ marginTop: '10px' }} className="dropzone" {...getRootProps()}>
             <div>
               <input {...getInputProps()} />
               <p>Re-Upload IC Front & Back</p>
             </div>
-            <aside>
+            <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <h4>Files</h4>
               <img
-                style={{ marginTop: "10px", marginBottom: "10px" }}
+                style={{ marginTop: '10px', marginBottom: '10px' }}
                 alt="Upload"
                 src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"
               />
@@ -288,15 +288,15 @@ const Financeconsultant = () => {
           <center>
             <Button sx={{ mt: 4 }}>Download 3 months bank statement</Button>
           </center>
-          <section style={{ marginTop: "10px" }} className="dropzone" {...getRootProps()}>
+          <section style={{ marginTop: '10px' }} className="dropzone" {...getRootProps()}>
             <div>
               <input {...getInputProps()} />
               <p>Re-Upload 3 months bank statement</p>
             </div>
-            <aside>
+            <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <h4>Files</h4>
               <img
-                style={{ marginTop: "10px", marginBottom: "10px" }}
+                style={{ marginTop: '10px', marginBottom: '10px' }}
                 alt="Upload"
                 src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"
               />
@@ -307,15 +307,15 @@ const Financeconsultant = () => {
           <center>
             <Button sx={{ mt: 4 }}>Download 3 months payslip</Button>
           </center>
-          <section style={{ marginTop: "10px" }} className="dropzone" {...getRootProps()}>
+          <section style={{ marginTop: '10px' }} className="dropzone" {...getRootProps()}>
             <div>
               <input {...getInputProps()} />
               <p>Re-Upload 3 months payslip</p>
             </div>
-            <aside>
+            <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <h4>Files</h4>
               <img
-                style={{ marginTop: "10px", marginBottom: "10px" }}
+                style={{ marginTop: '10px', marginBottom: '10px' }}
                 alt="Upload"
                 src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"
               />
@@ -326,15 +326,15 @@ const Financeconsultant = () => {
           <center>
             <Button sx={{ mt: 4 }}>Download Latest EPF details statement 2020 & 2019</Button>
           </center>
-          <section style={{ marginTop: "40px" }} className="dropzone" {...getRootProps()}>
+          <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
             <div>
               <input {...getInputProps()} />
               <p>Re-Upload Latest EPF details statement 2020 & 2019</p>
             </div>
-            <aside>
+            <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <h4>Files</h4>
               <img
-                style={{ marginTop: "10px", marginBottom: "10px" }}
+                style={{ marginTop: '10px', marginBottom: '10px' }}
                 alt="Upload"
                 src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"
               />
@@ -345,15 +345,15 @@ const Financeconsultant = () => {
           <center>
             <Button sx={{ mt: 4 }}>Download latest 2 years Borang BE Full set</Button>
           </center>
-          <section style={{ marginTop: "10px" }} className="dropzone" {...getRootProps()}>
+          <section style={{ marginTop: '10px' }} className="dropzone" {...getRootProps()}>
             <div>
               <input {...getInputProps()} />
               <p>Re-Upload latest 2 years Borang BE Full set</p>
             </div>
-            <aside>
+            <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <h4>Files</h4>
               <img
-                style={{ marginTop: "10px", marginBottom: "10px" }}
+                style={{ marginTop: '10px', marginBottom: '10px' }}
                 alt="Upload"
                 src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"
               />
@@ -366,15 +366,15 @@ const Financeconsultant = () => {
               Download Bonus/savings/fixed deposit/Unit Trust/Shares/Gold/ASB/Tabung Haji
             </Button>
           </center>
-          <section style={{ marginTop: "10px" }} className="dropzone" {...getRootProps()}>
+          <section style={{ marginTop: '10px' }} className="dropzone" {...getRootProps()}>
             <div>
               <input {...getInputProps()} />
               <p>Re-Upload Bonus/savings/fixed deposit/Unit Trust/Shares/Gold/ASB/Tabung Haji</p>
             </div>
-            <aside>
+            <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <h4>Files</h4>
               <img
-                style={{ marginTop: "10px", marginBottom: "10px" }}
+                style={{ marginTop: '10px', marginBottom: '10px' }}
                 alt="Upload"
                 src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"
               />
@@ -390,11 +390,11 @@ const Financeconsultant = () => {
               value={status}
               onChange={(e) => setStatus(e.target.value)}
             >
-              <MenuItem value={"Select Status"}>Select Status</MenuItem>
-              <MenuItem value={"Submit"}>Submit</MenuItem>
-              <MenuItem value={"Reject"}>Reject</MenuItem>
-              <MenuItem value={"DSR Burst"}>DSR Burst</MenuItem>
-              <MenuItem value={"Stuck"}>Stuck</MenuItem>
+              <MenuItem value={'Select Status'}>Select Status</MenuItem>
+              <MenuItem value={'Submit'}>Submit</MenuItem>
+              <MenuItem value={'Reject'}>Reject</MenuItem>
+              <MenuItem value={'DSR Burst'}>DSR Burst</MenuItem>
+              <MenuItem value={'Stuck'}>Stuck</MenuItem>
             </Select>
           </FormControl>
         </DialogContent>
@@ -405,7 +405,7 @@ const Financeconsultant = () => {
           <Button
             onClick={() => {
               handleClosereview();
-              if (status !== "Submit") {
+              if (status !== 'Submit') {
                 setOpen2(true);
               }
             }}
@@ -424,7 +424,7 @@ const Financeconsultant = () => {
         aria-describedby="alert-dialog-description"
       >
         <div className="container">
-          <DialogTitle id="alert-dialog-title" sx={{ float: "left" }}>
+          <DialogTitle id="alert-dialog-title" sx={{ float: 'left' }}>
             Logs
           </DialogTitle>
           <DialogActions>
@@ -436,7 +436,7 @@ const Financeconsultant = () => {
 
         <DialogContent>
           <TableContainer component={Paper}>
-            <Table sx={{ Width: "100%" }} aria-label="simple table">
+            <Table sx={{ Width: '100%' }} aria-label="simple table">
               <TableHead>
                 <TableRow>
                   <TableCell>Sl No.</TableCell>
@@ -445,21 +445,21 @@ const Financeconsultant = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                <TableRow key={1} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                <TableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                   <TableCell component="th" scope="row">
                     1
                   </TableCell>
                   <TableCell align="left">Created Logs Dialog</TableCell>
                   <TableCell align="left">{getDate(Date.now())}</TableCell>
                 </TableRow>
-                <TableRow key={1} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                <TableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                   <TableCell component="th" scope="row">
                     2
                   </TableCell>
                   <TableCell align="left">Added multiple table rows</TableCell>
                   <TableCell align="left">{getDate(Date.now())}</TableCell>
                 </TableRow>
-                <TableRow key={1} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                <TableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                   <TableCell component="th" scope="row">
                     3
                   </TableCell>
@@ -505,14 +505,14 @@ const Financeconsultant = () => {
       >
         <DialogTitle id="alert-dialog-title"></DialogTitle>
         <DialogContent>
-          <div style={{ border: "1px solid #E0E0E0", padding: "5px", marginTop: "20px" }}>
+          <div style={{ border: '1px solid #E0E0E0', padding: '5px', marginTop: '20px' }}>
             <Typography
               sx={{
-                backgroundColor: "#E0E0E0",
-                border: "1px solid #B0B0B0",
+                backgroundColor: '#E0E0E0',
+                border: '1px solid #B0B0B0',
                 borderRadius: 1,
                 p: 1,
-                mb: 2,
+                mb: 2
               }}
               textAlign="center"
               variant="h5"
@@ -528,7 +528,7 @@ const Financeconsultant = () => {
                 return <TextField {...params} label="Bankers" />;
               }}
             />
-            {bankers1 !== "" ? (
+            {bankers1 !== '' ? (
               <Button sx={{ m: 2 }} variant="outlined">
                 <Radio checked />
                 {bankers1}
@@ -537,14 +537,14 @@ const Financeconsultant = () => {
               <Box sx={{ mb: 11.5 }}></Box>
             )}
           </div>
-          <div style={{ border: "1px solid #E0E0E0", padding: "5px", marginTop: "20px" }}>
+          <div style={{ border: '1px solid #E0E0E0', padding: '5px', marginTop: '20px' }}>
             <Typography
               sx={{
-                backgroundColor: "#E0E0E0",
-                border: "1px solid #B0B0B0",
+                backgroundColor: '#E0E0E0',
+                border: '1px solid #B0B0B0',
                 borderRadius: 1,
                 p: 1,
-                mb: 2,
+                mb: 2
               }}
               textAlign="center"
               variant="h5"
@@ -560,7 +560,7 @@ const Financeconsultant = () => {
                 return <TextField {...params} label="Bankers" />;
               }}
             />
-            {bankers2 !== "" ? (
+            {bankers2 !== '' ? (
               <Button sx={{ m: 2 }} variant="outlined">
                 <Radio checked />
                 {bankers2}
@@ -591,10 +591,10 @@ const Financeconsultant = () => {
         <DialogContent>
           <select
             style={{
-              width: "100%",
-              padding: "12px",
-              border: "1px solid #000000",
-              borderRadius: "10px",
+              width: '100%',
+              padding: '12px',
+              border: '1px solid #000000',
+              borderRadius: '10px'
             }}
             onChange={(e) => settype(e.target.value)}
           >
@@ -628,15 +628,15 @@ const Financeconsultant = () => {
             value=""
           />
 
-          <section style={{ marginTop: "40px" }} className="dropzone" {...getRootProps()}>
+          <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
             <div>
               <input {...getInputProps()} />
               <p>Please Upload 3 months bank statement</p>
             </div>
-            <aside>
+            <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <h4>Files</h4>
               <img
-                style={{ marginTop: "10px", marginBottom: "10px" }}
+                style={{ marginTop: '10px', marginBottom: '10px' }}
                 alt="Upload"
                 src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"
               />
@@ -644,15 +644,15 @@ const Financeconsultant = () => {
             </aside>
           </section>
 
-          <section style={{ marginTop: "40px" }} className="dropzone" {...getRootProps()}>
+          <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
             <div>
               <input {...getInputProps()} />
               <p>Please Upload 3 months payslip</p>
             </div>
-            <aside>
+            <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <h4>Files</h4>
               <img
-                style={{ marginTop: "10px", marginBottom: "10px" }}
+                style={{ marginTop: '10px', marginBottom: '10px' }}
                 alt="Upload"
                 src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"
               />
@@ -660,15 +660,15 @@ const Financeconsultant = () => {
             </aside>
           </section>
 
-          <section style={{ marginTop: "40px" }} className="dropzone" {...getRootProps()}>
+          <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
             <div>
               <input {...getInputProps()} />
               <p>Please Upload Latest EPF details statement 2020 & 2019</p>
             </div>
-            <aside>
+            <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <h4>Files</h4>
               <img
-                style={{ marginTop: "10px", marginBottom: "10px" }}
+                style={{ marginTop: '10px', marginBottom: '10px' }}
                 alt="Upload"
                 src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"
               />
@@ -676,15 +676,15 @@ const Financeconsultant = () => {
             </aside>
           </section>
 
-          <section style={{ marginTop: "40px" }} className="dropzone" {...getRootProps()}>
+          <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
             <div>
               <input {...getInputProps()} />
               <p>Please Upload latest 2 years Borang BE Full set</p>
             </div>
-            <aside>
+            <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <h4>Files</h4>
               <img
-                style={{ marginTop: "10px", marginBottom: "10px" }}
+                style={{ marginTop: '10px', marginBottom: '10px' }}
                 alt="Upload"
                 src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"
               />
@@ -692,15 +692,15 @@ const Financeconsultant = () => {
             </aside>
           </section>
 
-          <section style={{ marginTop: "40px" }} className="dropzone" {...getRootProps()}>
+          <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
             <div>
               <input {...getInputProps()} />
               <p>Upload Bonus/savings/fixed deposit/Unit Trust/Shares/Gold/ASB/Tabung Haji</p>
             </div>
-            <aside>
+            <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <h4>Files</h4>
               <img
-                style={{ marginTop: "10px", marginBottom: "10px" }}
+                style={{ marginTop: '10px', marginBottom: '10px' }}
                 alt="Upload"
                 src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"
               />
@@ -708,15 +708,15 @@ const Financeconsultant = () => {
             </aside>
           </section>
 
-          <section style={{ marginTop: "40px" }} className="dropzone" {...getRootProps()}>
+          <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
             <div>
               <input {...getInputProps()} />
               <p>Please Upload IC Front & Back</p>
             </div>
-            <aside>
+            <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <h4>Files</h4>
               <img
-                style={{ marginTop: "10px", marginBottom: "10px" }}
+                style={{ marginTop: '10px', marginBottom: '10px' }}
                 alt="Upload"
                 src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"
               />
@@ -724,15 +724,15 @@ const Financeconsultant = () => {
             </aside>
           </section>
 
-          <section style={{ marginTop: "40px" }} className="dropzone" {...getRootProps()}>
+          <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
             <div>
               <input {...getInputProps()} />
               <p>Please Upload latest 2 years Borang BE Full set</p>
             </div>
-            <aside>
+            <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <h4>Files</h4>
               <img
-                style={{ marginTop: "10px", marginBottom: "10px" }}
+                style={{ marginTop: '10px', marginBottom: '10px' }}
                 alt="Upload"
                 src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"
               />
@@ -740,15 +740,15 @@ const Financeconsultant = () => {
             </aside>
           </section>
 
-          <section style={{ marginTop: "40px" }} className="dropzone" {...getRootProps()}>
+          <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
             <div>
               <input {...getInputProps()} />
               <p>Annual report (3 years)</p>
             </div>
-            <aside>
+            <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <h4>Files</h4>
               <img
-                style={{ marginTop: "10px", marginBottom: "10px" }}
+                style={{ marginTop: '10px', marginBottom: '10px' }}
                 alt="Upload"
                 src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"
               />
@@ -756,15 +756,15 @@ const Financeconsultant = () => {
             </aside>
           </section>
 
-          <section style={{ marginTop: "40px" }} className="dropzone" {...getRootProps()}>
+          <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
             <div>
               <input {...getInputProps()} />
               <p>Bank offer letter / latest loan statement</p>
             </div>
-            <aside>
+            <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <h4>Files</h4>
               <img
-                style={{ marginTop: "10px", marginBottom: "10px" }}
+                style={{ marginTop: '10px', marginBottom: '10px' }}
                 alt="Upload"
                 src="https://img.icons8.com/external-kmg-design-flat-kmg-design/28/000000/external-upload-user-interface-kmg-design-flat-kmg-design.png"
               />
@@ -798,13 +798,13 @@ const Financeconsultant = () => {
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={PAC}
-              sx={{ textAlign: "left" }}
+              sx={{ textAlign: 'left' }}
               onChange={(e) => {
                 setPAC(e.target.value);
               }}
             >
-              <MenuItem value={"See"}>See</MenuItem>
-              <MenuItem value={"Not See"}>Not See</MenuItem>
+              <MenuItem value={'See'}>See</MenuItem>
+              <MenuItem value={'Not See'}>Not See</MenuItem>
             </Select>
           </FormControl>
           <TextField
@@ -825,11 +825,11 @@ const Financeconsultant = () => {
               label="Select Status"
               onChange={(e) => setInsuranceType(e.target.value)}
             >
-              <MenuItem value={""}>Select Insurance Type</MenuItem>
-              <MenuItem value={"Insurance Type 1"}>Insurance Type 1</MenuItem>
-              <MenuItem value={"Insurance Type 2"}>Insurance Type 2</MenuItem>
-              <MenuItem value={"Insurance Type 3"}>Insurance Type 3</MenuItem>
-              <MenuItem value={"Insurance Type 4"}>Insurance Type 4</MenuItem>
+              <MenuItem value={''}>Select Insurance Type</MenuItem>
+              <MenuItem value={'Insurance Type 1'}>Insurance Type 1</MenuItem>
+              <MenuItem value={'Insurance Type 2'}>Insurance Type 2</MenuItem>
+              <MenuItem value={'Insurance Type 3'}>Insurance Type 3</MenuItem>
+              <MenuItem value={'Insurance Type 4'}>Insurance Type 4</MenuItem>
             </Select>
           </FormControl>
 
@@ -869,7 +869,7 @@ const Financeconsultant = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                <TableRow key={1} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                <TableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                   <TableCell component="th" scope="row">
                     IC Front & Back
                   </TableCell>
@@ -880,7 +880,7 @@ const Financeconsultant = () => {
                   </TableCell>
                 </TableRow>
 
-                <TableRow key={1} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                <TableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                   <TableCell component="th" scope="row">
                     3 months bank statement
                   </TableCell>
@@ -891,7 +891,7 @@ const Financeconsultant = () => {
                   </TableCell>
                 </TableRow>
 
-                <TableRow key={1} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                <TableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                   <TableCell component="th" scope="row">
                     3 months payslip
                   </TableCell>
@@ -902,7 +902,7 @@ const Financeconsultant = () => {
                   </TableCell>
                 </TableRow>
 
-                <TableRow key={1} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                <TableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                   <TableCell component="th" scope="row">
                     Latest EPF details statement 2020 & 2019
                   </TableCell>
@@ -913,7 +913,7 @@ const Financeconsultant = () => {
                   </TableCell>
                 </TableRow>
 
-                <TableRow key={1} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                <TableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                   <TableCell component="th" scope="row">
                     Latest 2 years Borang BE Full set
                   </TableCell>
@@ -924,7 +924,7 @@ const Financeconsultant = () => {
                   </TableCell>
                 </TableRow>
 
-                <TableRow key={1} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                <TableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                   <TableCell component="th" scope="row">
                     Bonus/savings/fixed deposit/Unit Trust/Shares/Gold/ASB/Tabung Haji
                   </TableCell>
@@ -946,12 +946,12 @@ const Financeconsultant = () => {
               label="Select Status"
               onChange={(e) => setStatus(e.target.value)}
             >
-              <MenuItem value={""}>Select Status</MenuItem>
-              <MenuItem value={"Missing document"}>Missing document</MenuItem>
-              <MenuItem value={"KIV"}>KIV</MenuItem>
-              <MenuItem value={"Approved"}>Approved </MenuItem>
-              <MenuItem value={"Reject"}>Reject </MenuItem>
-              <MenuItem value={"Submitted"}>Submitted </MenuItem>
+              <MenuItem value={''}>Select Status</MenuItem>
+              <MenuItem value={'Missing document'}>Missing document</MenuItem>
+              <MenuItem value={'KIV'}>KIV</MenuItem>
+              <MenuItem value={'Approved'}>Approved </MenuItem>
+              <MenuItem value={'Reject'}>Reject </MenuItem>
+              <MenuItem value={'Submitted'}>Submitted </MenuItem>
             </Select>
           </FormControl>
           {/* </DialogContent> */}
@@ -962,20 +962,19 @@ const Financeconsultant = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      
-        
+
       <Box
         component="main"
         sx={{
           flexGrow: 1,
-          py: 8,
+          py: 8
         }}
       >
         <Container maxWidth="lg">
           <Button
             sx={{
-              float: "right",
-              mb: 2,
+              float: 'right',
+              mb: 2
             }}
             variant="contained"
             color="primary"
@@ -996,7 +995,7 @@ const Financeconsultant = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                <TableRow key={1} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                <TableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                   <TableCell component="th" scope="row">
                     1
                   </TableCell>
@@ -1014,26 +1013,6 @@ const Financeconsultant = () => {
                         <RemoveRedEyeIcon />
                       </IconButton>
                     </Tooltip>
-                    {/* <Tooltip title="Property Agent can">
-                      <IconButton
-                        onClick={() => setShowSelect(!showSelect)}
-                        color="primary"
-                        aria-label="upload picture"
-                        component="span"
-                      >
-                        <LinkIcon />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="View Logs">
-                      <IconButton
-                        onClick={handleClickOpenlogs}
-                        color="primary"
-                        aria-label="upload picture"
-                        component="span"
-                      >
-                        <FeedIcon />
-                      </IconButton>
-                    </Tooltip> */}
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -1044,6 +1023,5 @@ const Financeconsultant = () => {
     </>
   );
 };
-
 
 export default Financeconsultant;

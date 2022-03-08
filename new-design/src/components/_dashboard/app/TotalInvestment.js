@@ -36,12 +36,12 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 
 const TOTAL = 1352831;
 
-export default function AppNewUsers() {
+export default function TotalInvestment() {
   return (
     <RootStyle>
       <Typography variant="h3">{fShortenNumber(TOTAL)}</Typography>
       <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
-        Total Sales
+        Total Investment
       </Typography>
     </RootStyle>
   );

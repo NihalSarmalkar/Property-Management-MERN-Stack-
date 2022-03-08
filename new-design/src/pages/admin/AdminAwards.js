@@ -217,14 +217,14 @@ const AdminAwards = () => {
           >
             Post Awards Offer
           </Button>
-          <Grid container spacing={3}>
+          {/* <Grid container spacing={3}>
             <Grid item sm={6}>
               <Sales />
             </Grid>
             <Grid item sm={6}>
               <TrafficByDevice />
             </Grid>
-          </Grid>
+          </Grid> */}
 
           <TableContainer component={Paper} sx={{ marginY: '50px' }}>
             <Table sx={{ Width: '100%' }} aria-label="simple table">

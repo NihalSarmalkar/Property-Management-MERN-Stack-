@@ -32,7 +32,21 @@ import MenuItem from '@mui/material/MenuItem';
 import DownloadIcon from '@mui/icons-material/Download';
 import { DateRangePicker } from '@mui/lab';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-
+import {
+  AppTasks,
+  AppNewUsers,
+  AppBugReports,
+  AppItemOrders,
+  AppNewsUpdate,
+  AppWeeklySales,
+  AppOrderTimeline,
+  AppCurrentVisits,
+  AppWebsiteVisits,
+  AppTrafficBySite,
+  AppCurrentSubject,
+  AppConversionRates,
+  TotalInvestment
+} from '../../components/_dashboard/app';
 const statusArray = [
   {
     value: 'Enable the award'
@@ -288,28 +302,38 @@ const AdminAwardReports = () => {
             )}
           </Container>
 
-          <Grid
-            container
-            sx={{ mt: 4, mb: 4 }}
-            rowSpacing={1}
-            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-          >
-            <Grid item xs={6}>
-              <Paper sx={{ p: 4 }}>
-                <center>
-                  <h4>Total Cases</h4>
-                  <h4>1,000</h4>
-                </center>
-              </Paper>
+          <Grid sx={{ mb: 4 }} container spacing={3}>
+            <Grid item xs={12} sm={6} md={6}>
+              <AppWeeklySales />
             </Grid>
-            <Grid item xs={6}>
-              <Paper sx={{ p: 4 }}>
-                <center>
-                  <h4>Total Inviestment</h4>
-                  <h4>1,000 MYR</h4>
-                </center>
-              </Paper>
+            <Grid item xs={12} sm={6} md={6}>
+              <TotalInvestment />
             </Grid>
+            
+  {/* 
+            <Grid item xs={12} md={6} lg={8}>
+              <AppConversionRates />
+            </Grid>
+
+            <Grid item xs={12} md={6} lg={4}>
+              <AppCurrentSubject />
+            </Grid>
+
+            <Grid item xs={12} md={6} lg={8}>
+              <AppNewsUpdate />
+            </Grid>
+
+            <Grid item xs={12} md={6} lg={4}>
+              <AppOrderTimeline />
+            </Grid>
+
+            <Grid item xs={12} md={6} lg={4}>
+              <AppTrafficBySite />
+            </Grid>
+
+            <Grid item xs={12} md={6} lg={8}>
+              <AppTasks />
+            </Grid> */}
           </Grid>
 
           <TableContainer component={Paper}>

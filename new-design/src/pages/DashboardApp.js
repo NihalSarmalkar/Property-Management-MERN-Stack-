@@ -47,7 +47,7 @@ export default function DashboardApp() {
           <Grid item xs={12} md={6} lg={4}>
             <AppCurrentVisits />
           </Grid>
-
+{/* 
           <Grid item xs={12} md={6} lg={8}>
             <AppConversionRates />
           </Grid>
@@ -70,7 +70,7 @@ export default function DashboardApp() {
 
           <Grid item xs={12} md={6} lg={8}>
             <AppTasks />
-          </Grid>
+          </Grid> */}
         </Grid>
       </Container>
     </Page>

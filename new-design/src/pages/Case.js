@@ -17,8 +17,38 @@ import DialogContent from '@mui/material/DialogContent';
 import TextField from '@mui/material/TextField';
 import DialogTitle from '@mui/material/DialogTitle';
 import DownloadIcon from '@mui/icons-material/Download';
+import { API_SERVICE } from '../config/URI';
 
 import { useDropzone } from 'react-dropzone';
+
+const TableViewPage = ({ counter, caseall }) => {
+
+
+  var date = caseall.createdAt;
+  date = new Date(date).toString();
+  return (
+    <>
+      <TableRow key={caseall._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+        <TableCell component="th" scope="row">
+          {counter}
+        </TableCell>
+        <TableCell align="center">{caseall.name}</TableCell>
+        <TableCell align="center">
+          <p>
+            {date}
+          </p>
+        </TableCell>
+        <TableCell align="center">{caseall.type}</TableCell>
+        <TableCell align="center">
+          <IconButton color="primary">
+            <DownloadIcon />
+          </IconButton>
+        </TableCell>
+      </TableRow>
+    </>
+  )
+}
+
 
 const CasePage = () => {
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
@@ -27,11 +57,16 @@ const CasePage = () => {
   const [open2, setOpen2] = React.useState(false);
 
   const [type, settype] = React.useState('');
-
   const [projecttype, setprojecttype] = React.useState('');
-
   const [subcategory, setsubcategory] = React.useState('');
   const [employementyear, setemployementyear] = React.useState('');
+  const [name, setname] = React.useState('');
+  const [contact, setcontact] = React.useState('');
+  const [email, setemail] = React.useState('');
+
+  const [loading, setloading] = React.useState(true);
+  const [allCase, setallCase] = React.useState([]);
+
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -51,6 +86,7 @@ const CasePage = () => {
 
   const handleCloseNext = () => {
     setOpen2(false);
+    submitCase();
   };
 
   const goBack = () => {
@@ -68,6 +104,67 @@ const CasePage = () => {
     settype(type);
     setsubcategory('');
     setemployementyear('');
+  };
+
+  const submitCase = async () => {
+    console.log(API_SERVICE);
+    try {
+      const data = {
+        usertype: 'Property Agent', type, projecttype, subcategory, employementyear, name, contact, email
+      };
+        const res = await fetch(`${API_SERVICE}/addcasepropertyagent`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      const response = await res.json();
+      console.log(response);
+      if (response === "Added") {
+        alert("Case successfully added");
+        setloading(true);
+        getAllCase();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  React.useEffect(() => {
+    getAllCase();
+  }, []);
+  
+
+  const getAllCase = async () => {
+    try {
+      const res = await fetch(
+        `${API_SERVICE}/getcase`
+      );
+      const caseall = await res.json();
+      setallCase(caseall);
+      setloading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const showServicesList = () => {
+    var counter = 0;
+    return (
+      <>
+        {allCase.map((caseall) => {
+          counter = counter + 1;
+          return (
+            <TableViewPage
+              caseall={caseall}
+              counter={counter}
+              key={caseall._id}
+            />
+          );
+        })}
+      </>
+    );
   };
 
   return (
@@ -278,25 +375,28 @@ const CasePage = () => {
                 sx={{ mt: 4 }}
                 type="text"
                 label="Name"
+                onChange={(e) => setname(e.target.value)}
                 fullWidth
                 variant="outlined"
-                value=""
+                value={name}
               />
               <TextField
                 sx={{ mt: 4 }}
                 type="text"
                 label="Contact Number"
+                onChange={(e) => setcontact(e.target.value)}
                 fullWidth
                 variant="outlined"
-                value=""
+                value={contact}
               />
               <TextField
                 sx={{ mt: 4 }}
                 type="email"
                 label="Email Address"
+                onChange={(e) => setemail(e.target.value)}
                 fullWidth
                 variant="outlined"
-                value=""
+                value={email}
               />
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
@@ -401,25 +501,28 @@ const CasePage = () => {
                 sx={{ mt: 4 }}
                 type="text"
                 label="Name"
+                onChange={(e) => setname(e.target.value)}
                 fullWidth
                 variant="outlined"
-                value=""
+                value={name}
               />
               <TextField
                 sx={{ mt: 4 }}
                 type="text"
                 label="Contact Number"
+                onChange={(e) => setcontact(e.target.value)}
                 fullWidth
                 variant="outlined"
-                value=""
+                value={contact}
               />
               <TextField
                 sx={{ mt: 4 }}
                 type="email"
                 label="Email Address"
+                onChange={(e) => setemail(e.target.value)}
                 fullWidth
                 variant="outlined"
-                value=""
+                value={email}
               />
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
@@ -524,25 +627,28 @@ const CasePage = () => {
                 sx={{ mt: 4 }}
                 type="text"
                 label="Name"
+                onChange={(e) => setname(e.target.value)}
                 fullWidth
                 variant="outlined"
-                value=""
+                value={name}
               />
               <TextField
                 sx={{ mt: 4 }}
                 type="text"
                 label="Contact Number"
+                onChange={(e) => setcontact(e.target.value)}
                 fullWidth
                 variant="outlined"
-                value=""
+                value={contact}
               />
               <TextField
                 sx={{ mt: 4 }}
                 type="email"
                 label="Email Address"
+                onChange={(e) => setemail(e.target.value)}
                 fullWidth
                 variant="outlined"
-                value=""
+                value={email}
               />
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
@@ -647,25 +753,28 @@ const CasePage = () => {
                 sx={{ mt: 4 }}
                 type="text"
                 label="Name"
+                onChange={(e) => setname(e.target.value)}
                 fullWidth
                 variant="outlined"
-                value=""
+                value={name}
               />
               <TextField
                 sx={{ mt: 4 }}
                 type="text"
                 label="Contact Number"
+                onChange={(e) => setcontact(e.target.value)}
                 fullWidth
                 variant="outlined"
-                value=""
+                value={contact}
               />
               <TextField
                 sx={{ mt: 4 }}
                 type="email"
                 label="Email Address"
+                onChange={(e) => setemail(e.target.value)}
                 fullWidth
                 variant="outlined"
-                value=""
+                value={email}
               />
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
@@ -786,25 +895,28 @@ const CasePage = () => {
                 sx={{ mt: 4 }}
                 type="text"
                 label="Name"
+                onChange={(e) => setname(e.target.value)}
                 fullWidth
                 variant="outlined"
-                value=""
+                value={name}
               />
               <TextField
                 sx={{ mt: 4 }}
                 type="text"
                 label="Contact Number"
+                onChange={(e) => setcontact(e.target.value)}
                 fullWidth
                 variant="outlined"
-                value=""
+                value={contact}
               />
               <TextField
                 sx={{ mt: 4 }}
                 type="email"
                 label="Email Address"
+                onChange={(e) => setemail(e.target.value)}
                 fullWidth
                 variant="outlined"
-                value=""
+                value={email}
               />
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
@@ -978,19 +1090,13 @@ const CasePage = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                <TableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                  <TableCell component="th" scope="row">
-                    1
-                  </TableCell>
-                  <TableCell align="center">dasda</TableCell>
-                  <TableCell align="center">sdada</TableCell>
-                  <TableCell align="center">dasda</TableCell>
-                  <TableCell align="center">
-                    <IconButton color="primary">
-                      <DownloadIcon />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
+                  {loading === true ? (
+                    <>
+                      Loading...
+                    </>
+                  ) : (
+                    <>{showServicesList()}</>
+                  )}
               </TableBody>
             </Table>
           </TableContainer>

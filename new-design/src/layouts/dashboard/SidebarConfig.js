@@ -22,72 +22,72 @@ const sidebarConfig = [
     path: '/dashboard/app',
     icon: getIcon(pieChart2Fill)
   },
-  {
-    title: 'admin awards',
-    path: '/dashboard/adminawards',
-    icon: <AdminPanelSettingsIcon />
-  },
-  {
-    title: 'admin award reports',
-    path: '/dashboard/adminawardreports',
-    icon: <AdminPanelSettingsIcon />
-  },
-  {
-    title: 'bank',
-    path: '/dashboard/bank',
-    icon: <AccountBalanceIcon />
-  },
-  {
-    title: 'bank reports',
-    path: '/dashboard/bank-reports',
-    icon: <AccountBalanceIcon />
-  },
-  {
-    title: 'finance consultant',
-    path: '/dashboard/finance-consultant',
-    icon: <AttachMoneyIcon />
-  },
-  {
-    title: 'finance consultant awards',
-    path: '/dashboard/finance-consultant-awards',
-    icon: <AttachMoneyIcon />
-  },
-  {
-    title: 'finance consultant reports',
-    path: '/dashboard/finance-consultant-reports',
-    icon: <AttachMoneyIcon />
-  },
+  // {
+  //   title: 'admin awards',
+  //   path: '/dashboard/adminawards',
+  //   icon: <AdminPanelSettingsIcon />
+  // },
+  // {
+  //   title: 'admin award reports',
+  //   path: '/dashboard/adminawardreports',
+  //   icon: <AdminPanelSettingsIcon />
+  // },
+  // {
+  //   title: 'bank',
+  //   path: '/dashboard/bank',
+  //   icon: <AccountBalanceIcon />
+  // },
+  // {
+  //   title: 'bank reports',
+  //   path: '/dashboard/bank-reports',
+  //   icon: <AccountBalanceIcon />
+  // },
+  // {
+  //   title: 'finance consultant',
+  //   path: '/dashboard/finance-consultant',
+  //   icon: <AttachMoneyIcon />
+  // },
+  // {
+  //   title: 'finance consultant awards',
+  //   path: '/dashboard/finance-consultant-awards',
+  //   icon: <AttachMoneyIcon />
+  // },
+  // {
+  //   title: 'finance consultant reports',
+  //   path: '/dashboard/finance-consultant-reports',
+  //   icon: <AttachMoneyIcon />
+  // },
   {
     title: 'case',
     path: '/dashboard/case',
     icon: <ArticleIcon />
   },
-  {
-    title: 'viewcase',
-    path: '/dashboard/viewcase',
-    icon: <ArticleIcon />
-  },
-  {
-    title: 'user management',
-    path: '/dashboard/user-management',
-    icon: <Person />
-  },
+  // {
+  //   title: 'viewcase',
+  //   path: '/dashboard/viewcase',
+  //   icon: <ArticleIcon />
+  // },
+  // {
+  //   title: 'user management',
+  //   path: '/dashboard/user-management',
+  //   icon: <Person />
+  // },
   {
     title: 'property agent',
     path: '/dashboard/property-agent',
     icon: <SupportAgentIcon />
   },
 
-  {
-    title: 'login',
-    path: '/login',
-    icon: getIcon(lockFill)
-  },
-  {
-    title: 'register',
-    path: '/register',
-    icon: getIcon(personAddFill)
-  }
+  // {
+  //   title: 'login',
+  //   path: '/login',
+  //   icon: getIcon(lockFill)
+  // },
+  // {
+  //   title: 'register',
+  //   path: '/register',
+  //   icon: getIcon(personAddFill)
+  // }
 ];
 
 export default sidebarConfig;

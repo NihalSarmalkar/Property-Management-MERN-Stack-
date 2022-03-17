@@ -35,7 +35,7 @@ const TableViewPage = ({ counter, caseall }) => {
         <TableCell align="center">{caseall.name}</TableCell>
         <TableCell align="center">
           <p>
-            {date}
+            {date.replace(/(.*:\d+).*/g, "$1")}
           </p>
         </TableCell>
         <TableCell align="center">{caseall.type}</TableCell>

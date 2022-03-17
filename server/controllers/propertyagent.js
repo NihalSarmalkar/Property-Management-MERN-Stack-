@@ -4,6 +4,7 @@ const Case_Model = require('../models/Case');
 
 const addCase = async (req, res) => {
     res.setHeader("Content-Type", "application/json");
+    
     const {
        usertype ,type, projecttype, subcategory, employementyear, name, contact, email
     } = req.body;

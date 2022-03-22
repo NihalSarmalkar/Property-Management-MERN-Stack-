@@ -46,7 +46,7 @@ export default function Router() {
         { path: 'case', element: <CasePage /> },
         { path: 'viewcase', element: <ViewCase /> },
 
-        { path: 'property-agent', element: <PropertyAgent /> },
+        { path: 'report', element: <PropertyAgent /> },
 
         { path: 'user', element: <User /> },
         { path: 'user-management', element: <UserManagement /> },

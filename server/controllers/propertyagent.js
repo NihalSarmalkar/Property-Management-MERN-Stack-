@@ -3,10 +3,10 @@
 const Case_Model = require('../models/Case');
 
 const addCase = async (req, res) => {
-    res.setHeader("Content-Type", "application/json");
+    // res.setHeader("Content-Type", "application/json");
     
     const {
-       usertype ,type, projecttype, subcategory, employementyear, name, contact, email
+       usertype ,type, projecttype, subcategory, employementyear, name, contact, email, urls
     } = req.body;
 
     var data = {
@@ -17,7 +17,8 @@ const addCase = async (req, res) => {
         employementyear, 
         name, 
         contact, 
-        email
+        email,
+        urls
     }
 
     try {
@@ -27,15 +28,19 @@ const addCase = async (req, res) => {
               newCase
                 .save()
                 .then((data) => {
-                    res.status(200).json("Added");
+                    Case_Model.find({}).sort({ createdAt: -1 })
+                    .then((cases) => {
+                        res.status(200).json(cases);
+                    })
+                    .catch((err) => res.status(200).json(`Error: ${err}`));
                 })
-                .catch((err) => console.log(err));
+                .catch((err) => {});
             } else {
                 res.status(201).json("Already Added");
             }
         });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
     }
 }
 
@@ -45,9 +50,9 @@ const getCaseAll = async (req, res) => {
             .then((data) => {
                 res.status(200).json(data);
             })
-            .catch((err) => res.status(400).json(`Error: ${err}`));
+            .catch((err) => res.status(200).json(`Error: ${err}`));
     } catch (err) {
-        console.log(err);
+        // console.log(err);
     }
 }
 

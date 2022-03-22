@@ -73,8 +73,8 @@ const sidebarConfig = [
   //   icon: <Person />
   // },
   {
-    title: 'property agent',
-    path: '/dashboard/property-agent',
+    title: 'Report',
+    path: '/dashboard/report',
     icon: <SupportAgentIcon />
   },
 

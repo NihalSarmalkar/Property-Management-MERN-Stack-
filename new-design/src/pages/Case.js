@@ -20,12 +20,13 @@ import DownloadIcon from '@mui/icons-material/Download';
 import { API_SERVICE } from '../config/URI';
 
 import { useDropzone } from 'react-dropzone';
+import { useStorage } from '../hooks/useStorage';
 
 const TableViewPage = ({ counter, caseall }) => {
-
-
+  const [open, setOpen] = React.useState(false);
   var date = caseall.createdAt;
   date = new Date(date).toString();
+
   return (
     <>
       <TableRow key={caseall._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
@@ -34,21 +35,122 @@ const TableViewPage = ({ counter, caseall }) => {
         </TableCell>
         <TableCell align="center">{caseall.name}</TableCell>
         <TableCell align="center">
-          <p>
-            {date.replace(/(.*:\d+).*/g, "$1")}
-          </p>
+          <p>{date.replace(/(.*:\d+).*/g, '$1')}</p>
         </TableCell>
         <TableCell align="center">{caseall.type}</TableCell>
         <TableCell align="center">
-          <IconButton color="primary">
-            <DownloadIcon />
-          </IconButton>
+          {/* <IconButton color="primary"> */}
+            <Dialog
+              open={open}
+              onClose={() => { }}
+              aria-labelledby="alert-dialog-title"
+              fullWidth
+              maxWidth="md"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">Download Files</DialogTitle>
+              <DialogContent>
+                    <Table>
+                      <TableHead>
+                      <TableRow>
+                        <TableCell>ID</TableCell>
+                        <TableCell align="left">Filename</TableCell>
+                        <TableCell align="right">Action</TableCell>
+                      </TableRow>
+                      </TableHead>
+                      <TableBody>
+                      {[...caseall.urls].map((file, _) => {
+                        if (typeof file === "object") {
+                          return <TableRow key={"table_" + _}>
+                            <TableCell>{_ + 1}</TableCell>
+                            <TableCell align='left'>{file.name}</TableCell>
+                            <TableCell align='right'>
+                              <Button>
+                                <DownloadIcon onClick={() => {
+                                var a = document.createElement("a");
+                                a.href = file.url;
+                                a.download = file.name;
+                                a.target = "_blank";
+                                a.click();
+                              }} />
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        } else {
+                          return <TableRow key={"table_" + _}>
+                            <TableCell>{_ + 1}</TableCell>
+                            <TableCell align='left'>File</TableCell>
+                            <TableCell align='right'>
+                              <Button>
+                                <DownloadIcon onClick={() => {
+                                var a = document.createElement("a");
+                                a.href = file;
+                                a.download = "File";
+                                a.target = "_blank";
+                                a.click();
+                              }} />
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        }
+                      })}
+                      {[...caseall.urls].length < 1 ? 
+                        <TableRow>
+                          <TableCell>No Files Found!</TableCell>
+                        </TableRow> :
+                        null
+                      }
+                      </TableBody>
+                    </Table>
+                  </DialogContent>
+              <DialogActions>
+                <Button onClick={() => setOpen(false)}>Close</Button>
+                <Button onClick={() => setOpen(false)}>Back</Button>
+                <Button onClick={() => setOpen(false)} autoFocus>
+                  Submit
+                </Button>
+              </DialogActions>
+            </Dialog>
+            <Button><DownloadIcon onClick={() => setOpen(true)} /></Button>
+          {/* </IconButton> */}
         </TableCell>
       </TableRow>
     </>
-  )
-}
+  );
+};
 
+const UploadFile = ({ file, setFile, setURL, urls }) => {
+  const { progress, url } = useStorage(file.file, 'files');
+
+  console.log(progress);
+
+  React.useEffect(() => {
+    if (url != null) {
+      const nurls = urls;
+      nurls.push({
+        name: file.name,
+        url: url
+      });
+
+      setFile(null);
+      setURL(nurls);
+    }
+  }, [url]);
+
+  return <span></span>;
+};
+
+const ShowServicesList = ({ allCase }) => {
+  var counter = 0;
+  return (
+    <>
+      {allCase.map((caseall) => {
+        counter = counter + 1;
+        return <TableViewPage caseall={caseall} counter={counter} key={caseall._id} />;
+      })}
+    </>
+  );
+};
 
 const CasePage = () => {
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
@@ -66,7 +168,25 @@ const CasePage = () => {
 
   const [loading, setloading] = React.useState(true);
   const [allCase, setallCase] = React.useState([]);
+  const [urls, setUrls] = React.useState([]);
+  const [currentFile, setCurrentFile] = React.useState(null);
 
+  const uploadFile = function (e) {
+    if (currentFile !== null) {
+      alert('Please wait until the file is being uploaded!');
+      e.target.value = null;
+      return;
+    }
+
+    const file = e.target.files[0] ?? null;
+
+    if (file) {
+      setCurrentFile({
+        name: e.target.parentElement.querySelector('p').innerText.replace('Please Upload', ""),
+        file: file,
+      });
+    }
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -86,7 +206,9 @@ const CasePage = () => {
 
   const handleCloseNext = () => {
     setOpen2(false);
-    submitCase();
+
+    if (currentFile === null) submitCase();
+    else alert('Please wait the file is being uploaded');
   };
 
   const goBack = () => {
@@ -107,68 +229,60 @@ const CasePage = () => {
   };
 
   const submitCase = async () => {
-    console.log(API_SERVICE);
+    // console.log(API_SERVICE);
+
     try {
       const data = {
-        usertype: 'Property Agent', type, projecttype, subcategory, employementyear, name, contact, email
+        usertype: 'Property Agent',
+        type,
+        projecttype,
+        subcategory,
+        employementyear,
+        name,
+        contact,
+        email,
+        urls
       };
-        const res = await fetch(`${API_SERVICE}/addcasepropertyagent`, {
-        method: "POST",
+      const res = await fetch(`${API_SERVICE}/addcasepropertyagent`, {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(data)
       });
       const response = await res.json();
-      console.log(response);
-      if (response === "Added") {
-        alert("Case successfully added");
-        setloading(true);
-        getAllCase();
-      }
+      if (response) setallCase(response);
+      // if (response === 'Added') {
+      //   alert('Case successfully added');
+      // }
+      // setloading(true);
+      // getAllCase();
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
-  }
+  };
 
   React.useEffect(() => {
     getAllCase();
   }, []);
-  
 
   const getAllCase = async () => {
     try {
-      const res = await fetch(
-        `${API_SERVICE}/getcase`
-      );
+      const res = await fetch(`${API_SERVICE}/getcase`);
       const caseall = await res.json();
+
       setallCase(caseall);
       setloading(false);
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
-  }
-
-  const showServicesList = () => {
-    var counter = 0;
-    return (
-      <>
-        {allCase.map((caseall) => {
-          counter = counter + 1;
-          return (
-            <TableViewPage
-              caseall={caseall}
-              counter={counter}
-              key={caseall._id}
-            />
-          );
-        })}
-      </>
-    );
   };
 
   return (
     <>
+      {currentFile && (
+        <UploadFile file={currentFile} urls={urls} setURL={setUrls} setFile={setCurrentFile} />
+      )}
       <Dialog
         open={open2}
         onClose={handleCloseNext}
@@ -188,18 +302,19 @@ const CasePage = () => {
             }}
             onChange={(e) => setprojecttype(e.target.value)}
           >
-            <option disabled selected>
+            <option >
               Select the Type
             </option>
             <option value="Sub-sales">Sub-sales</option>
             <option value="Project">Project</option>
+            {/* {console.log(getInputProps())} */}
           </select>
           {projecttype === 'Sub-sales' ? (
             <>
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
-                  <p>Please upload title</p>
+                  <input onChange={uploadFile} type="file" />
+                  <p>Please Upload title</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
@@ -214,8 +329,8 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
-                  <p>Please upload booking form</p>
+                  <input onChange={uploadFile} type="file" />
+                  <p>Please Upload booking form</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
@@ -232,8 +347,8 @@ const CasePage = () => {
             <>
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
-                  <p>Please upload booking form</p>
+                  <input onChange={uploadFile} type="file" />
+                  <p>Please Upload booking form</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
@@ -247,8 +362,8 @@ const CasePage = () => {
               </section>
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
-                  <p>Please upload the title</p>
+                  <input onChange={uploadFile} type="file" />
+                  <p>Please Upload the title</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4>Files</h4>
@@ -292,7 +407,7 @@ const CasePage = () => {
             }}
             onChange={(e) => changeEmployeeType(e.target.value)}
           >
-            <option disabled selected>
+            <option >
               Select the Type
             </option>
             <option value="Employee">Employee</option>
@@ -311,7 +426,7 @@ const CasePage = () => {
                 }}
                 onChange={(e) => setsubcategory(e.target.value)}
               >
-                <option disabled selected>
+                <option>
                   Select the Sub Category
                 </option>
                 <option value="Sdn Bhd">Sdn Bhd</option>
@@ -330,7 +445,7 @@ const CasePage = () => {
                 }}
                 onChange={(e) => setsubcategory(e.target.value)}
               >
-                <option disabled selected>
+                <option >
                   Select the Sub Category
                 </option>
                 <option value="Basic salary">Basic salary</option>
@@ -350,7 +465,7 @@ const CasePage = () => {
                 }}
                 onChange={(e) => setemployementyear(e.target.value)}
               >
-                <option disabled selected>
+                <option >
                   Select employement year
                 </option>
                 <option value="Less than 1 Year">Less than 1 Year</option>
@@ -401,7 +516,7 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
+                  <input onChange={uploadFile} type="file" />
                   <p>Please Upload IC Front & Back</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -417,7 +532,7 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
+                  <input onChange={uploadFile} type="file" />
                   <p>Please Upload 3 months bank statement</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -433,7 +548,7 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
+                  <input onChange={uploadFile} type="file" />
                   <p>Please Upload 3 months payslip</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -449,7 +564,7 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
+                  <input onChange={uploadFile} type="file" />
                   <p>Please Upload Latest EPF details statement 2020 & 2019</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -465,7 +580,7 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
+                  <input onChange={uploadFile} type="file" />
                   <p>Please Upload latest 2 years Borang BE Full set</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -481,7 +596,7 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
+                  <input onChange={uploadFile} type="file" />
                   <p>Upload Bonus/savings/fixed deposit/Unit Trust/Shares/Gold/ASB/Tabung Haji</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -527,7 +642,7 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
+                  <input onChange={uploadFile} type="file" />
                   <p>Please Upload IC Front & Back</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -543,7 +658,7 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
+                  <input onChange={uploadFile} type="file" />
                   <p>Please Upload 6 months bank statement</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -559,7 +674,7 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
+                  <input onChange={uploadFile} type="file" />
                   <p>Please Upload 6 months payslip</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -575,7 +690,7 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
+                  <input onChange={uploadFile} type="file" />
                   <p>Please Upload Latest EPF details statement 2020 & 2019</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -591,7 +706,7 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
+                  <input onChange={uploadFile} type="file" />
                   <p>Please Upload latest 2 years Borang BE Full set</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -607,7 +722,7 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
+                  <input onChange={uploadFile} type="file" />
                   <p>Upload Bonus/savings/fixed deposit/Unit Trust/Shares/Gold/ASB/Tabung Haji</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -653,7 +768,7 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
+                  <input onChange={uploadFile} type="file" />
                   <p>Please Upload IC Front & Back</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -669,7 +784,7 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
+                  <input onChange={uploadFile} type="file" />
                   <p>Please Upload 6 months bank statement</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -685,7 +800,7 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
+                  <input onChange={uploadFile} type="file" />
                   <p>6 months commission statement</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -701,7 +816,7 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
+                  <input onChange={uploadFile} type="file" />
                   <p>Please Upload latest 2 years Borang B Full set</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -717,7 +832,7 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
+                  <input onChange={uploadFile} type="file" />
                   <p>Upload 2 years CP 58</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -733,7 +848,7 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
+                  <input onChange={uploadFile} type="file" />
                   <p>Upload Bonus/savings/fixed deposit/Unit Trust/Shares/Gold/ASB/Tabung Haji</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -779,7 +894,7 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
+                  <input onChange={uploadFile} type="file" />
                   <p>Please Upload IC Front & Back</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -795,7 +910,7 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
+                  <input onChange={uploadFile} type="file" />
                   <p>Please Upload 6 months bank statement</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -811,7 +926,7 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
+                  <input onChange={uploadFile} type="file" />
                   <p>SSM cert</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -827,7 +942,7 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
+                  <input onChange={uploadFile} type="file" />
                   <p>Form (24,44,49,M&A),</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -843,7 +958,7 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
+                  <input onChange={uploadFile} type="file" />
                   <p>2 years borang B full set</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -859,7 +974,7 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
+                  <input onChange={uploadFile} type="file" />
                   <p>Upload Bonus/savings/fixed deposit/Unit Trust/Shares/Gold/ASB/Tabung Haji</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -875,7 +990,7 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
+                  <input onChange={uploadFile} type="file" />
                   <p>Annual report (3 years)</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -921,7 +1036,7 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
+                  <input onChange={uploadFile} type="file" />
                   <p>Please Upload IC Front & Back</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -937,7 +1052,7 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
+                  <input onChange={uploadFile} type="file" />
                   <p>Please Upload 6 months bank statement</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -953,7 +1068,7 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
+                  <input onChange={uploadFile} type="file" />
                   <p>SSM cert</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -969,7 +1084,7 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
+                  <input onChange={uploadFile} type="file" />
                   <p>2 years borang B full set</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -985,7 +1100,7 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
+                  <input onChange={uploadFile} type="file" />
                   <p>Upload Bonus/savings/fixed deposit/Unit Trust/Shares/Gold/ASB/Tabung Haji</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -1001,7 +1116,7 @@ const CasePage = () => {
 
               <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
                 <div>
-                  <input {...getInputProps()} />
+                  <input onChange={uploadFile} type="file" />
                   <p>2 years management account</p>
                 </div>
                 <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -1020,8 +1135,8 @@ const CasePage = () => {
           {employementyear === 'Less than 1 Year' ? (
             <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
               <div>
-                <input {...getInputProps()} />
-                <p>Please upload Employment letter</p>
+                <input onChange={uploadFile} type="file" />
+                <p>Please Upload Employment letter</p>
               </div>
               <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <h4>Files</h4>
@@ -1036,8 +1151,8 @@ const CasePage = () => {
           ) : employementyear === '1 Year' ? (
             <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
               <div>
-                <input {...getInputProps()} />
-                <p>Please upload Employment letter</p>
+                <input onChange={uploadFile} type="file" />
+                <p>Please Upload Employment letter</p>
               </div>
               <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <h4>Files</h4>
@@ -1090,13 +1205,7 @@ const CasePage = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                  {loading === true ? (
-                    <>
-                      Loading...
-                    </>
-                  ) : (
-                    <>{showServicesList()}</>
-                  )}
+                {loading === true ? <TableRow><TableCell>Loading...</TableCell></TableRow> : <ShowServicesList allCase={allCase} />}
               </TableBody>
             </Table>
           </TableContainer>

@@ -1,4 +1,6 @@
 import React from 'react';
+import moment from 'moment';
+import { API_SERVICE } from '../../config/URI';
 
 import {
   Box,
@@ -76,19 +78,30 @@ const PropertyAgent = () => {
     { sl: 2, awardPoints: 500, status: 'Not Expired' },
     { sl: 3, awardPoints: 850, status: 'Not Expired' }
   ];
-  const demoEntries = [
-    { id: 1, name: 'Testing', date: '27-10-22', type: 'Expired' },
-    { id: 2, name: 'Completed', date: '27-10-22', type: 'Expired' },
-    { id: 3, name: 'Download', date: '27-10-22', type: 'Expired' },
-    { id: 4, name: 'Completed', date: '27-10-22', type: 'Expired' },
-    { id: 5, name: 'Completed', date: '27-10-22', type: 'Expired' }
-  ];
+  const [demoEntries, setDemoEntries] = React.useState([]);
+  const [demoEntriesClone, setDemoEntriesClone] = React.useState(demoEntries);
   React.useEffect(() => {
     let total = 0;
     awardsList.map((e) => {
       total += e.awardPoints;
     });
     setAwards(total);
+  }, []);
+
+  React.useEffect(function () {
+    const getCases = async function () {
+      try {
+        const res = await fetch(`${API_SERVICE}/getcase`);
+        const caseall = await res.json();
+  
+        setDemoEntries(caseall);
+        setDemoEntriesClone(caseall)
+      } catch (err) {
+        // console.log(err);
+      }
+    }
+
+    getCases();
   }, []);
 
   const [month, setMonth] = React.useState('January');
@@ -99,10 +112,12 @@ const PropertyAgent = () => {
   const [subtype, setsubtype] = React.useState('');
 
   const handleProjectInputChange = (e) => {
+    setDemoEntriesClone([]);
     settype(e.target.value);
     // console.log(e.target.value);
   };
   const handleSubProjectInputChange = (e) => {
+    setDemoEntriesClone([]);
     setsubtype(e.target.value);
   };
   return (
@@ -204,6 +219,7 @@ const PropertyAgent = () => {
               endText="End Date"
               value={value}
               onChange={(newValue) => {
+                setDemoEntriesClone([]);
                 setValue(newValue);
               }}
               renderInput={(startProps, endProps) => (
@@ -220,7 +236,7 @@ const PropertyAgent = () => {
               }}
               variant="contained"
               color="primary"
-              // onClick={handleClickOpen}
+            // onClick={handleClickOpen}
             >
               Download CSV Report
             </Button>
@@ -291,24 +307,140 @@ const PropertyAgent = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {demoEntries.map((entry) => (
+                {demoEntriesClone.map((entry, _) => (
+                  <>
+                    <TableRow
+                      key={_ + "demo"}
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {_ + 1}
+                      </TableCell>
+                      <TableCell align="center">{entry.name}</TableCell>
+                      <TableCell align="center">{moment(entry.createdAt).format("DD-MM-YY")}</TableCell>
+                      <TableCell align="center">{entry.type}</TableCell>
+                      <TableCell align="center">
+                        <IconButton color="primary">
+                          <DownloadIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  </>
+                ))}
+
+                {demoEntriesClone.length < 1 ?
+                 <>
+                {demoEntries.map((entry, _) => (
                   <TableRow
-                    key={entry.id}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  key={_ + "filter"}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
-                    <TableCell component="th" scope="row">
-                      {entry.id}
-                    </TableCell>
-                    <TableCell align="center">{entry.name}</TableCell>
-                    <TableCell align="center">{entry.date}a</TableCell>
-                    <TableCell align="center">{entry.type}</TableCell>
-                    <TableCell align="center">
-                      <IconButton color="primary">
-                        <DownloadIcon />
-                      </IconButton>
-                    </TableCell>
+                    {
+                      (value[0] != null && type === "") && (moment(entry.createdAt).isBetween(moment(value[0]), value[1] != null ? moment(value[1]) : moment().toISOString())) ?
+                      <>
+                          <TableCell component="th" scope="row">
+                            {_ + 1} One
+                          </TableCell>
+                          <TableCell align="center">{entry.name}</TableCell>
+                          <TableCell align="center">{moment(entry.createdAt).format("DD-MM-YY")}</TableCell>
+                          <TableCell align="center">{entry.type}</TableCell>
+                          <TableCell align="center">
+                            <IconButton color="primary">
+                              <DownloadIcon />
+                            </IconButton>
+                          </TableCell>
+                        </> :
+                        null
+                    }
+                    {
+                      (value[0] == null && type != null && subtype == "") ?
+                      <>
+                          {
+                            type.toLocaleLowerCase() == entry.type.toLocaleLowerCase() ?
+                            <><TableCell component="th" scope="row">
+                                {_ + 1} Two
+                              </TableCell>
+                                <TableCell align="center">{entry.name}</TableCell>
+                                <TableCell align="center">{moment(entry.createdAt).format("DD-MM-YY")}</TableCell>
+                                <TableCell align="center">{entry.type}</TableCell>
+                                <TableCell align="center">
+                                  <IconButton color="primary">
+                                    <DownloadIcon />
+                                  </IconButton>
+                                </TableCell>
+                              </> :
+                              null
+                          }
+                        </> : null
+                    }
+                    {
+                      (value[0] != null && type != null && subtype == "") && (moment(entry.createdAt).isBetween(moment(value[0]).format("YYYY-MM-DD"), value[1] != null ? moment(value[1]).format("YYYY-MM-DD") : moment().format("YYYY-MM-DD"))) ?
+                      <>
+                          {
+                            type.toLocaleLowerCase() == entry.type.toLocaleLowerCase() ?
+                            <><TableCell component="th" scope="row">
+                                {_ + 1} Three
+                              </TableCell>
+                                <TableCell align="center">{entry.name}</TableCell>
+                                <TableCell align="center">{moment(entry.createdAt).format("DD-MM-YY")}</TableCell>
+                                <TableCell align="center">{entry.type}</TableCell>
+                                <TableCell align="center">
+                                  <IconButton color="primary">
+                                    <DownloadIcon />
+                                  </IconButton>
+                                </TableCell>
+                              </> :
+                              null
+                          }
+                        </> : null
+                    }
+                            {
+                      (value[0] == null && subtype != "" && type != "") ?
+                      <>
+                          {
+                            (type.toLocaleLowerCase() === entry.type.toLocaleLowerCase() && subtype.toLocaleLowerCase() === entry.subcategory.toLocaleLowerCase()) ?
+                            <><TableCell component="th" scope="row">
+                                {_ + 1} Four
+                              </TableCell>
+                                <TableCell align="center">{entry.name}</TableCell>
+                                <TableCell align="center">{moment(entry.createdAt).format("DD-MM-YY")}</TableCell>
+                                <TableCell align="center">{entry.type}</TableCell>
+                                <TableCell align="center">
+                                  <IconButton color="primary">
+                                    <DownloadIcon />
+                                  </IconButton>
+                                </TableCell>
+                              </> :
+                              null
+                          }
+                        </> : null
+                    }
+                    {
+                      (value[0] != null && subtype != "" && type != "") && (moment(entry.createdAt).isBetween(moment(value[0]), value[1] != null ? moment(value[1]) : moment().toISOString())) ?
+                      <>
+                          {
+                            (type.toLocaleLowerCase() === entry.type.toLocaleLowerCase() && subtype.toLocaleLowerCase() === entry.subcategory.toLocaleLowerCase()) ?
+                            <><TableCell component="th" scope="row">
+                                {_ + 1} Four
+                              </TableCell>
+                                <TableCell align="center">{entry.name}</TableCell>
+                                <TableCell align="center">{moment(entry.createdAt).format("DD-MM-YY")}</TableCell>
+                                <TableCell align="center">{entry.type}</TableCell>
+                                <TableCell align="center">
+                                  <IconButton color="primary">
+                                    <DownloadIcon />
+                                  </IconButton>
+                                </TableCell>
+                              </> :
+                              null
+                          }
+                        </> : null
+                    }
                   </TableRow>
                 ))}
+            </> : null
+           }
+           
               </TableBody>
             </Table>
           </TableContainer>

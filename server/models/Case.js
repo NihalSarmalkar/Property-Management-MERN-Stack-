@@ -37,6 +37,10 @@ const attendeeSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  urls: {
+    type: Array,
+    default: []
+  }
 });
 
 const Attendee = mongoose.model("attendee", attendeeSchema);

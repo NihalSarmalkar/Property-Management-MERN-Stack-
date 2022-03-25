@@ -33,7 +33,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import MenuItem from '@mui/material/MenuItem';
-import DownloadIcon from '@mui/icons-material/Download';
+import DownloadIcon from '@mui/icons-material/Preview';
 
 const statusArray = [
   {

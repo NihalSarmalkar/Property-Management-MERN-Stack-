@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Container, IconButton } from '@mui/material';
+import { Box, Container, FormControl, IconButton, Input, InputLabel, MenuItem, Select } from '@mui/material';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -16,11 +16,24 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import TextField from '@mui/material/TextField';
 import DialogTitle from '@mui/material/DialogTitle';
-import DownloadIcon from '@mui/icons-material/Download';
+import PreviewIcon from '@mui/icons-material/Preview';
 import { API_SERVICE } from '../config/URI';
 
 import { useDropzone } from 'react-dropzone';
 import { useStorage } from '../hooks/useStorage';
+
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Avatar from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
+import { red } from '@mui/material/colors';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ShareIcon from '@mui/icons-material/Share';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import moment from 'moment';
 
 const TableViewPage = ({ counter, caseall }) => {
   const [open, setOpen] = React.useState(false);
@@ -40,78 +53,117 @@ const TableViewPage = ({ counter, caseall }) => {
         <TableCell align="center">{caseall.type}</TableCell>
         <TableCell align="center">
           {/* <IconButton color="primary"> */}
-            <Dialog
-              open={open}
-              onClose={() => { }}
-              aria-labelledby="alert-dialog-title"
-              fullWidth
-              maxWidth="md"
-              aria-describedby="alert-dialog-description"
-            >
-              <DialogTitle id="alert-dialog-title">Download Files</DialogTitle>
-              <DialogContent>
-                    <Table>
-                      <TableHead>
-                      <TableRow>
-                        <TableCell>ID</TableCell>
-                        <TableCell align="left">Filename</TableCell>
-                        <TableCell align="right">Action</TableCell>
+          <Dialog
+            open={open}
+            onClose={() => { }}
+            aria-labelledby="alert-dialog-title"
+            fullWidth
+            maxWidth="md"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">View Files</DialogTitle>
+            <DialogContent>
+
+              <Card sx={{ maxWidth: '100%' }}>
+                <CardHeader
+                  avatar={
+                    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                      {caseall.name.split('')[0]}
+                    </Avatar>
+                  }
+                  action={
+                    <IconButton aria-label="settings">
+                      {/* <MoreVertIcon /> */}
+                    </IconButton>
+                  }
+                  title={caseall.name}
+                  subheader={moment(caseall.createdAt).format("MMMM DD, YYYY")}
+                />
+                <CardContent>
+                  <Typography variant="body2" color="text.primary">
+                    <div>
+                      Type: {caseall.type},<br></br>
+                      SubType: {caseall.subcategory}
+                    </div>
+                    <div>
+                      ProjectType: {caseall.projecttype}
+                    </div>
+                    <div>
+                      EmployementYear: {caseall.employementyear}
+                    </div>
+                    <div>
+                      Contact: {caseall.contact} <br></br> Email: {caseall.email}
+                    </div>
+                    
+                  </Typography>
+                </CardContent>
+              </Card>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="left">ID</TableCell>
+                    <TableCell align="left">Filename</TableCell>
+                    <TableCell align="left">For Case</TableCell>
+                    <TableCell align="left">For Email</TableCell>
+                    <TableCell align="right">View</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {[...caseall.urls].map((file, _) => {
+                    if (typeof file === "object") {
+                      return <TableRow key={"table_" + _}>
+                        <TableCell>{_ + 1}</TableCell>
+                        <TableCell align='left'>{file.name}</TableCell>
+                        <TableCell align='left'>{caseall.name}</TableCell>
+                        <TableCell align='left'>{caseall.email}</TableCell>
+                        <TableCell align='right'>
+                          <Button>
+                            <PreviewIcon onClick={() => {
+                              var a = document.createElement("a");
+                              a.href = file.url;
+                              a.download = file.name;
+                              a.target = "_blank";
+                              a.click();
+                            }} />
+                          </Button>
+                        </TableCell>
                       </TableRow>
-                      </TableHead>
-                      <TableBody>
-                      {[...caseall.urls].map((file, _) => {
-                        if (typeof file === "object") {
-                          return <TableRow key={"table_" + _}>
-                            <TableCell>{_ + 1}</TableCell>
-                            <TableCell align='left'>{file.name}</TableCell>
-                            <TableCell align='right'>
-                              <Button>
-                                <DownloadIcon onClick={() => {
-                                var a = document.createElement("a");
-                                a.href = file.url;
-                                a.download = file.name;
-                                a.target = "_blank";
-                                a.click();
-                              }} />
-                              </Button>
-                            </TableCell>
-                          </TableRow>
-                        } else {
-                          return <TableRow key={"table_" + _}>
-                            <TableCell>{_ + 1}</TableCell>
-                            <TableCell align='left'>File</TableCell>
-                            <TableCell align='right'>
-                              <Button>
-                                <DownloadIcon onClick={() => {
-                                var a = document.createElement("a");
-                                a.href = file;
-                                a.download = "File";
-                                a.target = "_blank";
-                                a.click();
-                              }} />
-                              </Button>
-                            </TableCell>
-                          </TableRow>
-                        }
-                      })}
-                      {[...caseall.urls].length < 1 ? 
-                        <TableRow>
-                          <TableCell>No Files Found!</TableCell>
-                        </TableRow> :
-                        null
-                      }
-                      </TableBody>
-                    </Table>
-                  </DialogContent>
-              <DialogActions>
-                <Button onClick={() => setOpen(false)}>Close</Button>
-                <Button onClick={() => setOpen(false)}>Back</Button>
-                <Button onClick={() => setOpen(false)} autoFocus>
-                  Submit
-                </Button>
-              </DialogActions>
-            </Dialog>
-            <Button><DownloadIcon onClick={() => setOpen(true)} /></Button>
+                    } else {
+                      return <TableRow key={"table_" + _}>
+                        <TableCell>{_ + 1}</TableCell>
+                        <TableCell align='left'>File</TableCell>
+                        <TableCell align='right'>
+                          <Button>
+                            <PreviewIcon onClick={() => {
+                              var a = document.createElement("a");
+                              a.href = file;
+                              a.download = "File";
+                              a.target = "_blank";
+                              a.click();
+                            }} />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    }
+                  })}
+                  {[...caseall.urls].length < 1 ?
+                    <TableRow>
+                      <TableCell>No Files Found!</TableCell>
+                    </TableRow> :
+                    null
+                  }
+                </TableBody>
+              </Table>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setOpen(false)}>Close</Button>
+              <Button onClick={() => setOpen(false)}>Back</Button>
+              <Button onClick={() => setOpen(false)} autoFocus>
+                Submit
+              </Button>
+            </DialogActions>
+          </Dialog>
+          <Button><PreviewIcon onClick={() => setOpen(true)} /></Button>
           {/* </IconButton> */}
         </TableCell>
       </TableRow>

@@ -35,10 +35,40 @@ import ShareIcon from '@mui/icons-material/Share';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import moment from 'moment';
 
-const TableViewPage = ({ counter, caseall }) => {
+const TableViewPage = ({ counter, caseall, rerender }) => {
   const [open, setOpen] = React.useState(false);
+  const [edit, setEdit] = React.useState(false);
   var date = caseall.createdAt;
   date = new Date(date).toString();
+
+  const [formData, setFormData] = React.useState({});
+
+  const setFormProp = function (e) {
+    const oldFormData = formData;
+    oldFormData[e.target.name] = e.target.value;
+
+    setFormData(oldFormData);
+  }
+
+  const updateCase = async function () {
+    const request = await fetch(`${API_SERVICE}/updatecase`, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        case: caseall,
+        updateable: formData
+      })
+    });
+
+    if (await request.json()) {
+      rerender();
+      setEdit(false);
+      setOpen(false);
+    }
+  }
 
   return (
     <>
@@ -61,106 +91,162 @@ const TableViewPage = ({ counter, caseall }) => {
             maxWidth="md"
             aria-describedby="alert-dialog-description"
           >
-            <DialogTitle id="alert-dialog-title">View Files</DialogTitle>
-            <DialogContent>
+            <DialogTitle id="alert-dialog-title">{edit ? "Edit" : "View"} Case</DialogTitle>
+            {
+              !edit ?
+              <DialogContent>
 
-              <Card sx={{ maxWidth: '100%' }}>
-                <CardHeader
-                  avatar={
-                    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                      {caseall.name.split('')[0]}
-                    </Avatar>
-                  }
-                  action={
-                    <IconButton aria-label="settings">
-                      {/* <MoreVertIcon /> */}
-                    </IconButton>
-                  }
-                  title={caseall.name}
-                  subheader={moment(caseall.createdAt).format("MMMM DD, YYYY")}
-                />
-                <CardContent>
-                  <Typography variant="body2" color="text.primary">
-                    <div>
-                      Type: {caseall.type},<br></br>
-                      SubType: {caseall.subcategory}
-                    </div>
-                    <div>
-                      ProjectType: {caseall.projecttype}
-                    </div>
-                    <div>
-                      EmployementYear: {caseall.employementyear}
-                    </div>
-                    <div>
-                      Contact: {caseall.contact} <br></br> Email: {caseall.email}
-                    </div>
-                    
-                  </Typography>
-                </CardContent>
-              </Card>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="left">ID</TableCell>
-                    <TableCell align="left">Filename</TableCell>
-                    <TableCell align="left">For Case</TableCell>
-                    <TableCell align="left">For Email</TableCell>
-                    <TableCell align="right">View</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {[...caseall.urls].map((file, _) => {
-                    if (typeof file === "object") {
-                      return <TableRow key={"table_" + _}>
-                        <TableCell>{_ + 1}</TableCell>
-                        <TableCell align='left'>{file.name}</TableCell>
-                        <TableCell align='left'>{caseall.name}</TableCell>
-                        <TableCell align='left'>{caseall.email}</TableCell>
-                        <TableCell align='right'>
-                          <Button>
-                            <PreviewIcon onClick={() => {
-                              var a = document.createElement("a");
-                              a.href = file.url;
-                              a.download = file.name;
-                              a.target = "_blank";
-                              a.click();
-                            }} />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    } else {
-                      return <TableRow key={"table_" + _}>
-                        <TableCell>{_ + 1}</TableCell>
-                        <TableCell align='left'>File</TableCell>
-                        <TableCell align='right'>
-                          <Button>
-                            <PreviewIcon onClick={() => {
-                              var a = document.createElement("a");
-                              a.href = file;
-                              a.download = "File";
-                              a.target = "_blank";
-                              a.click();
-                            }} />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
+                <Card sx={{ maxWidth: '100%' }}>
+                  <CardHeader
+                    avatar={
+                      <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                        {caseall.name.split('')[0]}
+                      </Avatar>
                     }
-                  })}
-                  {[...caseall.urls].length < 1 ?
+                    action={
+                      <IconButton aria-label="settings">
+                        {/* <MoreVertIcon /> */}
+                      </IconButton>
+                    }
+                    title={caseall.name}
+                    subheader={moment(caseall.createdAt).format("MMMM DD, YYYY")}
+                  />
+                  <CardContent>
+                    <Typography variant="body2" color="text.primary">
+                      <div>
+                        Type: {caseall.type},<br></br>
+                        SubType: {caseall.subcategory}
+                      </div>
+                      <div>
+                        ProjectType: {caseall.projecttype}
+                      </div>
+                      <div>
+                        EmployementYear: {caseall.employementyear}
+                      </div>
+                      <div>
+                        Contact: {caseall.contact} <br></br> Email: {caseall.email}
+                      </div>
+                      
+                    </Typography>
+                  </CardContent>
+                </Card>
+                <Table>
+                  <TableHead>
                     <TableRow>
-                      <TableCell>No Files Found!</TableCell>
-                    </TableRow> :
-                    null
-                  }
-                </TableBody>
-              </Table>
-            </DialogContent>
+                      <TableCell align="left">ID</TableCell>
+                      <TableCell align="left">Filename</TableCell>
+                      <TableCell align="left">For Case</TableCell>
+                      <TableCell align="left">For Email</TableCell>
+                      <TableCell align="right">View</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {[...caseall.urls].map((file, _) => {
+                      if (typeof file === "object") {
+                        return <TableRow key={"table_" + _}>
+                          <TableCell>{_ + 1}</TableCell>
+                          <TableCell align='left'>{file.name}</TableCell>
+                          <TableCell align='left'>{caseall.name}</TableCell>
+                          <TableCell align='left'>{caseall.email}</TableCell>
+                          <TableCell align='right'>
+                            <Button>
+                              <PreviewIcon onClick={() => {
+                                var a = document.createElement("a");
+                                a.href = file.url;
+                                a.download = file.name;
+                                a.target = "_blank";
+                                a.click();
+                              }} />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      } else {
+                        return <TableRow key={"table_" + _}>
+                          <TableCell>{_ + 1}</TableCell>
+                          <TableCell align='left'>File</TableCell>
+                          <TableCell align='right'>
+                            <Button>
+                              <PreviewIcon onClick={() => {
+                                var a = document.createElement("a");
+                                a.href = file;
+                                a.download = "File";
+                                a.target = "_blank";
+                                a.click();
+                              }} />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      }
+                    })}
+                    {[...caseall.urls].length < 1 ?
+                      <TableRow>
+                        <TableCell>No Files Found!</TableCell>
+                      </TableRow> :
+                      null
+                    }
+                  </TableBody>
+                </Table>
+              </DialogContent>
+              : <DialogContent>
+                  <TextField id="outlined-basic" onChange={setFormProp} defaultValue={caseall.name} style={{minWidth: '100%', marginBottom: '20px'}} name="name" label="Casename" variant="outlined" />
+                  {/* <TextField id="outlined-basic" onChange={setFormProp} defaultValue={caseall.type} style={{minWidth: '100%', marginBottom: '20px'}} name="type" label="Type" variant="outlined" /> */}
+                  <select
+                    id="outlined-basic"
+                    style={{
+                      width: '100%',
+                      padding: '12px',
+                      border: '1px solid #000000',
+                      borderRadius: '10px'
+                    }}
+                    // defaultValue={caseall.type}
+                    defaultValue={formData.type}
+                    name="type"
+                    onChange={setFormProp}
+                  >
+                    <option >
+                      Select the Type
+                    </option>
+                    <option value="Employee">Employee</option>
+                    <option value="Self-Employed">Self-Employed</option>
+                  </select>
+
+
+                  <select
+                  style={{
+                    width: '100%',
+                    padding: '12px',
+                    marginTop: '20px',
+                    marginBottom: '20px',
+                    border: '1px solid #000000',
+                    borderRadius: '10px'
+                  }}
+                  onChange={setFormProp}
+                  >
+                <option>
+                  Select the Sub Category
+                </option>
+                <option value="Sdn Bhd">Sdn Bhd</option>
+                <option value="Sole proprietorship">Sole proprietorship</option>
+                <option value="Basic salary">Basic salary</option>
+                <option value="Basic + Commission / Allowance">
+                  Basic + Commission / Allowance
+                </option>
+                <option value="Full commission earner">Full commission earner</option>
+                </select>
+                  <TextField id="outlined-basic" onChange={setFormProp} defaultValue={caseall.contact} style={{minWidth: '100%', marginBottom: '20px'}} name="contact" label="Contact" variant="outlined" />
+                  <TextField id="outlined-basic" onChange={setFormProp} defaultValue={caseall.email} style={{minWidth: '100%', marginBottom: '20px'}} name="email" label="Email" variant="outlined" />
+                  
+              </DialogContent>
+            }
+
             <DialogActions>
-              <Button onClick={() => setOpen(false)}>Close</Button>
-              <Button onClick={() => setOpen(false)}>Back</Button>
-              <Button onClick={() => setOpen(false)} autoFocus>
-                Submit
-              </Button>
+              <Button onClick={() => {setEdit(false); setOpen(false);}} autoFocus>Close</Button>
+              {!edit ? (
+                <Button onClick={() => setEdit(true)}>Edit</Button>
+              ): (
+                <Button onClick={updateCase}>Update</Button>
+              ) 
+              }
             </DialogActions>
           </Dialog>
           <Button><PreviewIcon onClick={() => setOpen(true)} /></Button>
@@ -192,13 +278,13 @@ const UploadFile = ({ file, setFile, setURL, urls }) => {
   return <span></span>;
 };
 
-const ShowServicesList = ({ allCase }) => {
+const ShowServicesList = ({ allCase, getAllCase }) => {
   var counter = 0;
   return (
     <>
       {allCase.map((caseall) => {
         counter = counter + 1;
-        return <TableViewPage caseall={caseall} counter={counter} key={caseall._id} />;
+        return <TableViewPage caseall={caseall} rerender={getAllCase} counter={counter} key={caseall._id} />;
       })}
     </>
   );
@@ -1257,7 +1343,7 @@ const CasePage = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {loading === true ? <TableRow><TableCell>Loading...</TableCell></TableRow> : <ShowServicesList allCase={allCase} />}
+                {loading === true ? <TableRow><TableCell>Loading...</TableCell></TableRow> : <ShowServicesList getAllCase={getAllCase} allCase={allCase} />}
               </TableBody>
             </Table>
           </TableContainer>

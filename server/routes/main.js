@@ -6,7 +6,7 @@ require('dotenv').config();
 // Controllers
 const propertyagentController = require('../controllers/propertyagent');
 
-
+router.use(express.json())
 
 router.get('/test', (req, res) => {
   res.send('Working');
@@ -17,8 +17,9 @@ router.get('/test', (req, res) => {
 
 
 // Adding to cart i.e. checkout
-router.post('/addcasepropertyagent', propertyagentController.addCase);
 router.get('/getcase', propertyagentController.getCaseAll);
+router.post('/updatecase', propertyagentController.updateCase)
+router.post('/addcasepropertyagent', propertyagentController.addCase);
 // router.delete('/delallcheckouts/:uid', checkoutController.delallcheckouts);
 
 

@@ -67,9 +67,52 @@ const updateCase = async (req, res) => {
       console.log(e);
    }
 }
+const updatecasefile = async (req, res) => {
+   try {
+      console.log(req.params.id)
+      
+      res.status(200).json("Product has been deleted...");
+    } catch (err) {
+      res.status(500).json(err);
+    }
+}
+
+const getCaseOne = async (req, res) => {
+  
+   try {
+
+      
+      const data = await Case_Model.findById(req.params.id);
+      
+      res.status(200).json(data);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+}
+const updateCaseOne = async (req, res) => {
+   
+   try {
+
+      
+      const updatedProduct = await Case_Model.findByIdAndUpdate(
+         req.params.id,
+         {
+           $set: req.body,
+         },
+         { new: true }
+       );
+      
+      res.status(200).json(updatedProduct);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+}
 
 module.exports = {
    addCase,
    getCaseAll,
    updateCase,
+   updatecasefile,
+   getCaseOne,
+   updateCaseOne,
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { Box, Container, FormControl, IconButton, Input, InputLabel, MenuItem, Select } from '@mui/material';
 
@@ -10,6 +10,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+import axios from 'axios';
 
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -17,6 +18,7 @@ import DialogContent from '@mui/material/DialogContent';
 import TextField from '@mui/material/TextField';
 import DialogTitle from '@mui/material/DialogTitle';
 import PreviewIcon from '@mui/icons-material/Preview';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { API_SERVICE } from '../config/URI';
 
 import { useDropzone } from 'react-dropzone';
@@ -48,6 +50,26 @@ const TableViewPage = ({ counter, caseall, rerender }) => {
     oldFormData[e.target.name] = e.target.value;
 
     setFormData(oldFormData);
+  }
+
+  
+  
+  
+
+  const handleDeleteFile = async (file,id)=>{
+   
+    const res =await axios.get("http://localhost:8080/api/v1/main/getone/"+ id);
+   
+    res.data.urls.splice(file,1)
+  
+   
+    const newresponse = await axios.put(`http://localhost:8080/api/v1/main/updateone/${id}`,res.data);
+    if (await newresponse) {
+      rerender();
+      setEdit(false);
+      setOpen(false);
+    }
+
   }
 
   const updateCase = async function () {
@@ -138,6 +160,7 @@ const TableViewPage = ({ counter, caseall, rerender }) => {
                       <TableCell align="left">For Case</TableCell>
                       <TableCell align="left">For Email</TableCell>
                       <TableCell align="right">View</TableCell>
+                      <TableCell align="right">Delete</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -145,11 +168,11 @@ const TableViewPage = ({ counter, caseall, rerender }) => {
                       if (typeof file === "object") {
                         return <TableRow key={"table_" + _}>
                           <TableCell>{_ + 1}</TableCell>
-                          <TableCell align='left'>{file.name}</TableCell>
+                          <TableCell align='left'>{caseall.name}</TableCell>
                           <TableCell align='left'>{caseall.name}</TableCell>
                           <TableCell align='left'>{caseall.email}</TableCell>
                           <TableCell align='right'>
-                            <Button>
+                            <Button variant="outlined">
                               <PreviewIcon onClick={() => {
                                 var a = document.createElement("a");
                                 a.href = file.url;
@@ -157,7 +180,21 @@ const TableViewPage = ({ counter, caseall, rerender }) => {
                                 a.target = "_blank";
                                 a.click();
                               }} />
+                              
                             </Button>
+                           
+                            
+                          </TableCell>
+                          <TableCell align='right'>
+                            
+                            <Button variant="outlined" color='error'>
+                              <DeleteIcon color='error' onClick={() => {
+                                handleDeleteFile(_,caseall._id)
+                                
+                              }} />
+                              
+                            </Button>
+                            
                           </TableCell>
                         </TableRow>
                       } else {
@@ -269,8 +306,12 @@ const UploadFile = ({ file, setFile, setURL, urls }) => {
         name: file.name,
         url: url
       });
+      console.log(urls)
+      console.log("urls")
+      console.log(nurls)
 
       setFile(null);
+      
       setURL(nurls);
     }
   }, [url]);
@@ -317,8 +358,10 @@ const CasePage = () => {
     }
 
     const file = e.target.files[0] ?? null;
+    console.log(file)
 
     if (file) {
+      
       setCurrentFile({
         name: e.target.parentElement.querySelector('p').innerText.replace('Please Upload', ""),
         file: file,
@@ -381,6 +424,8 @@ const CasePage = () => {
         email,
         urls
       };
+      console.log("After ---")
+      console.log(urls)
       const res = await fetch(`${API_SERVICE}/addcasepropertyagent`, {
         method: 'POST',
         headers: {

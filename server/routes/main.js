@@ -17,8 +17,12 @@ router.get('/test', (req, res) => {
 
 
 // Adding to cart i.e. checkout
+
 router.get('/getcase', propertyagentController.getCaseAll);
+router.get('/getone/:id', propertyagentController.getCaseOne);
+router.put('/updateone/:id', propertyagentController.updateCaseOne);
 router.post('/updatecase', propertyagentController.updateCase)
+router.get('/updatecasefile/:id', propertyagentController.updatecasefile)
 router.post('/addcasepropertyagent', propertyagentController.addCase);
 // router.delete('/delallcheckouts/:uid', checkoutController.delallcheckouts);
 

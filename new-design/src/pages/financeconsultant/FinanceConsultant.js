@@ -20,14 +20,21 @@ import DialogContent from '@mui/material/DialogContent';
 import TextField from '@mui/material/TextField';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useDropzone } from 'react-dropzone';
+import { API_SERVICE } from '../../config/URI';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import CardContent from '@mui/material/CardContent';
 import Paper from '@mui/material/Paper';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import Avatar from '@mui/material/Avatar';
+import { red } from '@mui/material/colors';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import moment from 'moment';
 import ChatIcon from '@mui/icons-material/Chat';
 import FeedIcon from '@mui/icons-material/Feed';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -37,7 +44,286 @@ import FormControl from '@mui/material/FormControl';
 import ListItemText from '@mui/material/ListItemText';
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
-import { Send } from '@mui/icons-material';
+import { ContentCutOutlined, Send } from '@mui/icons-material';
+import axios from "axios"
+import PreviewIcon from '@mui/icons-material/Preview';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { useEffect, useState } from "react";
+import { useStorage } from '../../hooks/useStorage';
+
+
+
+const TableViewPage = ({ counter, caseall, rerender }) => {
+  const [open, setOpen] = useState(false);
+  const [edit, setEdit] = useState(false);
+  
+
+
+  var date = caseall.createdAt;
+  date = new Date(date).toString();
+
+  const [formData, setFormData] = React.useState({});
+
+  const setFormProp = function (e) {
+    const oldFormData = formData;
+    oldFormData[e.target.name] = e.target.value;
+
+    setFormData(oldFormData);
+  }
+
+  
+  
+  
+
+  const handleDeleteFile = async (file,id)=>{
+   
+    const res =await axios.get("http://localhost:8080/api/v1/main/getonefinanceconsutant/"+ id);
+   
+    res.data.urls.splice(file,1)
+  
+   
+    const newresponse = await axios.put(`http://localhost:8080/api/v1/main/putonefinanceconsutant/${id}`,res.data);
+    if (await newresponse) {
+      rerender();
+      setEdit(false);
+      setOpen(false);
+    }
+
+  }
+
+  const updateCase = async function () {
+    const res =await axios.get("http://localhost:8080/api/v1/main/getallfinanceconsutant");
+    const request = await fetch(`${API_SERVICE}/updatefinanceconsutant`, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        case: caseall,
+        updateable: formData
+      })
+    });
+
+    if (await request.json()) {
+      rerender();
+      setEdit(false);
+      setOpen(false);
+    }
+  }
+
+  return (
+    <>
+      <TableRow key={caseall._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+        <TableCell component="th" scope="row">
+          {counter}
+        </TableCell>
+        <TableCell align="center">{caseall.name}</TableCell>
+        <TableCell align="center">
+          <p>{date.replace(/(.*:\d+).*/g, '$1')}</p>
+        </TableCell>
+        <TableCell align="center">{caseall.type}</TableCell>
+        <TableCell align="center">
+          {/* <IconButton color="primary"> */}
+          <Dialog
+            open={open}
+            onClose={() => { }}
+            aria-labelledby="alert-dialog-title"
+            fullWidth
+            maxWidth="md"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">{edit ? "Edit" : "View"} Case</DialogTitle>
+            {
+              !edit ?
+              <DialogContent>
+
+                <Card sx={{ maxWidth: '100%' }}>
+                  <CardHeader
+                    avatar={
+                      <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                        {caseall.name.split('')[0]}
+                      </Avatar>
+                    }
+                    action={
+                      <IconButton aria-label="settings">
+                        {/* <MoreVertIcon /> */}
+                      </IconButton>
+                    }
+                    title={caseall.name}
+                    subheader={moment(caseall.createdAt).format("MMMM DD, YYYY")}
+                  />
+                  <CardContent>
+                    <Typography variant="body2" color="text.primary">
+                      <div>
+                        Type: {caseall.type},<br></br>
+                        SubType: {caseall.subcategory}
+                      </div>
+                      <div>
+                        ProjectType: {caseall.type}
+                      </div>
+                      <div>
+                        EmployementYear: {caseall.employementyear}
+                      </div>
+                      <div>
+                        Contact: {caseall.contact} <br></br> Email: {caseall.email}
+                      </div>
+                      
+                    </Typography>
+                  </CardContent>
+                </Card>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="left">ID</TableCell>
+                      <TableCell align="left">Filename</TableCell>
+                      <TableCell align="left">For Case</TableCell>
+                      <TableCell align="left">For Email</TableCell>
+                      <TableCell align="right">View</TableCell>
+                      <TableCell align="right">Delete</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {[...caseall.urls].map((file, _) => {
+                      if (typeof file === "object") {
+                        return <TableRow key={"table_" + _}>
+                          <TableCell>{_ + 1}</TableCell>
+                          <TableCell align='left'>{caseall.name}</TableCell>
+                          <TableCell align='left'>{caseall.name}</TableCell>
+                          <TableCell align='left'>{caseall.email}</TableCell>
+                          <TableCell align='right'>
+                            <Button variant="outlined">
+                              <PreviewIcon onClick={() => {
+                                var a = document.createElement("a");
+                                a.href = file.url;
+                                a.download = file.name;
+                                a.target = "_blank";
+                                a.click();
+                              }} />
+                              
+                            </Button>
+                           
+                            
+                          </TableCell>
+                          <TableCell align='right'>
+                            
+                            <Button variant="outlined" color='error'>
+                              <DeleteIcon color='error' onClick={() => {
+                                handleDeleteFile(_,caseall._id)
+                                
+                              }} />
+                              
+                            </Button>
+                            
+                          </TableCell>
+                        </TableRow>
+                      } else {
+                        return <TableRow key={"table_" + _}>
+                          <TableCell>{_ + 1}</TableCell>
+                          <TableCell align='left'>File</TableCell>
+                          <TableCell align='right'>
+                            <Button>
+                              <PreviewIcon onClick={() => {
+                                var a = document.createElement("a");
+                                a.href = file;
+                                a.download = "File";
+                                a.target = "_blank";
+                                a.click();
+                              }} />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      }
+                    })}
+                    {[...caseall.urls].length < 1 ?
+                      <TableRow>
+                        <TableCell>No Files Found!</TableCell>
+                      </TableRow> :
+                      null
+                    }
+                  </TableBody>
+                </Table>
+              </DialogContent>
+              : <DialogContent>
+                  <TextField id="outlined-basic" onChange={setFormProp} defaultValue={caseall.name} style={{minWidth: '100%', marginBottom: '20px'}} name="name" label="Casename" variant="outlined" />
+                  {/* <TextField id="outlined-basic" onChange={setFormProp} defaultValue={caseall.type} style={{minWidth: '100%', marginBottom: '20px'}} name="type" label="Type" variant="outlined" /> */}
+                  <select
+                    id="outlined-basic"
+                    style={{
+                      width: '100%',
+                      padding: '12px',
+                      border: '1px solid #000000',
+                      borderRadius: '10px'
+                    }}
+                    // defaultValue={caseall.type}
+                    defaultValue={formData.type}
+                    name="type"
+                    onChange={setFormProp}
+                  >
+                    <option >
+                      Select the Type
+                    </option>
+                    <option value="Employee">Employee</option>
+                    <option value="Self-Employed">Self-Employed</option>
+                  </select>
+
+
+                  <select
+                  style={{
+                    width: '100%',
+                    padding: '12px',
+                    marginTop: '20px',
+                    marginBottom: '20px',
+                    border: '1px solid #000000',
+                    borderRadius: '10px'
+                  }}
+                  onChange={setFormProp}
+                  >
+                <option>
+                  Select the Sub Category
+                </option>
+                <option value="Sdn Bhd">Sdn Bhd</option>
+                <option value="Sole proprietorship">Sole proprietorship</option>
+                <option value="Basic salary">Basic salary</option>
+                <option value="Basic + Commission / Allowance">
+                  Basic + Commission / Allowance
+                </option>
+                <option value="Full commission earner">Full commission earner</option>
+                </select>
+                  <TextField id="outlined-basic" onChange={setFormProp} defaultValue={caseall.contact} style={{minWidth: '100%', marginBottom: '20px'}} name="contact" label="Contact" variant="outlined" />
+                  <TextField id="outlined-basic" onChange={setFormProp} defaultValue={caseall.email} style={{minWidth: '100%', marginBottom: '20px'}} name="email" label="Email" variant="outlined" />
+                  
+              </DialogContent>
+            }
+
+            <DialogActions>
+              <Button onClick={() => {setEdit(false); setOpen(false);}} autoFocus>Close</Button>
+              {!edit ? (
+                <Button onClick={() => setEdit(true)}>Edit</Button>
+              ): (
+                <Button onClick={updateCase} >Update</Button>
+              ) 
+              }
+            </DialogActions>
+          </Dialog>
+          <Button><PreviewIcon onClick={() => setOpen(true)} /></Button>
+          {/* </IconButton> */}
+        </TableCell>
+      </TableRow>
+    </>
+  );
+};
+const ShowServicesList = ({ allCase, getAllCase }) => {
+  var counter = 0;
+  return (
+    <>
+      {allCase.map((caseall) => {
+        counter = counter + 1;
+        return <TableViewPage caseall={caseall} rerender={getAllCase} counter={counter} key={caseall._id} />;
+      })}
+    </>
+  );
+};
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -50,6 +336,7 @@ const MenuProps = {
   }
 };
 
+
 const names = ['Bank 1', 'Bank 2', 'Bank 3', 'Bank 4', 'Bank 5', 'Bank 6', 'Bank 7', 'Bank 8'];
 const BankersArray = ['Banker1', 'Banker2', 'Banker3', 'Banker4'];
 const Financeconsultant = () => {
@@ -60,9 +347,15 @@ const Financeconsultant = () => {
   const [openchats, setOpenchats] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
   const [status, setStatus] = React.useState('Select Status');
-
+  const [allCase, setallCase] = useState([]);
   const handleClickOpenreview = () => {
     setOpenreview(true);
+  };
+  const handleCloseNext = () => {
+    setOpen2(false);
+
+    if (currentFile === null) submitCase();
+    else alert('Please wait the file is being uploaded');
   };
 
   const handleClosereview = () => {
@@ -87,13 +380,14 @@ const Financeconsultant = () => {
   const handleClosechats = () => {
     setOpenchats(false);
   };
-
+  const [edit, setEdit] = React.useState(false);
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
   const [type, settype] = React.useState('Refinance');
 
   const handleClickOpen = () => {
     setOpen(true);
   };
+
 
   const handleClose = () => {
     setOpen(false);
@@ -105,15 +399,18 @@ const Financeconsultant = () => {
     </li>
   ));
 
-  const [name, setname] = React.useState('Test Name');
-  const [contact, setcontact] = React.useState('46256273990');
-  const [email, setemail] = React.useState('test@gmail.com');
-  const [bankers1, setBankers1] = React.useState('Banker1');
-  const [bankers2, setBankers2] = React.useState('Banker1');
+  const [name, setname] = React.useState('');
+  const [contact, setcontact] = React.useState('');
+  const [email, setemail] = React.useState('');
+  const [bankers1, setBankers1] = React.useState('');
+  const [bankers2, setBankers2] = React.useState('');
   const [PAC, setPAC] = React.useState('Not See');
   const [showSelect, setShowSelect] = React.useState(false);
   const [dsr, setdsr] = React.useState(0);
   const [insuranceType, setInsuranceType] = React.useState('');
+  const [currentFile, setCurrentFile] = React.useState(null);
+  const [urls, setUrls] = React.useState([]);
+  const [loading, setloading] = React.useState(true);
 
   const [personName, setPersonName] = React.useState([]);
   const handleChange = (event) => {
@@ -150,8 +447,124 @@ const Financeconsultant = () => {
     return formattedDate;
   };
 
+  const handleDeleteFile = async (file,id)=>{
+   
+    const res =await axios.get("http://localhost:8080/api/v1/main/getone/"+ id);
+   
+    res.data.urls.splice(file,1)
+  
+   
+    const newresponse = await axios.put(`http://localhost:8080/api/v1/main/updateone/${id}`,res.data);
+    if (await newresponse) {
+    
+      setEdit(false);
+      setOpen(false);
+    }
+
+  }
+  const getAllCase = async () => {
+    try {
+      const res =await axios.get("http://localhost:8080/api/v1/main/getallfinanceconsutant");
+      console.log("getAllCase")
+      console.log(res.data)
+      setallCase(res.data.reverse())
+
+      
+      setloading(false);
+    } catch (err) {
+      // console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getAllCase();
+  },[]);
+
+  
+  const uploadFile = function (e) {
+    if (currentFile !== null) {
+      alert('Please wait until the file is being uploaded!');
+      e.target.value = null;
+      return;
+    }
+
+    const file = e.target.files[0] ?? null;
+    console.log(file)
+
+    if (file) {
+      
+      setCurrentFile({
+        name: e.target.parentElement.querySelector('p').innerText.replace('Please Upload', ""),
+        file: file,
+      });
+    }
+  };
+  const UploadFile = ({ file, setFile, setURL, urls }) => {
+    const { progress, url } = useStorage(file.file, 'files');
+  
+    console.log(progress);
+  
+    React.useEffect(() => {
+      if (url != null) {
+        const nurls = urls;
+        nurls.push({
+          name: file.name,
+          url: url
+        });
+        console.log(urls)
+        console.log("urls")
+        console.log(nurls)
+  
+        setFile(null);
+        
+        setURL(nurls);
+      }
+    }, [url]);
+  
+    return <span></span>;
+  };
+  const submitCase = async () => {
+    // console.log(API_SERVICE);
+
+    try {
+      const data = {
+        usertype: 'Finance Consultant',
+        type:'Refinance',
+        name,
+        contact,
+        email,
+        urls
+        
+      };
+      console.log("After ---")
+      console.log(urls)
+      const res =await axios.post("http://localhost:8080/api/v1/main/addfinanceconsutant",data);
+      console.log(res)
+      allCase.push(res)
+      console.log(allCase)
+
+      if (res) setallCase(allCase.reverse());
+      // if (response === 'Added') {
+      //   alert('Case successfully added');
+      // }
+      setloading(true);
+      getAllCase();
+      setEdit(false);
+      setOpen(false);
+      
+    } catch (err) {
+      // console.log(err);
+    }
+  };
+  console.log("data")
+  console.log(allCase)
+
+
   return (
     <>
+    {currentFile && (
+        <UploadFile file={currentFile} urls={urls} setURL={setUrls} setFile={setCurrentFile} />
+      )}
       <Dialog
         open={confirmation}
         onClose={handleClosereconfirmation}
@@ -607,30 +1020,33 @@ const Financeconsultant = () => {
             sx={{ mt: 4 }}
             type="text"
             label="Name"
+            onChange={(e) => setname(e.target.value)}
             fullWidth
             variant="outlined"
-            value=""
+            value={name}
           />
           <TextField
             sx={{ mt: 4 }}
             type="text"
             label="Contact Number"
+            onChange={(e) => setcontact(e.target.value)}
             fullWidth
             variant="outlined"
-            value=""
+            value={contact}
           />
           <TextField
             sx={{ mt: 4 }}
             type="email"
             label="Email Address"
+            onChange={(e) => setemail(e.target.value)}
             fullWidth
             variant="outlined"
-            value=""
+            value={email}
           />
 
           <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
             <div>
-              <input {...getInputProps()} />
+              <input onChange={uploadFile} type="file" />
               <p>Please Upload 3 months bank statement</p>
             </div>
             <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -646,7 +1062,7 @@ const Financeconsultant = () => {
 
           <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
             <div>
-              <input {...getInputProps()} />
+              <input onChange={uploadFile} type="file" />
               <p>Please Upload 3 months payslip</p>
             </div>
             <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -662,7 +1078,7 @@ const Financeconsultant = () => {
 
           <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
             <div>
-              <input {...getInputProps()} />
+            <input onChange={uploadFile} type="file" />
               <p>Please Upload Latest EPF details statement 2020 & 2019</p>
             </div>
             <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -678,7 +1094,7 @@ const Financeconsultant = () => {
 
           <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
             <div>
-              <input {...getInputProps()} />
+            <input onChange={uploadFile} type="file" />
               <p>Please Upload latest 2 years Borang BE Full set</p>
             </div>
             <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -694,7 +1110,7 @@ const Financeconsultant = () => {
 
           <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
             <div>
-              <input {...getInputProps()} />
+            <input onChange={uploadFile} type="file" />
               <p>Upload Bonus/savings/fixed deposit/Unit Trust/Shares/Gold/ASB/Tabung Haji</p>
             </div>
             <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -710,7 +1126,7 @@ const Financeconsultant = () => {
 
           <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
             <div>
-              <input {...getInputProps()} />
+            <input onChange={uploadFile} type="file" />
               <p>Please Upload IC Front & Back</p>
             </div>
             <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -726,7 +1142,7 @@ const Financeconsultant = () => {
 
           <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
             <div>
-              <input {...getInputProps()} />
+            <input onChange={uploadFile} type="file" />
               <p>Please Upload latest 2 years Borang BE Full set</p>
             </div>
             <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -742,7 +1158,7 @@ const Financeconsultant = () => {
 
           <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
             <div>
-              <input {...getInputProps()} />
+            <input onChange={uploadFile} type="file" />
               <p>Annual report (3 years)</p>
             </div>
             <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -758,7 +1174,7 @@ const Financeconsultant = () => {
 
           <section style={{ marginTop: '40px' }} className="dropzone" {...getRootProps()}>
             <div>
-              <input {...getInputProps()} />
+            <input onChange={uploadFile} type="file" />
               <p>Bank offer letter / latest loan statement</p>
             </div>
             <aside style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -776,7 +1192,7 @@ const Financeconsultant = () => {
           <Button color="inherit" onClick={handleClose}>
             Close
           </Button>
-          <Button onClick={handleClose} autoFocus>
+          <Button onClick={handleCloseNext} autoFocus>
             Submit
           </Button>
         </DialogActions>
@@ -995,26 +1411,7 @@ const Financeconsultant = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                <TableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                  <TableCell component="th" scope="row">
-                    1
-                  </TableCell>
-                  <TableCell align="center">Test Case</TableCell>
-                  <TableCell align="center">22-12-2021</TableCell>
-                  <TableCell align="center">Self Employed</TableCell>
-                  <TableCell align="center">
-                    <Tooltip title="Review Case">
-                      <IconButton
-                        onClick={handleClickOpenreview}
-                        color="primary"
-                        aria-label="upload picture"
-                        component="span"
-                      >
-                        <RemoveRedEyeIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </TableCell>
-                </TableRow>
+                {loading === true ? <TableRow><TableCell>Loading...</TableCell></TableRow> : <ShowServicesList getAllCase={getAllCase} allCase={allCase} />}
               </TableBody>
             </Table>
           </TableContainer>

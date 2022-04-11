@@ -1,4 +1,5 @@
 import React from 'react';
+import { CSVLink } from 'react-csv';
 
 import {
   Box,
@@ -18,7 +19,7 @@ import {
   Autocomplete
 } from '@mui/material';
 import { DateRangePicker } from '@mui/lab';
-
+import axios from "axios"
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import TextField from '@mui/material/TextField';
@@ -32,6 +33,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import MenuItem from '@mui/material/MenuItem';
 import DownloadIcon from '@mui/icons-material/Download';
+import { useEffect, useState } from "react";
+
 
 const statusArray = [
   {
@@ -49,15 +52,24 @@ const FinanceConsultantReports = () => {
   const [value, setValue] = React.useState([null, null]);
   const [projecttype, setprojecttype] = React.useState('Refinance');
   const [projectsubtype, setprojectsubtype] = React.useState('');
-
+  const [allCase, setallCase] = useState([]);
   const [status, setstatus] = React.useState('Enable the award');
+  const [loading, setloading] = React.useState(true);
 
+  const [month, setMonth] = useState();
+  const [projectType, setProjectType]=useState("");
+  const [startdate, setStartdate]=useState("");
+  const [enddate, setEnddate]=useState("");
   const handleChange = (event) => {
     setstatus(event.target.value);
   };
   const handleClickOpen = () => {
     setOpen(true);
   };
+  const csvReport = {
+    filename:'Report.csv',
+    data:allCase
+  }
   const handleClaim = () => {
     let total = 0;
     awardsList.map((e) => {
@@ -67,9 +79,49 @@ const FinanceConsultantReports = () => {
     setAwards(0);
     setOpen(false);
   };
+
   const handleClose = () => {
     setOpen(false);
   };
+
+  
+
+  const getAllCase = async (month,value) => {
+    try {
+      if(value){
+        console.log(value[0])
+        const res =await axios.get(`http://localhost:8080/api/v1/main/getallfinanceconsutant?start=${value[0]}&end=${value[1]}`);
+        setallCase(res.data.reverse())
+
+      }
+      if(month)
+      {
+
+        const res =await axios.get("http://localhost:8080/api/v1/main/getallfinanceconsutant?month="+month);
+        setallCase(res.data.reverse())
+      }
+      else{
+        const res =await axios.get("http://localhost:8080/api/v1/main/getallfinanceconsutant");
+        setallCase(res.data.reverse())
+      }
+      
+      setloading(false);
+    } catch (err) {
+      // console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    
+    console.log(month);
+    console.log(typeof(value[0]));
+
+    
+    getAllCase(month,value);
+  },[month,value]);
+
+
+
 
   const awardsList = [
     { sl: 1, awardPoints: 2500, status: 'Not Expired' },
@@ -83,24 +135,18 @@ const FinanceConsultantReports = () => {
     { id: 4, name: 'Completed', date: '27-10-22', type: 'Expired' },
     { id: 5, name: 'Completed', date: '27-10-22', type: 'Expired' }
   ];
-  React.useEffect(() => {
-    let total = 0;
-    awardsList.map((e) => {
-      total += e.awardPoints;
-    });
-    setAwards(total);
-  }, []);
 
-  const [month, setMonth] = React.useState('January');
-  const handleInputChange = (e) => {
-    setMonth(e.target.value);
-  };
+
+  
+  
   const handleProjectInputChange = (e) => {
     setprojecttype(e.target.value);
   };
   // const handleSubInputChange = (e) => {
   //   setprojectsubtype(e.target.value);
   // };
+
+  
   return (
     <>
       <Dialog
@@ -178,9 +224,9 @@ const FinanceConsultantReports = () => {
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={month}
+                
                 label="Month"
-                onChange={handleInputChange}
+                onChange={(e)=>setMonth(e.target.value)}
               >
                 <MenuItem value={'January'}>January</MenuItem>
                 <MenuItem value={'February'}>February</MenuItem>
@@ -200,8 +246,8 @@ const FinanceConsultantReports = () => {
               startText="Start Date"
               endText="End Date"
               value={value}
-              onChange={(newValue) => {
-                setValue(newValue);
+              onChange={(e) => {
+                setValue(e);
               }}
               renderInput={(startProps, endProps) => (
                 <React.Fragment>
@@ -211,16 +257,18 @@ const FinanceConsultantReports = () => {
                 </React.Fragment>
               )}
             />
-            <Button
+            
+            <CSVLink {...csvReport}><Button
               sx={{
                 float: 'right'
               }}
               variant="contained"
               color="primary"
+              
               // onClick={handleClickOpen}
             >
               Download CSV Report
-            </Button>
+            </Button></CSVLink>
           </Container>
           <Container fullwidth="true" sx={{ display: 'flex', justifyContent: 'flex-start', mb: 2 }}>
             <FormControl sx={{ width: '45%' }}>
@@ -265,16 +313,16 @@ const FinanceConsultantReports = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {demoEntries.map((entry) => (
+                {allCase.map((entry, _) => (
                   <TableRow
                     key={entry.id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
-                      {entry.id}
+                      { _+1}
                     </TableCell>
                     <TableCell align="center">{entry.name}</TableCell>
-                    <TableCell align="center">{entry.date}a</TableCell>
+                    <TableCell align="center">{entry.createdAt}</TableCell>
                     <TableCell align="center">{entry.type}</TableCell>
                     <TableCell align="center">
                       <IconButton color="primary">

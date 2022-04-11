@@ -14,7 +14,7 @@ import AdminAwards from './pages/admin/AdminAwards';
 import AdminAwardReports from './pages/admin/AdminAwardReports';
 import Bank from './pages/bank/Bank';
 import BankReports from './pages/bank/BankReports';
-import FinanceConsultant from './pages/financeconsultant/FinanceConsultant';
+import Financeconsultant from './pages/financeconsultant/FinanceConsultant';
 import FinanceConsultantAwards from './pages/financeconsultant/FinanceConsultantAwards';
 import FinanceConsultantReports from './pages/financeconsultant/FinanceConsultantReports';
 import CasePage from './pages/Case';
@@ -39,7 +39,7 @@ export default function Router() {
         { path: 'bank', element: <Bank /> },
         { path: 'bank-reports', element: <BankReports /> },
 
-        { path: 'finance-consultant', element: <FinanceConsultant /> },
+        { path: 'finance-consultant', element: <Financeconsultant /> },
         { path: 'finance-consultant-awards', element: <FinanceConsultantAwards /> },
         { path: 'finance-consultant-reports', element: <FinanceConsultantReports /> },
 

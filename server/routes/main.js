@@ -5,6 +5,8 @@ require('dotenv').config();
 
 // Controllers
 const propertyagentController = require('../controllers/propertyagent');
+const financeconsultant = require('../controllers/financeConsultant')
+
 
 router.use(express.json())
 
@@ -18,12 +20,22 @@ router.get('/test', (req, res) => {
 
 // Adding to cart i.e. checkout
 
+//Routes for propertyagent
 router.get('/getcase', propertyagentController.getCaseAll);
 router.get('/getone/:id', propertyagentController.getCaseOne);
 router.put('/updateone/:id', propertyagentController.updateCaseOne);
 router.post('/updatecase', propertyagentController.updateCase)
 router.get('/updatecasefile/:id', propertyagentController.updatecasefile)
 router.post('/addcasepropertyagent', propertyagentController.addCase);
+
+//Routes for Finance Consultant
+router.post('/addfinanceconsutant',financeconsultant.addfinanceconsutant)
+router.get('/getallfinanceconsutant',financeconsultant.getall)
+router.get('/getcsv',financeconsultant.getcsv)
+router.get('/getonefinanceconsutant/:id',financeconsultant.getone)
+router.put('/putonefinanceconsutant/:id',financeconsultant.updateone)
+router.post('/updatefinanceconsutant', financeconsultant.updatefinanceconsutant)
+
 // router.delete('/delallcheckouts/:uid', checkoutController.delallcheckouts);
 
 

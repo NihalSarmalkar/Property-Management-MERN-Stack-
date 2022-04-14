@@ -6,6 +6,7 @@ require('dotenv').config();
 // Controllers
 const propertyagentController = require('../controllers/propertyagent');
 const financeconsultant = require('../controllers/financeConsultant')
+const adminawards = require('../controllers/adminawards')
 
 
 router.use(express.json())
@@ -35,6 +36,13 @@ router.get('/getcsv',financeconsultant.getcsv)
 router.get('/getonefinanceconsutant/:id',financeconsultant.getone)
 router.put('/putonefinanceconsutant/:id',financeconsultant.updateone)
 router.post('/updatefinanceconsutant', financeconsultant.updatefinanceconsutant)
+
+//Routes for admin awards
+
+router.post('/addadminawards',adminawards.addadminawards)
+router.get('/getadminawards',adminawards.getadminawards)
+router.delete('/deladminawards/:id',adminawards.deladminawards)
+router.put('/updateadminawards/:id',adminawards.updateadminawards)
 
 // router.delete('/delallcheckouts/:uid', checkoutController.delallcheckouts);
 

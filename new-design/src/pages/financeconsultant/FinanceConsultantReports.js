@@ -1,5 +1,6 @@
 import React from 'react';
 import { CSVLink } from 'react-csv';
+import moment from 'moment';
 
 import {
   Box,
@@ -53,6 +54,7 @@ const FinanceConsultantReports = () => {
   const [projecttype, setprojecttype] = React.useState('Refinance');
   const [projectsubtype, setprojectsubtype] = React.useState('');
   const [allCase, setallCase] = useState([]);
+  const [allCasedemo, setallCasedemo] = useState(allCase);
   const [status, setstatus] = React.useState('Enable the award');
   const [loading, setloading] = React.useState(true);
 
@@ -86,23 +88,20 @@ const FinanceConsultantReports = () => {
 
   
 
-  const getAllCase = async (month,value) => {
+  const getAllCase = async (month) => {
     try {
-      if(value){
-        console.log(value[0])
-        const res =await axios.get(`http://localhost:8080/api/v1/main/getallfinanceconsutant?start=${value[0]}&end=${value[1]}`);
-        setallCase(res.data.reverse())
-
-      }
+      
       if(month)
       {
 
         const res =await axios.get("http://localhost:8080/api/v1/main/getallfinanceconsutant?month="+month);
         setallCase(res.data.reverse())
+        setallCasedemo(res.data.reverse())
       }
       else{
         const res =await axios.get("http://localhost:8080/api/v1/main/getallfinanceconsutant");
         setallCase(res.data.reverse())
+        setallCasedemo(res.data.reverse())
       }
       
       setloading(false);
@@ -117,8 +116,8 @@ const FinanceConsultantReports = () => {
     console.log(typeof(value[0]));
 
     
-    getAllCase(month,value);
-  },[month,value]);
+    getAllCase(month);
+  },[month]);
 
 
 
@@ -224,7 +223,7 @@ const FinanceConsultantReports = () => {
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                
+              
                 label="Month"
                 onChange={(e)=>setMonth(e.target.value)}
               >
@@ -247,6 +246,7 @@ const FinanceConsultantReports = () => {
               endText="End Date"
               value={value}
               onChange={(e) => {
+                setallCasedemo([]);
                 setValue(e);
               }}
               renderInput={(startProps, endProps) => (
@@ -313,7 +313,7 @@ const FinanceConsultantReports = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {allCase.map((entry, _) => (
+                {allCasedemo.map((entry, _) => (
                   <TableRow
                     key={entry.id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -331,6 +331,37 @@ const FinanceConsultantReports = () => {
                     </TableCell>
                   </TableRow>
                 ))}
+                {allCasedemo.length < 1 ?
+                 <>
+                {allCase.map((entry, _) => (
+                  <TableRow
+                  key={_ + "filter"}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    {
+                      (value[0] != null ) && (moment(entry.createdAt).isBetween(moment(value[0]), value[1] != null ? moment(value[1]) : moment().toISOString())) ?
+                      <>
+                          <TableCell component="th" scope="row">
+                            {_ + 1} One
+                          </TableCell>
+                          <TableCell align="center">{entry.name}</TableCell>
+                          <TableCell align="center">{moment(entry.createdAt).format("DD-MM-YY")}</TableCell>
+                          <TableCell align="center">{entry.type}</TableCell>
+                          <TableCell align="center">
+                            <IconButton color="primary">
+                              <DownloadIcon />
+                            </IconButton>
+                          </TableCell>
+                        </> :
+                        null
+                    }
+                
+                  </TableRow>
+                ))}
+            </> : null
+           }
+
+
               </TableBody>
             </Table>
           </TableContainer>

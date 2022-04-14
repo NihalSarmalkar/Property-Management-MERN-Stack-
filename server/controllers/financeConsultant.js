@@ -1,5 +1,6 @@
 const financeConsultant_Model = require('../models/financeConsultant')
 const objectstocsv = require('objects-to-csv')
+
 const addfinanceconsutant = async (req, res)=>{
     const newfinanceConsultant_Model=new financeConsultant_Model(req.body);
     try{
@@ -33,7 +34,9 @@ const getall = async (req, res)=>{
         {
             console.log(req.query.start)
             console.log(req.query.end)
-           
+            console.log(typeof(Date.parse(req.query.start)))
+            console.log(typeof(Date.parse(req.query.end)))
+            
 
         }   
         if(req.query.month){

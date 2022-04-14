@@ -14,6 +14,7 @@ import {
   Grid
 } from '@mui/material';
 // import { DashboardLayout } from '../components/dashboard-layout';
+import { useEffect, useState } from "react";
 
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -26,12 +27,17 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import axios from "axios"
 import MenuItem from '@mui/material/MenuItem';
 // import { TrafficByDevice } from '../components/dashboard/traffic-by-device';
 // import { Sales } from '../components/dashboard/sales';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { TrafficByDevice } from 'src/components/charts/BarChart';
 import { Sales } from 'src/components/charts/DonutChart';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { useStorage } from '../../hooks/useStorage';
+import { async } from '@firebase/util';
+
 
 const statusArray = [
   {
@@ -66,31 +72,171 @@ const AdminAwards = () => {
   const [open, setOpen] = React.useState(false);
   const [awards, setAwards] = React.useState(0);
   const [awardsClaimed, setAwardsClaimed] = React.useState(0);
+  const [edit, setEdit] = React.useState(false);
+  const [status, setstatus] = React.useState('');
+  const [type, settype] = React.useState('');
+  const [rewardtitle, setrewardtitle] = React.useState('');
+  const [rewardpoint, setrewardpoint] = React.useState('');
+  const [allCase, setallCase] = useState([]);
+  const [description, setdescription] = React.useState('');
+  const [currentFile, setCurrentFile] = React.useState(null);
+  const [loading, setloading] = React.useState(true);
+  const [urls, setUrls] = React.useState([]);
 
-  const [status, setstatus] = React.useState('Enable the award');
-  const [type, settype] = React.useState('Finance Consultant');
 
-  const handleChange = (event) => {
-    setstatus(event.target.value);
+  const uploadFile = function (e) {
+    if (currentFile !== null) {
+      alert('Please wait until the file is being uploaded!');
+      e.target.value = null;
+      return;
+    }
+
+    const file = e.target.files[0] ?? null;
+    console.log("file")
+    console.log(file)
+
+    if (file) {
+      
+      setCurrentFile({
+        file: file,
+      });
+    }
   };
-  const handleTypeChange = (event) => {
-    settype(event.target.value);
+  const UploadFile = ({ file, setFile, setURL, urls }) => {
+    const { progress, url } = useStorage(file.file, 'files');
+  
+    console.log(progress);
+  
+    useEffect(() => {
+      if (url != null) {
+        const nurls = urls;
+        nurls.push({
+          name: file.name,
+          url: url
+        });
+        console.log(urls)
+        console.log("urls")
+        console.log(nurls)
+  
+        setFile(null);
+        setUrls(url)
+        
+        
+      }
+    }, [url]);
+  
+    return <span></span>;
   };
+  const submitCase = async () => {
+   
+    const data = {
+      rewardtitle,
+      type,
+      rewardpoint,
+      status,
+      description,
+      urls
+
+    };
+    console.log(typeof(type))
+   
+
+    const res =await axios.post("http://localhost:8080/api/v1/main/addadminawards",data);
+
+    console.log("res")
+    allCase.push(res)
+    console.log(allCase)
+
+    if (res) setallCase(allCase.reverse());
+    // if (response === 'Added') {
+    //   alert('Case successfully added');
+    // }
+    setloading(true);
+    getAllCase();
+    setEdit(false);
+    setOpen(false);
+
+   
+  };
+  const getAllCase = async () => {
+    try {
+      const res =await axios.get("http://localhost:8080/api/v1/main/getadminawards");
+      console.log("getAllCase")
+      console.log(res.data)
+      setallCase(res.data.reverse())
+
+      
+      setloading(false);
+    } catch (err) {
+      // console.log(err);
+    }
+  };
+
+  const updateAllCase=async(id,statuss)=>{
+    var newdata = {
+      status:statuss
+    }
+
+    console.log(statuss)
+    const res =await axios.put(`http://localhost:8080/api/v1/main/updateadminawards/${id}`,newdata);
+
+    console.log(res)
+
+    getAllCase();
+
+  }
+
+  useEffect(() => {
+
+    
+    getAllCase();
+  },[]);
+
+ 
+
+
+
+
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClaim = () => {
-    let total = 0;
-    awardsList.map((e) => {
-      total += e.awardPoints;
-    });
-    setAwardsClaimed(total);
-    setAwards(0);
-    setOpen(false);
+    submitCase();
+ 
+    
+    // let total = 0;
+    // awardsList.map((e) => {
+    //   total += e.awardPoints;
+    // });
+    // setAwardsClaimed(total);
+    // setAwards(0);
+    // setOpen(false);
   };
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handledelete=async(id)=>{
+    await axios.delete("http://localhost:8080/api/v1/main/deladminawards/"+id);
+
+    // console.log("res")
+    // allCase.push(res)
+    // console.log(allCase)
+
+    // if (res) setallCase(allCase.reverse());
+    // // if (response === 'Added') {
+    // //   alert('Case successfully added');
+    // // }
+    // setloading(true);
+    getAllCase();
+    // setEdit(false);
+    // setOpen(false);
+
+
+
+
+    console.log(id)
+  }
 
   const awardsList = [
     { sl: 1, awardPoints: 2500, status: 'Not Expired' },
@@ -105,8 +251,12 @@ const AdminAwards = () => {
     });
     setAwards(total);
   }, []);
+
   return (
     <>
+    {currentFile && (
+        <UploadFile file={currentFile} urls={urls} setURL={setUrls} setFile={setCurrentFile} />
+      )}
       <Dialog
         open={open}
         onClose={handleClose}
@@ -123,6 +273,8 @@ const AdminAwards = () => {
             variant="outlined"
             fullWidth
             sx={{ marginTop: '1rem' }}
+            onChange={(e)=>
+            setrewardtitle(e.target.value)}
           />
           <TextField
             id="Reward-point-basic"
@@ -131,13 +283,17 @@ const AdminAwards = () => {
             fullWidth
             type={'number'}
             sx={{ marginTop: '1rem' }}
+            onChange={(e)=>
+              setrewardpoint(e.target.value)}
           />
           <TextField
             id="outlined-select-status"
             select
             label="Type"
             value={type}
-            onChange={handleTypeChange}
+            onChange={(e)=>{
+              settype(e.target.value)
+            }}
             SelectProps={{
               native: true
             }}
@@ -155,7 +311,9 @@ const AdminAwards = () => {
             select
             label="Status"
             value={status}
-            onChange={handleChange}
+            onChange={(e)=>{
+              setstatus(e.target.value)
+            }}
             SelectProps={{
               native: true
             }}
@@ -177,6 +335,8 @@ const AdminAwards = () => {
             multiline
             rows={2}
             sx={{ marginTop: '1rem' }}
+            onChange={(e)=>
+              setdescription(e.target.value)}
           />
           <Button
             color="primary"
@@ -184,6 +344,7 @@ const AdminAwards = () => {
             autoFocus
             sx={{ marginX: 'auto', marginY: '10px' }}
           >
+             <input onChange={uploadFile} type="file" />
             Upload Image
           </Button>
         </DialogContent>
@@ -192,7 +353,7 @@ const AdminAwards = () => {
           <Button color="error" onClick={handleClose} autoFocus>
             Cancel
           </Button>
-          <Button color="primary" onClick={handleClaim} autoFocus>
+          <Button color="primary" onClick={submitCase} autoFocus>
             Assign
           </Button>
         </DialogActions>
@@ -234,15 +395,15 @@ const AdminAwards = () => {
                   <TableCell align="left">Award Type</TableCell>
                   <TableCell align="left">Full Name</TableCell>
                   <TableCell align="left">Awards Points</TableCell>
-                  <TableCell align="left">Status</TableCell>
+                  <TableCell align="center">Status</TableCell>
                   <TableCell align="left">Award Claimed</TableCell>
-                  <TableCell align="left">Date</TableCell>
+                  <TableCell align="center">Date</TableCell>
                 </TableRow>
               </TableHead>
 
               <TableBody>
-                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                  <TableCell>1</TableCell>
+               
+                  {/* <TableCell>1</TableCell>
                   <TableCell align="left">Finance Consultant</TableCell>
                   <TableCell align="left">Prathmesh Sebastian</TableCell>
                   <TableCell align="left">150</TableCell>
@@ -251,7 +412,9 @@ const AdminAwards = () => {
                       id="outlined-select-status"
                       select
                       value={status}
-                      onChange={handleChange}
+                      onChange={(e)=>{
+                        setstatus(e)
+                      }}
                       SelectProps={{
                         native: true
                       }}
@@ -265,8 +428,57 @@ const AdminAwards = () => {
                     </TextField>
                   </TableCell>
                   <TableCell align="left">1500</TableCell>
-                  <TableCell align="left">Jan 20 2022</TableCell>
-                </TableRow>
+                  <TableCell align="left">Jan 20 2022</TableCell> */}
+                  
+                  {allCase.map((file, _) => (
+                  <TableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                    <TableCell component="th" scope="row">
+                      {_ +1}
+                    </TableCell>
+                    <TableCell align="center">{file.type}</TableCell>
+                    <TableCell align="center">{file.rewardtitle}</TableCell>
+                    <TableCell align="center">{file.rewardpoint}</TableCell>
+                    <TableCell align="center">
+                    <TextField
+                      id="outlined-select-status"
+                      select
+                      value={file.status}
+                      onChange={(e)=>{
+                        setstatus(e.target.value)
+                      }}
+                      
+                      onClick={
+                        ()=>{
+                          updateAllCase(file._id,status)
+                        }
+                      }
+                      SelectProps={{
+                        native: true
+                      }}
+                      fullWidth
+                    >
+                      {statusArray.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.value}
+                        </option>
+                      ))}
+                    </TextField>
+                    </TableCell>
+                    <TableCell align="center">{file.awardsclaimed}</TableCell>
+                    <TableCell align="center">{file.createdAt}</TableCell>
+                    
+                      <Button variant="outlined" color='error' onClick={()=>{
+                        handledelete(file._id)
+                      }} sx={{ marginX: 'auto', marginY: '25px' }}>
+                        <DeleteIcon   align="left" color='error' />
+                                
+                      </Button>
+                      
+                    
+                    
+                  </TableRow>
+                ))}
+              
               </TableBody>
             </Table>
           </TableContainer>

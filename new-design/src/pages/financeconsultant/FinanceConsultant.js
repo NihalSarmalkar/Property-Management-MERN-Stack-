@@ -56,7 +56,8 @@ import { useStorage } from '../../hooks/useStorage';
 const TableViewPage = ({ counter, caseall, rerender }) => {
   const [open, setOpen] = useState(false);
   const [edit, setEdit] = useState(false);
-  
+  console.log("caseall")
+  console.log(caseall)
 
 
   var date = caseall.createdAt;
@@ -1422,3 +1423,5 @@ const Financeconsultant = () => {
 };
 
 export default Financeconsultant;
+
+

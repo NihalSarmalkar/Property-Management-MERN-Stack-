@@ -55,11 +55,25 @@ const deladminawards = async (req,res)=>{
     }
 
 }
+
+const updateawards = async (req, res) => {
+    // return res.json(req.body);
+    try {
+        AdminAward_Model.findByIdAndUpdate(req.body.case._id, req.body.updateable, { upsert: true }, function (err, doc) {
+          if (err) return res.status(500).json({ err });
+          else return res.status(200).json({ updated: true });
+       });
+    } catch (e) {
+       console.log(e);
+    }
+ }
+
 module.exports={
     addadminawards,
     getadminawards,
     updateadminawards,
-    deladminawards
+    deladminawards,
+    updateawards
 }
 
 // getadminawards

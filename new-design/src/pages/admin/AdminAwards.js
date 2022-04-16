@@ -15,9 +15,17 @@ import {
 } from '@mui/material';
 // import { DashboardLayout } from '../components/dashboard-layout';
 import { useEffect, useState } from "react";
-
+import { API_SERVICE } from '../../config/URI';
+import Avatar from '@mui/material/Avatar';
+import moment from 'moment'
+import { red } from '@mui/material/colors';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import PreviewIcon from '@mui/icons-material/Preview';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
+import CardContent from '@mui/material/CardContent';
+
 import TextField from '@mui/material/TextField';
 import DialogTitle from '@mui/material/DialogTitle';
 import Table from '@mui/material/Table';
@@ -67,6 +75,298 @@ const demoTransaction = [
   { id: 4, name: 'Bank Consultant', date: '27-10-22', type: 'Expired', transactionAmt: 1200 },
   { id: 5, name: 'Admin', date: '27-10-22', type: 'Expired', transactionAmt: 1200 }
 ];
+
+
+const TableViewPage = ({ counter, caseall, rerender }) => {
+  const [open, setOpen] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [status, setstatus] = React.useState('');
+
+  console.log("caseall")
+  console.log(caseall)
+
+  var date = caseall.createdAt;
+  date = new Date(date).toString();
+
+  const [formData, setFormData] = React.useState({});
+
+  const setFormProp = function (e) {
+    const oldFormData = formData;
+    oldFormData[e.target.name] = e.target.value;
+
+    setFormData(oldFormData);
+  }
+  const handledelete=async(id)=>{
+    await axios.delete("http://localhost:8080/api/v1/main/deladminawards/"+id);
+
+    // console.log("res")
+    // allCase.push(res)
+    // console.log(allCase)
+
+    // if (res) setallCase(allCase.reverse());
+    // // if (response === 'Added') {
+    // //   alert('Case successfully added');
+    // // }
+    // setloading(true);
+    rerender();
+    // setEdit(false);
+    // setOpen(false);
+
+
+
+
+    console.log(id)
+  }
+  const updateAllCase=async(id,statuss)=>{
+    var newdata = {
+      status:statuss
+    }
+
+    console.log(statuss)
+    const res =await axios.put(`http://localhost:8080/api/v1/main/updateadminawards/${id}`,newdata);
+
+    console.log(res)
+
+    rerender();
+
+  }
+
+  
+  
+  
+
+  const handleDeleteFile = async (file,id)=>{
+   
+    const res =await axios.get("http://localhost:8080/api/v1/main/getonefinanceconsutant/"+ id);
+   
+    res.data.urls.splice(file,1)
+  
+   
+    const newresponse = await axios.put(`http://localhost:8080/api/v1/main/putonefinanceconsutant/${id}`,res.data);
+    if (await newresponse) {
+      rerender();
+      setEdit(false);
+      setOpen(false);
+    }
+
+  }
+
+  const updateCase = async function () {
+    
+    const request = await fetch(`${API_SERVICE}/updateawards`, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        case: caseall,
+        updateable: formData
+      })
+    });
+
+    if (await request.json()) {
+      rerender();
+      setEdit(false);
+      setOpen(false);
+    }
+  }
+
+  return (
+    <>
+      <TableRow key={caseall._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+        <TableCell component="th" scope="row">
+          {counter}
+        </TableCell>
+        <TableCell align="center">{caseall.type}</TableCell>
+        
+        <TableCell align="center">{caseall.rewardtitle}</TableCell>
+        <TableCell align="center">{caseall.rewardpoint}</TableCell>
+        <TableCell align="center">
+                    <TextField
+                      id="outlined-select-status"
+                      select
+                      value={caseall.status}
+                      onChange={(e)=>{
+                        setstatus(e.target.value)
+                      }}
+                      
+                      onClick={
+                        ()=>{
+                          updateAllCase(caseall._id,status)
+                        }
+                      }
+                      SelectProps={{
+                        native: true
+                      }}
+                      fullWidth
+                    >
+                      {statusArray.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.value}
+                        </option>
+                      ))}
+                    </TextField>
+                    </TableCell>
+                    <TableCell align="center">{caseall.awardsclaimed}</TableCell>
+                    <TableCell align="center">{caseall.createdAt}</TableCell>
+
+        <TableCell align="center">
+          {/* <IconButton color="primary"> */}
+          <Dialog
+            open={open}
+            onClose={() => { }}
+            aria-labelledby="alert-dialog-title"
+            fullWidth
+            maxWidth="md"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">{edit ? "Edit" : "View"} Case</DialogTitle>
+            {
+              !edit ?
+              <DialogContent>
+
+                <Card sx={{ maxWidth: '100%' }}>
+                  <CardHeader
+                    avatar={
+                      <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                        {caseall.rewardtitle}
+                      </Avatar>
+                    }
+                    action={
+                      <IconButton aria-label="settings">
+                        {/* <MoreVertIcon /> */}
+                      </IconButton>
+                    }
+                    title={caseall.type}
+                    subheader={moment(caseall.createdAt).format("MMMM DD, YYYY")}
+                  />
+                  <CardContent>
+                    <Typography variant="body2" color="text.primary">
+                      <div>
+                        Type: {caseall.type},<br></br>
+                        Reward Title: {caseall.rewardtitle}
+                      </div>
+                      <div>
+                        Reward Point: {caseall.rewardpoint}
+                      </div>
+                      <div>
+                      Status: {caseall.status}
+                      </div>
+                      <div>
+                      Awards Claimed: {caseall.awardsclaimed} 
+                      </div>
+                      <div>
+                      Description: {caseall.description}
+                      </div>
+                      
+                    </Typography>
+                  </CardContent>
+                </Card>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="left">ID</TableCell>
+                      <TableCell align="left">Filename</TableCell>
+                     
+                      <TableCell align="right">View</TableCell>
+      
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {[...caseall.urls].map((file, _) => {
+                      if (typeof file === "object") {
+                        return <TableRow key={"table_" + _}>
+                        <TableCell>{_ + 1}</TableCell>
+                        <TableCell align='left'>{caseall.name}</TableCell>
+                      
+                        <TableCell align='right'>
+                          <Button variant="outlined">
+                            <PreviewIcon onClick={() => {
+                              var a = document.createElement("a");
+                              a.href = file.url;
+                              a.download = file.name;
+                              a.target = "_blank";
+                              a.click();
+                            }} />
+                            
+                          </Button>
+                         
+                          
+                        </TableCell>
+                      
+                      </TableRow>
+                      } else {
+                        return <TableRow key={"table_" + _}>
+                          <TableCell>{_ + 1}</TableCell>
+                          <TableCell align='left'>File</TableCell>
+                          <TableCell align='right'>
+                            <Button>
+                              <PreviewIcon onClick={() => {
+                                var a = document.createElement("a");
+                                a.href = file;
+                                a.download = "File";
+                                a.target = "_blank";
+                                a.click();
+                              }} />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      }
+                    })}
+                    {[...caseall.urls].length < 1 ?
+                      <TableRow>
+                        <TableCell>No Files Found!</TableCell>
+                      </TableRow> :
+                      null
+                    }
+                  </TableBody>
+                </Table>
+              </DialogContent>
+              : <DialogContent>
+                <br></br>
+                  <TextField id="outlined-basic" onChange={setFormProp} defaultValue={caseall.rewardtitle} style={{minWidth: '100%', marginBottom: '20px'}} name="rewardtitle" label="Reward Title" variant="outlined" />
+                  {/* <TextField id="outlined-basic" onChange={setFormProp} defaultValue={caseall.type} style={{minWidth: '100%', marginBottom: '20px'}} name="type" label="Type" variant="outlined" /> */}
+                  
+
+                  <TextField id="outlined-basic" onChange={setFormProp} defaultValue={caseall.rewardpoint} style={{minWidth: '100%', marginBottom: '20px'}} name="rewardpoint" label="Reward point" variant="outlined" />
+               
+                  <TextField id="outlined-basic" onChange={setFormProp} defaultValue={caseall.status} style={{minWidth: '100%', marginBottom: '20px'}} name="status" label="Status" variant="outlined" />
+                  <TextField id="outlined-basic" onChange={setFormProp} defaultValue={caseall.description} style={{minWidth: '100%', marginBottom: '20px'}} name="description" label="Description" variant="outlined" />
+                  
+              </DialogContent>
+            }
+
+            <DialogActions>
+              <Button onClick={() => {setEdit(false); setOpen(false);}} autoFocus>Close</Button>
+              {!edit ? (
+                <Button onClick={() => setEdit(true)}>Edit</Button>
+              ): (
+                <Button onClick={updateCase} >Update</Button>
+              ) 
+              }
+            </DialogActions>
+          </Dialog>
+          <Button><PreviewIcon onClick={() => setOpen(true)} /></Button>
+          {/* </IconButton> */}
+        </TableCell>
+      </TableRow>
+    </>
+  );
+};
+
+const ShowServicesList = ({ allCase, getAllCase }) => {
+  var counter = 0;
+  return (
+    <>
+      {allCase.map((caseall) => {
+        counter = counter + 1;
+        return <TableViewPage caseall={caseall} rerender={getAllCase} counter={counter} key={caseall._id} />;
+      })}
+    </>
+  );
+};
+
 
 const AdminAwards = () => {
   const [open, setOpen] = React.useState(false);
@@ -430,7 +730,7 @@ const AdminAwards = () => {
                   <TableCell align="left">1500</TableCell>
                   <TableCell align="left">Jan 20 2022</TableCell> */}
                   
-                  {allCase.map((file, _) => (
+                  {/* {allCase.map((file, _) => (
                   <TableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                     <TableCell component="th" scope="row">
                       {_ +1}
@@ -477,7 +777,8 @@ const AdminAwards = () => {
                     
                     
                   </TableRow>
-                ))}
+                ))} */}
+                {loading === true ? <TableRow><TableCell>Loading...</TableCell></TableRow> : <ShowServicesList getAllCase={getAllCase} allCase={allCase} />}
               
               </TableBody>
             </Table>
@@ -513,8 +814,10 @@ const AdminAwards = () => {
                         <VisibilityIcon />
                       </IconButton>
                     </TableCell>
+                    
                   </TableRow>
                 ))}
+                
               </TableBody>
             </Table>
           </TableContainer>

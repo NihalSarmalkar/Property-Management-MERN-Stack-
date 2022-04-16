@@ -43,7 +43,7 @@ router.post('/addadminawards',adminawards.addadminawards)
 router.get('/getadminawards',adminawards.getadminawards)
 router.delete('/deladminawards/:id',adminawards.deladminawards)
 router.put('/updateadminawards/:id',adminawards.updateadminawards)
-
+router.post('/updateawards', adminawards.updateawards)
 // router.delete('/delallcheckouts/:uid', checkoutController.delallcheckouts);
 
 

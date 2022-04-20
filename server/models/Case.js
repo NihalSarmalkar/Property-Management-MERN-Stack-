@@ -1,3 +1,4 @@
+const { application } = require("express");
 const mongoose = require("mongoose");
 
 const attendeeSchema = new mongoose.Schema({
@@ -40,6 +41,10 @@ const attendeeSchema = new mongoose.Schema({
   urls: {
     type: Array,
     default: []
+  },
+  action:{
+    type:Boolean,
+    default: false
   }
 });
 

@@ -1,4 +1,6 @@
 import React from 'react';
+import moment from 'moment';
+import { CSVLink } from 'react-csv';
 import {
   Box,
   Container,
@@ -32,6 +34,8 @@ import MenuItem from '@mui/material/MenuItem';
 import DownloadIcon from '@mui/icons-material/Download';
 import { DateRangePicker } from '@mui/lab';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import { useEffect, useState } from "react";
+import axios from "axios"
 import {
   AppTasks,
   AppNewUsers,
@@ -63,6 +67,12 @@ const AdminAwardReports = () => {
   const [value, setValue] = React.useState([null, null]);
   const [projecttype, setprojecttype] = React.useState('');
   const [projectsubtype, setprojectsubtype] = React.useState('');
+  const [allCase, setallCase] = useState([]);
+  const [allCasedemo, setallCasedemo] = useState(allCase);
+  const [allCase1, setallCase1] = useState([]);
+  const [allCasedemo1, setallCasedemo1] = useState(allCase1);
+  const [loading, setloading] = React.useState(true);
+  const [month, setMonth] = useState();
 
   const [status, setstatus] = React.useState('Enable the award');
 
@@ -72,6 +82,56 @@ const AdminAwardReports = () => {
   const handleClickOpen = () => {
     setOpen(true);
   };
+
+  const csvReport = {
+    filename:'Report.csv',
+    data:allCase.concat(allCase1)
+  }
+  const getAllCase = async (month) => {
+    try {
+      
+      if(month)
+      {
+
+        const res =await axios.get("http://localhost:8080/api/v1/main/getallfinanceconsutant?month="+month);
+        setallCase(res.data.reverse())
+        setallCasedemo(res.data.reverse())
+      }
+      else{
+        const res =await axios.get("http://localhost:8080/api/v1/main/getallfinanceconsutant");
+        setallCase(res.data.reverse())
+        setallCasedemo(res.data.reverse())
+      }
+
+      if(month)
+      {
+
+        const res =await axios.get("http://localhost:8080/api/v1/main/getcase?month="+month);
+        setallCase1(res.data.reverse())
+        setallCasedemo1(res.data.reverse())
+      }
+      else{
+        const res =await axios.get("http://localhost:8080/api/v1/main/getcase");
+        setallCase1(res.data.reverse())
+        setallCasedemo1(res.data.reverse())
+      }
+
+
+      
+      setloading(false);
+    } catch (err) {
+      // console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    
+    console.log(month);
+    console.log(typeof(value[0]));
+
+    
+    getAllCase(month);
+  },[month]);
   const handleClaim = () => {
     let total = 0;
     awardsList.map((e) => {
@@ -114,7 +174,7 @@ const AdminAwardReports = () => {
     setAwards(total);
   }, []);
 
-  const [month, setMonth] = React.useState('January');
+  
   const handleInputChange = (e) => {
     setMonth(e.target.value);
   };
@@ -223,8 +283,10 @@ const AdminAwardReports = () => {
               startText="Start Date"
               endText="End Date"
               value={value}
-              onChange={(newValue) => {
-                setValue(newValue);
+              onChange={(e) => {
+                setallCasedemo([]);
+                setallCasedemo1([]);
+                setValue(e);
               }}
               renderInput={(startProps, endProps) => (
                 <React.Fragment>
@@ -234,18 +296,17 @@ const AdminAwardReports = () => {
                 </React.Fragment>
               )}
             />
-            <Button
+            <CSVLink {...csvReport}><Button
               sx={{
-                float: 'right',
-                // mb: 2,
-                height: '100%'
+                float: 'right'
               }}
               variant="contained"
               color="primary"
+              
               // onClick={handleClickOpen}
             >
               Download CSV Report
-            </Button>
+            </Button></CSVLink>
           </Container>
           <Container
             fullwidth="true"
@@ -348,13 +409,16 @@ const AdminAwardReports = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {demoEntries.map((entry) => (
-                  <TableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                {allCasedemo.map((entry, _) => (
+                  <TableRow
+                    key={entry.id}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
                     <TableCell component="th" scope="row">
-                      {entry.id}
+                      { _+1}
                     </TableCell>
                     <TableCell align="center">{entry.name}</TableCell>
-                    <TableCell align="center">{entry.date}</TableCell>
+                    <TableCell align="center">{entry.createdAt}</TableCell>
                     <TableCell align="center">{entry.type}</TableCell>
                     <TableCell align="center">
                       <IconButton color="primary">
@@ -363,6 +427,35 @@ const AdminAwardReports = () => {
                     </TableCell>
                   </TableRow>
                 ))}
+                {allCasedemo.length < 1 ?
+                 <>
+                {allCase.map((entry, _) => (
+                  <TableRow
+                  key={_ + "filter"}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    {
+                      (value[0] != null ) && (moment(entry.createdAt).isBetween(moment(value[0]), value[1] != null ? moment(value[1]) : moment().toISOString())) ?
+                      <>
+                          <TableCell component="th" scope="row">
+                            {_ + 1} One
+                          </TableCell>
+                          <TableCell align="center">{entry.name}</TableCell>
+                          <TableCell align="center">{moment(entry.createdAt).format("DD-MM-YY")}</TableCell>
+                          <TableCell align="center">{entry.type}</TableCell>
+                          <TableCell align="center">
+                            <IconButton color="primary">
+                              <DownloadIcon />
+                            </IconButton>
+                          </TableCell>
+                        </> :
+                        null
+                    }
+                
+                  </TableRow>
+                ))}
+            </> : null
+           }
               </TableBody>
             </Table>
           </TableContainer>
@@ -383,22 +476,55 @@ const AdminAwardReports = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {demoTransaction.map((entry) => (
-                  <TableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                {allCasedemo1.map((entry, _) => (
+                  <TableRow
+                    key={entry.id}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
                     <TableCell component="th" scope="row">
-                      {entry.id}
+                      { _+1}
                     </TableCell>
                     <TableCell align="center">{entry.name}</TableCell>
-                    <TableCell align="center">{entry.date}</TableCell>
+                    <TableCell align="center">{entry.createdAt}</TableCell>
                     <TableCell align="center">{entry.transactionAmt}</TableCell>
-                    <TableCell align="center">{entry.id}</TableCell>
+                    <TableCell align="center">{entry._id}</TableCell>
                     <TableCell align="center">
                       <IconButton color="primary">
-                        <VisibilityIcon />
+                        <DownloadIcon />
                       </IconButton>
                     </TableCell>
                   </TableRow>
                 ))}
+                {allCasedemo1.length < 1 ?
+                 <>
+                {allCase1.map((entry, _) => (
+                  <TableRow
+                  key={_ + "filter"}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    {
+                      (value[0] != null ) && (moment(entry.createdAt).isBetween(moment(value[0]), value[1] != null ? moment(value[1]) : moment().toISOString())) ?
+                      <>
+                          <TableCell component="th" scope="row">
+                            {_ + 1} One
+                          </TableCell>
+                          <TableCell align="center">{entry.name}</TableCell>
+                    <TableCell align="center">{entry.createdAt}</TableCell>
+                    <TableCell align="center">{entry.transactionAmt}</TableCell>
+                    <TableCell align="center">{entry._id}</TableCell>
+                          <TableCell align="center">
+                            <IconButton color="primary">
+                              <DownloadIcon />
+                            </IconButton>
+                          </TableCell>
+                        </> :
+                        null
+                    }
+                
+                  </TableRow>
+                ))}
+            </> : null
+           }
               </TableBody>
             </Table>
           </TableContainer>

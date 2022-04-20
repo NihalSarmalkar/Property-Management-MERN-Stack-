@@ -24,6 +24,7 @@ router.get('/test', (req, res) => {
 //Routes for propertyagent
 router.get('/getcase', propertyagentController.getCaseAll);
 router.get('/getone/:id', propertyagentController.getCaseOne);
+router.delete('/delone/:id', propertyagentController.delCaseOne);
 router.put('/updateone/:id', propertyagentController.updateCaseOne);
 router.post('/updatecase', propertyagentController.updateCase)
 router.get('/updatecasefile/:id', propertyagentController.updatecasefile)

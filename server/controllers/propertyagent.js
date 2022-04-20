@@ -46,11 +46,36 @@ const addCase = async (req, res) => {
 
 const getCaseAll = async (req, res) => {
    try {
-      Case_Model.find({}).sort({ createdAt: -1 })
-         .then((data) => {
-            res.status(200).json(data);
-         })
-         .catch((err) => res.status(200).json(`Error: ${err}`));
+      const savedata = await Case_Model.find()
+      if(req.query.month){
+         const month = req.query.month;
+         
+         const montharray =["demo","January","February","March","April","May","June","July","August","September","October","November","December"]
+         let index = montharray.indexOf(month);
+         console.log(index)
+         console.log("----")
+         const selecteddata=[]
+
+         for (i in savedata){
+             
+             if((savedata[i].createdAt.getMonth()+1)=== montharray.indexOf(month))
+             {
+                 console.log(savedata[i].createdAt.getMonth())
+                 selecteddata.push(savedata[i])
+             }
+             
+
+         }
+         res.status(200).json(selecteddata)
+         
+     }
+     
+    
+     
+     
+     
+     res.status(200).json(savedata)
+
    } catch (err) {
       // console.log(err);
    }
@@ -89,6 +114,21 @@ const getCaseOne = async (req, res) => {
       res.status(500).json(err);
     }
 }
+
+const delCaseOne = async (req, res) => {
+  
+   try {
+
+      
+      await Case_Model.findByIdAndDelete(req.params.id);
+      
+      res.status(200).json("Deleted Successfully");
+    } catch (err) {
+      res.status(500).json(err);
+    }
+}
+
+
 const updateCaseOne = async (req, res) => {
    
    try {
@@ -115,4 +155,5 @@ module.exports = {
    updatecasefile,
    getCaseOne,
    updateCaseOne,
+   delCaseOne
 }

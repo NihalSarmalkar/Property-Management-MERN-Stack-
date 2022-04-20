@@ -5,7 +5,8 @@ import { alpha, styled } from '@mui/material/styles';
 import { Card, Typography } from '@mui/material';
 // utils
 import { fShortenNumber } from '../../../utils/formatNumber';
-
+import { useEffect, useState } from "react";
+import axios from "axios"
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Card)(({ theme }) => ({
@@ -37,9 +38,32 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 const TOTAL = 1352831;
 
 export default function TotalInvestment() {
+  const [allCase, setallCase] = useState([]);
+
+  const getAllCase = async (month) => {
+    try {
+      
+    
+        const res =await axios.get("http://localhost:8080/api/v1/main/getallfinanceconsutant");
+        setallCase(res.data.reverse())
+       
+  
+    } catch (err) {
+      // console.log(err);
+    }
+  };
+  
+  useEffect(() => {
+    
+  
+  
+    
+    getAllCase();
+    console.log(allCase.length)
+  },[]);
   return (
     <RootStyle>
-      <Typography variant="h3">{fShortenNumber(TOTAL)}</Typography>
+      <Typography variant="h3">{fShortenNumber(allCase.length)}</Typography>
       <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
         Total Investment
       </Typography>

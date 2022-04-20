@@ -27,7 +27,6 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -35,6 +34,10 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { styled } from '@mui/material/styles';
 import DoneIcon from '@mui/icons-material/Done';
 import CloseIcon from '@mui/icons-material/Close';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { async } from '@firebase/util';
+
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(0),
@@ -49,10 +52,27 @@ const Bank = () => {
   const [status, setStatus] = React.useState('');
   const [lawyer, setLawyer] = React.useState('');
   const [LawyersDialog, setLawyersDialog] = React.useState(false);
+  const [allCase, setallCase] = useState([]);
+  const [formdata, setFormData] = useState({});
+
+  const getAllCase = async (month) => {
+    try {
+      const res = await axios.get('http://localhost:8080/api/v1/main/getcase');
+      setallCase(res.data.reverse());
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getAllCase();
+    console.log(allCase.length);
+  }, []);
 
   const handleClickOpenreview = () => {
     setOpenreview(true);
   };
+
   const handleClosereview = () => {
     setOpenreview(false);
   };
@@ -65,6 +85,19 @@ const Bank = () => {
     setLawyersDialog(false);
     setOpenreview(false);
     setStatus('');
+  };
+
+  const handleAccept = async (id) => {
+    console.log('handleAccept');
+    var newdata = {
+      action: true
+    };
+
+    const newresponse = await axios.put(
+      `http://localhost:8080/api/v1/main/updateone/${id}`,
+      newdata
+    );
+    getAllCase();
   };
   return (
     <>
@@ -79,22 +112,22 @@ const Bank = () => {
         <DialogTitle id="alert-dialog-title">Submitted Case</DialogTitle>
         <DialogContent>
           <Typography sx={{ mt: 2 }} variant="h6">
-            Type: Employee
+            Type:{formdata?.type}
           </Typography>
           <Typography sx={{ mt: 2 }} variant="h6">
-            Category: Basic Salary
+            Category: {formdata?.subcategory}
           </Typography>
           <Typography sx={{ mt: 2 }} variant="h6">
-            Employement Year: 1 Year
+            Employement Year: {formdata?.employementyear}
           </Typography>
           <Typography sx={{ mt: 2 }} variant="h6">
-            Name: Test Name
+            Name: {formdata?.name}
           </Typography>
           <Typography sx={{ mt: 2 }} variant="h6">
-            Contact Number: +1 42009382438
+            Contact Number:{formdata?.contact}
           </Typography>
           <Typography sx={{ mt: 2 }} variant="h6">
-            Email Address: test@gmail.com
+            Email Address: {formdata?.email}
           </Typography>
           <Typography sx={{ mt: 2 }} variant="h6">
             DSR: 20%
@@ -109,6 +142,42 @@ const Bank = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
+
+              {formdata.urls?.map((file, _) => {
+                      if (typeof file === "object") {
+                        return <TableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                        <TableCell component="th" scope="row">
+                        {file.name}
+                        </TableCell>
+                        <TableCell align="center">
+                          <a href={file.url}>
+                          <Button color="primary" size="small" >
+                            Download
+                          </Button>
+                          </a>
+
+                          
+
+                        </TableCell>
+                      </TableRow>
+                      }
+                    })}
+                    
+
+
+                {/* <TableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                  <TableCell component="th" scope="row">
+                    IC Front & Back
+                  </TableCell>
+                  <TableCell align="center">
+                    <Button color="primary" size="small">
+                      Download
+                    </Button>
+                  </TableCell>
+                </TableRow>
+
+
+
                 <TableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                   <TableCell component="th" scope="row">
                     IC Front & Back
@@ -173,7 +242,7 @@ const Bank = () => {
                       Download
                     </Button>
                   </TableCell>
-                </TableRow>
+                </TableRow> */}
               </TableBody>
             </Table>
           </TableContainer>
@@ -354,51 +423,63 @@ const Bank = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                <TableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                  <TableCell component="th" scope="row">
-                    1
-                  </TableCell>
-                  <TableCell align="center">Test Case</TableCell>
-                  <TableCell align="center">22-12-2021</TableCell>
-                  <TableCell align="center">Self Employed</TableCell>
-                  {approved ? (
-                    <TableCell align="center">
-                      <Tooltip title="Review Case">
-                        <IconButton
-                          onClick={handleClickOpenreview}
-                          color="primary"
-                          aria-label="upload picture"
-                          component="span"
-                        >
-                          <RemoveRedEyeIcon />
-                        </IconButton>
-                      </Tooltip>{' '}
+                {allCase.map((entry, _) => (
+                  <TableRow
+                    key={entry.id}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {_ + 1}
                     </TableCell>
-                  ) : (
-                    <TableCell align="center">
-                      <Tooltip title="Accept">
-                        <IconButton
-                          onClick={() => setApproved(true)}
-                          color="secondary"
-                          aria-label="upload picture"
-                          component="span"
-                        >
-                          <DoneIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Reject">
-                        <IconButton
-                          onClick={() => setRejectionReasonDialog(true)}
-                          sx={{ color: 'red' }}
-                          aria-label="upload picture"
-                          component="span"
-                        >
-                          <CloseIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </TableCell>
-                  )}
-                </TableRow>
+                    <TableCell align="center">{entry.name}</TableCell>
+                    <TableCell align="center">{entry.createdAt}</TableCell>
+                    <TableCell align="center">{entry.type}</TableCell>
+                    {entry.action ? (
+                      <TableCell align="center">
+                        <Tooltip title="Review Case">
+                          <IconButton
+                            onClick={() => {
+                              setFormData(entry);
+
+                              handleClickOpenreview();
+                            }}
+                            color="primary"
+                            aria-label="upload picture"
+                            component="span"
+                          >
+                            <RemoveRedEyeIcon />
+                          </IconButton>
+                        </Tooltip>{' '}
+                      </TableCell>
+                    ) : (
+                      <TableCell align="center">
+                        <Tooltip title="Accept">
+                          <IconButton
+                            onClick={() => {
+                              handleAccept(entry._id);
+                            }}
+                            color="secondary"
+                            aria-label="upload picture"
+                            component="span"
+                          >
+                            <DoneIcon />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Reject">
+                          <IconButton
+                            onClick={() => setRejectionReasonDialog(true)}
+                            sx={{ color: 'red' }}
+                            aria-label="upload picture"
+                            component="span"
+                          >
+                            <CloseIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </TableCell>
+                    )}
+                  </TableRow>
+                ))}
+                {/* {loading === true ? <TableRow><TableCell>Loading...</TableCell></TableRow> : <ShowServicesList getAllCase={getAllCase} allCase={allCase} openreview={openreview} />} */}
               </TableBody>
             </Table>
           </TableContainer>

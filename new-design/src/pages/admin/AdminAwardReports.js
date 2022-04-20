@@ -144,6 +144,10 @@ const AdminAwardReports = () => {
   const handleClose = () => {
     setOpen(false);
   };
+  const handleReset=()=>{
+    window.location.reload();
+  }
+
 
   const awardsList = [
     { sl: 1, awardPoints: 2500, status: 'Not Expired' },
@@ -308,6 +312,17 @@ const AdminAwardReports = () => {
               Download CSV Report
             </Button></CSVLink>
           </Container>
+          <Button
+              sx={{
+                float: 'right'
+              }}
+              variant="contained"
+              color="primary"
+              
+              onClick={handleReset}
+            >
+              Reset filters
+            </Button>
           <Container
             fullwidth="true"
             sx={{ display: 'flex', justifyContent: 'space-between', my: 5 }}

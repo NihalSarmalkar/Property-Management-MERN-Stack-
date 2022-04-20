@@ -1,5 +1,6 @@
 import React from 'react';
-
+import { CSVLink } from 'react-csv';
+import moment from 'moment';
 import {
   Box,
   Container,
@@ -32,6 +33,10 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import MenuItem from '@mui/material/MenuItem';
 import DownloadIcon from '@mui/icons-material/Download';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import DoneIcon from '@mui/icons-material/Done';
+import CloseIcon from '@mui/icons-material/Close';
 
 const statusArray = [
   {
@@ -55,12 +60,50 @@ const BankReports = () => {
   const [awards, setAwards] = React.useState(0);
   const [awardsClaimed, setAwardsClaimed] = React.useState(0);
   const [value, setValue] = React.useState([null, null]);
+  const [allCase, setallCase] = useState([]);
+  const [formdata, setFormData] = useState({});
+  const [allCasedemo, setallCasedemo] = useState(allCase);
+  const [month, setMonth] = useState();
 
   const [status, setstatus] = React.useState('Enable the award');
 
   const handleChange = (event) => {
     setstatus(event.target.value);
   };
+
+  const getAllCase = async (month) => {
+    try {
+      if(month){
+
+        const res = await axios.get("http://localhost:8080/api/v1/main/getcase?month="+month);
+        setallCase(res.data.reverse());
+        setallCasedemo(res.data.reverse())
+      }
+      else{
+        const res = await axios.get('http://localhost:8080/api/v1/main/getcase');
+        setallCase(res.data.reverse());
+        setallCasedemo(res.data.reverse())
+
+
+      }
+      
+
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    console.log(month);
+    getAllCase(month);
+   
+
+  }, [month]);
+
+  const csvReport = {
+    filename:'Report.csv',
+    data:allCase
+  }
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -76,6 +119,10 @@ const BankReports = () => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleReset=()=>{
+    window.location.reload();
+  }
 
   const awardsList = [
     { sl: 1, awardPoints: 2500, status: 'Not Expired' },
@@ -99,7 +146,7 @@ const BankReports = () => {
     { id: 5, name: 'Completed', date: '27-10-22', type: 'Expired' }
   ];
 
-  const [month, setMonth] = React.useState('January');
+
   const handleInputChange = (e) => {
     setMonth(e.target.value);
   };
@@ -125,7 +172,7 @@ const BankReports = () => {
                 id="demo-simple-select"
                 value={month}
                 label="Month"
-                onChange={handleInputChange}
+                onChange={(e)=>setMonth(e.target.value)}
               >
                 <MenuItem value={'January'}>January</MenuItem>
                 <MenuItem value={'February'}>February</MenuItem>
@@ -143,11 +190,11 @@ const BankReports = () => {
             </FormControl>
             <DateRangePicker
               startText="Start Date"
-              sx={{ width: '30%' }}
               endText="End Date"
               value={value}
-              onChange={(newValue) => {
-                setValue(newValue);
+              onChange={(e) => {
+                setallCasedemo([]);
+                setValue(e);
               }}
               renderInput={(startProps, endProps) => (
                 <React.Fragment>
@@ -157,18 +204,30 @@ const BankReports = () => {
                 </React.Fragment>
               )}
             />
-            <Button
+            <CSVLink {...csvReport}><Button
               sx={{
-                float: 'right',
-                mb: 2
+                float: 'right'
               }}
               variant="contained"
               color="primary"
+              
               // onClick={handleClickOpen}
             >
               Download CSV Report
-            </Button>
+            </Button></CSVLink>
+            
           </Container>
+          <Button
+              sx={{
+                float: 'right'
+              }}
+              variant="contained"
+              color="primary"
+              
+              onClick={handleReset}
+            >
+              Reset filters
+            </Button>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
@@ -181,21 +240,45 @@ const BankReports = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {demoEntries.map((entry) => (
-                  <TableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                    <TableCell component="th" scope="row">
-                      {entry.id}
-                    </TableCell>
-                    <TableCell align="center">{entry.name}</TableCell>
-                    <TableCell align="center">{entry.date}a</TableCell>
-                    <TableCell align="center">{entry.type}</TableCell>
-                    <TableCell align="center">
-                      <IconButton color="primary">
-                        <DownloadIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {allCasedemo.map((entry, _) => {
+                  if (entry.action === true) {
+                    return (
+                      <TableRow key={entry.id}>
+                        <TableCell>{_ + 1}</TableCell>
+                        <TableCell align="center">{entry.name}</TableCell>
+                        <TableCell align="center">{entry.createdAt}</TableCell>
+                        <TableCell align="center">{entry.type}</TableCell>
+                        <TableCell align="center">
+                          <IconButton color="primary">
+                            <DownloadIcon />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  } 
+                })}
+                {allCasedemo.length < 1 ?
+                 <>
+                {allCase.map((entry, _) =>{
+                  if (entry.action === true) {
+                    return (
+                      <TableRow key={entry.id}>
+                        <TableCell>{_ + 1}</TableCell>
+                        <TableCell align="center">{entry.name}</TableCell>
+                        <TableCell align="center">{entry.createdAt}</TableCell>
+                        <TableCell align="center">{entry.type}</TableCell>
+                        <TableCell align="center">
+                          <IconButton color="primary">
+                            <DownloadIcon />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    );
+                    }
+                  })}
+            </> : null
+           }
+                
               </TableBody>
             </Table>
           </TableContainer>

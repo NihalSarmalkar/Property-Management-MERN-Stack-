@@ -81,6 +81,9 @@ const FinanceConsultantReports = () => {
     setAwards(0);
     setOpen(false);
   };
+  const handleReset=()=>{
+    window.location.reload();
+  }
 
   const handleClose = () => {
     setOpen(false);
@@ -270,6 +273,17 @@ const FinanceConsultantReports = () => {
               Download CSV Report
             </Button></CSVLink>
           </Container>
+          <Button
+              sx={{
+                float: 'right'
+              }}
+              variant="contained"
+              color="primary"
+              
+              onClick={handleReset}
+            >
+              Reset filters
+            </Button>
           <Container fullwidth="true" sx={{ display: 'flex', justifyContent: 'flex-start', mb: 2 }}>
             <FormControl sx={{ width: '45%' }}>
               <InputLabel id="demo-simple-select-label">Project Type</InputLabel>

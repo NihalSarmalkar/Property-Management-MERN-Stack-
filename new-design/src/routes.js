@@ -21,17 +21,20 @@ import CasePage from './pages/Case';
 import PropertyAgent from './pages/propertyagent/PropertyAgent';
 import UserManagement from './pages/UserManagement';
 import ViewCase from './pages/ViewCase';
+import { useContext } from "react";
+import { AuthContext } from './context/AuthContext';
 
 // ----------------------------------------------------------------------
 
 export default function Router() {
+  const { user } = useContext(AuthContext);
   return useRoutes([
     {
       path: '/dashboard',
       element: <DashboardLayout />,
       children: [
         { element: <Navigate to="/dashboard/app" replace /> },
-        { path: 'app', element: <DashboardApp /> },
+        { path: 'app', element: user ? <DashboardApp /> : <Navigate to="/Login" />},
 
         { path: 'adminawards', element: <AdminAwards /> },
         { path: 'adminawardreports', element: <AdminAwardReports /> },

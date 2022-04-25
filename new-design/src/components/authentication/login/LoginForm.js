@@ -2,9 +2,13 @@ import * as Yup from 'yup';
 import { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
+import { useContext, useRef } from 'react';
 import { Icon } from '@iconify/react';
 import eyeFill from '@iconify/icons-eva/eye-fill';
 import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
+import axios from 'axios';
+import { AuthContext } from '../../../context/AuthContext';
+
 // material
 import {
   Link,
@@ -16,23 +20,24 @@ import {
   FormControlLabel
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+import { async } from '@firebase/util';
 
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
     password: Yup.string().required('Password is required')
   });
-
+  const { isFetching, dispatch } = useContext(AuthContext);
   const formik = useFormik({
     initialValues: {
       email: '',
-      password: '',
-      remember: true
+      password: ''
     },
     validationSchema: LoginSchema,
     onSubmit: () => {
@@ -40,32 +45,47 @@ export default function LoginForm() {
     }
   });
 
-  const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps } = formik;
+  const { errors, touched, values, isSubmitting, getFieldProps } = formik;
 
+  const handleSubmit = async () => {
+    const data = {
+      email,
+      password
+    };
+
+    dispatch({ type: 'LOGIN_START' });
+    try {
+      
+      const res = await axios.post('http://localhost:8080/api/v1/main/login', data);
+      dispatch({ type: 'LOGIN_SUCCESS', payload: res.data });
+      navigate("/dashboard");
+    } catch (err) {
+      dispatch({ type: 'LOGIN_FAILURE', payload: err });
+    }
+  };
   const handleShowPassword = () => {
     setShowPassword((show) => !show);
   };
 
   return (
     <FormikProvider value={formik}>
-      <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
+      <Form autoComplete="off" noValidate>
         <Stack spacing={3}>
           <TextField
             fullWidth
-            autoComplete="username"
             type="email"
             label="Email address"
-            {...getFieldProps('email')}
-            error={Boolean(touched.email && errors.email)}
-            helperText={touched.email && errors.email}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+           
           />
 
           <TextField
             fullWidth
-            autoComplete="current-password"
             type={showPassword ? 'text' : 'password'}
             label="Password"
-            {...getFieldProps('password')}
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -75,8 +95,7 @@ export default function LoginForm() {
                 </InputAdornment>
               )
             }}
-            error={Boolean(touched.password && errors.password)}
-            helperText={touched.password && errors.password}
+           
           />
         </Stack>
 
@@ -97,6 +116,7 @@ export default function LoginForm() {
           type="submit"
           variant="contained"
           loading={isSubmitting}
+          onClick={handleSubmit}
         >
           Login
         </LoadingButton>

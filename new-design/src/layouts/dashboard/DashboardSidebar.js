@@ -10,8 +10,11 @@ import Scrollbar from '../../components/Scrollbar';
 import NavSection from '../../components/NavSection';
 import { MHidden } from '../../components/@material-extend';
 //
+import { useContext } from "react";
 import sidebarConfig from './SidebarConfig';
 import account from '../../_mocks_/account';
+import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
@@ -41,6 +44,8 @@ DashboardSidebar.propTypes = {
 
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const { user: currentUser, dispatch } = useContext(AuthContext);
 
   useEffect(() => {
     if (isOpenSidebar) {
@@ -68,10 +73,10 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
             <Avatar src={account.photoURL} alt="photoURL" />
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                {account.displayName}
+              {currentUser?.username}
               </Typography>
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {account.role}
+              {currentUser?.email}
               </Typography>
             </Box>
           </AccountStyle>

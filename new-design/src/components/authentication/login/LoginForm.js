@@ -57,6 +57,8 @@ export default function LoginForm() {
     try {
       
       const res = await axios.post('http://localhost:8080/api/v1/main/login', data);
+      console.log("res")
+      console.log(res)
       dispatch({ type: 'LOGIN_SUCCESS', payload: res.data });
       navigate("/dashboard");
     } catch (err) {

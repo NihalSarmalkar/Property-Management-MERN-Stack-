@@ -28,6 +28,8 @@ import { AuthContext } from './context/AuthContext';
 
 export default function Router() {
   const { user } = useContext(AuthContext);
+  console.log(user)
+  
   return useRoutes([
     {
       path: '/dashboard',
@@ -36,23 +38,23 @@ export default function Router() {
         { element: <Navigate to="/dashboard/app" replace /> },
         { path: 'app', element: user ? <DashboardApp /> : <Navigate to="/Login" />},
 
-        { path: 'adminawards', element: <AdminAwards /> },
-        { path: 'adminawardreports', element: <AdminAwardReports /> },
+        { path: 'adminawards', element:user?.usertype ? <Navigate to="/" />: <AdminAwards /> },
+        { path: 'adminawardreports', element: user?.usertype ?<Navigate to="/" />:<AdminAwardReports /> },
 
-        { path: 'bank', element: <Bank /> },
-        { path: 'bank-reports', element: <BankReports /> },
+        { path: 'bank', element:user?.usertype ? user?.usertype==="Banker"? <Bank />: <Navigate to="/" /> :  <Bank />},
+        { path: 'bank-reports', element:user?.usertype ? user?.usertype==="Banker"? <BankReports /> : <Navigate to="/" /> :  <BankReports />},
 
-        { path: 'finance-consultant', element: <Financeconsultant /> },
-        { path: 'finance-consultant-awards', element: <FinanceConsultantAwards /> },
-        { path: 'finance-consultant-reports', element: <FinanceConsultantReports /> },
+        { path: 'finance-consultant', element: user?.usertype ? user?.usertype==="Finance Consultant"?<Financeconsultant /> : <Navigate to="/" /> :  <Financeconsultant />},
+        { path: 'finance-consultant-awards', element: user?.usertype ? user?.usertype==="Finance Consultant"? <FinanceConsultantAwards /> : <Navigate to="/" /> :  <FinanceConsultantAwards />},
+        { path: 'finance-consultant-reports', element: user?.usertype ? user?.usertype==="Finance Consultant"? <FinanceConsultantReports />: <Navigate to="/"  /> :  <FinanceConsultantReports />},
 
-        { path: 'case', element: <CasePage /> },
-        { path: 'viewcase', element: <ViewCase /> },
+        { path: 'case', element: user?.usertype ? user?.usertype==="Property Agent"? <CasePage /> : <Navigate to="/" />:  <CasePage />},
+        { path: 'viewcase', element:user?.usertype ? user?.usertype==="Property Agent"?<ViewCase />: <Navigate to="/" /> :  <ViewCase />},
 
-        { path: 'report', element: <PropertyAgent /> },
+        { path: 'report', element: user?.usertype ? user?.usertype==="Property Agent"? <PropertyAgent /> : <Navigate to="/" /> :  <PropertyAgent />},
 
-        { path: 'user', element: <User /> },
-        { path: 'user-management', element: <UserManagement /> },
+        { path: 'user', element: user?.usertype ?<Navigate to="/" />:<User /> },
+        { path: 'user-management', element:user?.usertype ?<Navigate to="/" /> :<UserManagement /> },
 
         { path: 'products', element: <Products /> },
         { path: 'blog', element: <Blog /> }

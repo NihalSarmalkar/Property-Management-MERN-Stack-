@@ -7,7 +7,8 @@ import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
 // material
 import { alpha, useTheme, styled } from '@mui/material/styles';
 import { Box, List, Collapse, ListItemText, ListItemIcon, ListItemButton } from '@mui/material';
-
+import { useContext } from "react";
+import { AuthContext } from './../context/AuthContext';
 // ----------------------------------------------------------------------
 
 const ListItemStyle = styled((props) => <ListItemButton disableGutters {...props} />)(
@@ -155,14 +156,140 @@ NavSection.propTypes = {
 
 export default function NavSection({ navConfig, ...other }) {
   const { pathname } = useLocation();
+  const { user } = useContext(AuthContext);
+  console.log("userifno")
+  
+
   const match = (path) => (path ? !!matchPath({ path, end: false }, pathname) : false);
 
   return (
     <Box {...other}>
       <List disablePadding>
-        {navConfig.map((item) => (
-          <NavItem key={item.title} item={item} active={match} />
-        ))}
+        {navConfig.map((item) => {
+          console.log(item.title)
+          if(user?.usertype==="Banker"){
+            if(item.title==="bank" ){
+
+    
+              return(
+                <NavItem key={item.title} item={item} active={match} />
+              )
+
+            }
+            if(item.title==="bank reports" ){
+
+        
+              return(
+                <NavItem key={item.title} item={item} active={match} />
+              )
+
+            }
+            if(item.title==="login" ){
+
+          
+              return(
+                <NavItem key={item.title} item={item} active={match} />
+              )
+
+            }
+            if(item.title==="register" ){
+
+           
+              return(
+                <NavItem key={item.title} item={item} active={match} />
+              )
+
+            }
+            
+
+          }
+          else if(user?.usertype==="Finance Consultant"){
+            if(item.title==="finance consultant" ){
+
+           
+              return(
+                <NavItem key={item.title} item={item} active={match} />
+              )
+
+            }
+            if(item.title==="finance consultant awards" ){
+
+         
+              return(
+                <NavItem key={item.title} item={item} active={match} />
+              )
+
+            }
+            if(item.title==="finance consultant reports" ){
+
+           
+              return(
+                <NavItem key={item.title} item={item} active={match} />
+              )
+
+            }
+            if(item.title==="login" ){
+
+         
+              return(
+                <NavItem key={item.title} item={item} active={match} />
+              )
+
+            }
+            if(item.title==="register" ){
+
+             
+              return(
+                <NavItem key={item.title} item={item} active={match} />
+              )
+
+            }
+            
+
+          }
+          else if(user?.usertype==="Property Agent"){
+            if(item.title==="case" ){
+
+          
+              return(
+                <NavItem key={item.title} item={item} active={match} />
+              )
+
+            }
+            if(item.title==="viewcase" ){
+
+           
+              return(
+                <NavItem key={item.title} item={item} active={match} />
+              )
+
+            }
+            if(item.title==="login" ){
+
+         
+              return(
+                <NavItem key={item.title} item={item} active={match} />
+              )
+
+            }
+            if(item.title==="register" ){
+
+             
+              return(
+                <NavItem key={item.title} item={item} active={match} />
+              )
+
+            }
+
+          }
+          else{
+       
+            return(
+              <NavItem key={item.title} item={item} active={match} />
+            )
+
+          }
+          })}
       </List>
     </Box>
   );

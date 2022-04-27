@@ -1,5 +1,6 @@
 
 const Usersdata = require('../models/usersdata')
+const userManagementModel = require('../models/userManagementData')
 const bcrypt = require("bcrypt");
 
 
@@ -33,13 +34,34 @@ const registeruser = async(req,res)=>{
 const loginuser =async(req,res)=>{
 
   try {
-    const user = await Usersdata.findOne({ email: req.body.email });
-    !user && res.status(404).json("user not found");
 
-    const validPassword = await bcrypt.compare(req.body.password, user.password)
-    !validPassword && res.status(400).json("wrong password")
+    const user = await userManagementModel.findOne({ email: req.body.email });
+    if(user){
+      if(req.body.password===user.password){
+        console.log("special case")
+        res.status(200).json(user)
 
-    res.status(200).json(user)
+
+      }else{
+        res.status(400).json("wrong password")
+
+      }
+    }
+    else{
+      console.log("noraml case")
+      const user1 = await Usersdata.findOne({ email: req.body.email });
+      !user1 && res.status(404).json("user not found");
+
+      const validPassword = await bcrypt.compare(req.body.password, user1.password)
+      !validPassword && res.status(400).json("wrong password")
+
+      res.status(200).json(user1)
+
+    }
+
+
+
+    
   } catch (err) {
     res.status(500).json(err)
   }

@@ -281,6 +281,7 @@ const UserManagement = () => {
                   <TableCell align="left">Type</TableCell>
                   <TableCell align="left">Created On</TableCell>
                   <TableCell align="center">Action</TableCell>
+                  <TableCell align="center">Status</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -307,6 +308,7 @@ const UserManagement = () => {
                         <Visibility />
                       </IconButton>
                     </TableCell>
+                   
                   </TableRow>
                 ))}
               </TableBody>

@@ -9,7 +9,8 @@ const financeconsultant = require('../controllers/financeConsultant')
 const adminawards = require('../controllers/adminawards')
 const authcontroller = require('../controllers/authcontroller')
 const userManagement = require('../controllers/userManagement')
-
+const Comment = require('../controllers/comment')
+const rejectionContent = require('../controllers/rejectionContent')
 
 router.use(express.json())
 
@@ -54,6 +55,17 @@ router.get('/getadminawards',adminawards.getadminawards)
 router.delete('/deladminawards/:id',adminawards.deladminawards)
 router.put('/updateadminawards/:id',adminawards.updateadminawards)
 router.post('/updateawards', adminawards.updateawards)
+
+
+//rejectionComments
+router.post('/rejectionContent',rejectionContent.rejectionContent)
+router.get('/getrejectionContent',rejectionContent.getrejectionContent)
+
+
+//Comments
+router.post('/postComment',Comment.postComment)
+router.get('/getComment',Comment.getComment)
+
 
 
 //UserManagement

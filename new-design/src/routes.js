@@ -49,7 +49,7 @@ export default function Router() {
         { path: 'finance-consultant-reports', element: user?.usertype ? user?.usertype==="Finance Consultant"? <FinanceConsultantReports />: <Navigate to="/"  /> :  <FinanceConsultantReports />},
 
         { path: 'case', element: user?.usertype ? user?.usertype==="Property Agent"? <CasePage /> : <Navigate to="/" />:  <CasePage />},
-        { path: 'viewcase', element:user?.usertype ? user?.usertype==="Property Agent"?<ViewCase />: <Navigate to="/" /> :  <ViewCase />},
+        { path: 'viewcase', element:<ViewCase />},
 
         { path: 'report', element: user?.usertype ? user?.usertype==="Property Agent"? <PropertyAgent /> : <Navigate to="/" /> :  <PropertyAgent />},
 

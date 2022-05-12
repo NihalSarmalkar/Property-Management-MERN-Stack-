@@ -45,6 +45,10 @@ const attendeeSchema = new mongoose.Schema({
   action:{
     type:Boolean,
     default: false
+  },
+  modified:{
+    type:Boolean,
+    default: false
   }
 });
 

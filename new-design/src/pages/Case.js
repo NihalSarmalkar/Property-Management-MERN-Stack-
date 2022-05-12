@@ -1,6 +1,16 @@
 import React, { useEffect } from 'react';
 
-import { Box, Container, FormControl, IconButton, Input, InputLabel, MenuItem, Select } from '@mui/material';
+import {
+  Box,
+  Container,
+  FormControl,
+  IconButton,
+  Input,
+  Tooltip,
+  InputLabel,
+  MenuItem,
+  Select
+} from '@mui/material';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -11,7 +21,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import axios from 'axios';
-
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import { Link } from "react-router-dom";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -36,47 +47,80 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import moment from 'moment';
+import { useState } from 'react';
 
-const TableViewPage = ({ counter, caseall, rerender }) => {
+const TableViewPage = ({ counter, caseall, rerender, rejData }) => {
   const [open, setOpen] = React.useState(false);
   const [edit, setEdit] = React.useState(false);
   var date = caseall.createdAt;
   date = new Date(date).toString();
-
+  const [openreview, setOpenreview] = React.useState(false);
+  const [openCommentBox,setOpenCommentBox] = React.useState(false);
   const [formData, setFormData] = React.useState({});
+  const [rejjdata, setrejjData] = useState('');
+  const [comment , setComment] = useState('');
+  const [content , setContent] = useState('');
+  const [commentBoxData , setCommentBoxData] = useState({});
+  const [starValue , setstarValue] = useState();
 
   const setFormProp = function (e) {
     const oldFormData = formData;
     oldFormData[e.target.name] = e.target.value;
 
     setFormData(oldFormData);
+  };
+  const handleClickOpenreview = () => {
+    setOpenreview(true);
+  };
+
+  const handleClickOpenCommentBox =()=>{
+    setOpenCommentBox(true);
   }
 
-  
-  
-  
+  const handleDeleteFile = async (file, id) => {
+    const res = await axios.get('http://localhost:8080/api/v1/main/getone/' + id);
 
-  const handleDeleteFile = async (file,id)=>{
-   
-    const res =await axios.get("http://localhost:8080/api/v1/main/getone/"+ id);
-   
-    res.data.urls.splice(file,1)
-  
-   
-    const newresponse = await axios.put(`http://localhost:8080/api/v1/main/updateone/${id}`,res.data);
+    res.data.urls.splice(file, 1);
+
+    const newresponse = await axios.put(
+      `http://localhost:8080/api/v1/main/updateone/${id}`,
+      res.data
+    );
     if (await newresponse) {
       rerender();
       setEdit(false);
       setOpen(false);
     }
+  };
+
+  const submitComment = async(caseId,type,name)=>{
+    console.log(caseId)
+    console.log(type)
+    console.log(content)
+    try {
+      const data = {
+        caseId,
+        type,
+        content,
+        name,
+        starValue
+      };
+
+      await axios.post('http://localhost:8080/api/v1/main/postComment', data);
+      handleCancelCommentBox();
+      
+    } catch (err) {
+      console.log(err)
+    }
+    
 
   }
 
   const updateCase = async function () {
     const request = await fetch(`${API_SERVICE}/updatecase`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -90,34 +134,159 @@ const TableViewPage = ({ counter, caseall, rerender }) => {
       setEdit(false);
       setOpen(false);
     }
-  }
+  };
+  const handleCancel = () => {
+    setOpenreview(false);
+  };
+
+  const handleCancelCommentBox = () => {
+    setOpenCommentBox(false);
+  };
+
+  
 
   return (
-    <>
+    <><Dialog
+    open={openCommentBox}
+    onClose={handleCancelCommentBox}
+    aria-labelledby="alert-dialog-title"
+    fullWidth
+    maxWidth="md"
+    aria-describedby="alert-dialog-description"
+  >
+    <DialogTitle id="alert-dialog-title">Add Comment and rate</DialogTitle>
+    <DialogContent>
+      <Typography sx={{ mt: 2, mb: 2 }} variant="h6">
+        Comment down below.
+      </Typography>
+      <TextField color="secondary" focused fullWidth multiline rows="4" 
+          onChange={(e) => setContent(e.target.value)}
+          />
+          <TextField
+                sx={{ mt: 4 }}
+                type="number"
+                label="Rate out of 5"
+                focused
+                fullWidth
+                onChange={(e) => setstarValue(e.target.value)}
+                variant="outlined"
+                color="secondary"
+                
+              />
+    </DialogContent>
+
+    <DialogActions>
+      <Button color="inherit" onClick={handleCancelCommentBox}>
+        Cancel
+      </Button>
+      <Button
+        onClick={() => {
+          submitComment(commentBoxData._id,commentBoxData.usertype,commentBoxData.name);
+        }}
+        autoFocus
+      >
+        
+        Submit
+      </Button>
+    </DialogActions>
+  </Dialog>
+      <Dialog
+        open={openreview}
+        onClose={handleCancel}
+        aria-labelledby="alert-dialog-title"
+        fullWidth
+        maxWidth="md"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Submitted Case</DialogTitle>
+        <DialogContent>
+          <Typography sx={{ mt: 2 }} variant="h6">
+            Type:{rejjdata}
+          </Typography>
+        </DialogContent>
+      </Dialog>
       <TableRow key={caseall._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
         <TableCell component="th" scope="row">
           {counter}
         </TableCell>
-        <TableCell align="center">{caseall.name}</TableCell>
+        
+            <TableCell align="center"><Link
+              to={`/dashboard/viewcase?id=${caseall._id}&type=${caseall.usertype}&name=${caseall.name}`}
+              style={{ textDecoration: "none",color:"black" }}
+            >{caseall.name}
+            </Link></TableCell>
+
+        
         <TableCell align="center">
           <p>{date.replace(/(.*:\d+).*/g, '$1')}</p>
         </TableCell>
         <TableCell align="center">{caseall.type}</TableCell>
+
+        {/* {caseall.action
+        ? <TableCell align="center">Accepted</TableCell>
+        : <TableCell align="center">Rejected</TableCell>
+       } */}
+        {(() => {
+          if (caseall.action) {
+            return <TableCell align="center">Accepted</TableCell>;
+          } else {
+            if (!caseall.modified) {
+              return <TableCell align="center">Not Specified</TableCell>;
+            }
+            return (
+              <>
+              <TableCell align="center">Rejected {(() => {
+                  rejData.data.map((file, _) => {
+                    
+                    if (caseall._id === file.caseId) {
+                   
+                      return (
+                        <>
+                        <Tooltip title="Review Case">
+                            <IconButton
+                              onClick={() => {
+                                setrejjData(file.content);
+
+                                handleClickOpenreview();
+                              }}
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              <RemoveRedEyeIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </>
+                        
+                      )
+                      
+                          
+                       
+                          
+                     
+
+                    }
+                  });
+                })()}</TableCell>
+                
+              </>
+            );
+          }
+        })()}
+
         <TableCell align="center">
           {/* <IconButton color="primary"> */}
           <Dialog
             open={open}
-            onClose={() => { }}
+            onClose={() => {}}
             aria-labelledby="alert-dialog-title"
             fullWidth
             maxWidth="md"
             aria-describedby="alert-dialog-description"
           >
-            <DialogTitle id="alert-dialog-title">{edit ? "Edit" : "View"} Case</DialogTitle>
-            {
-              !edit ?
+            <DialogTitle id="alert-dialog-title">{edit ? 'Edit' : 'View'} Case</DialogTitle>
+            {!edit ? (
               <DialogContent>
-
                 <Card sx={{ maxWidth: '100%' }}>
                   <CardHeader
                     avatar={
@@ -125,13 +294,9 @@ const TableViewPage = ({ counter, caseall, rerender }) => {
                         {caseall.name.split('')[0]}
                       </Avatar>
                     }
-                    action={
-                      <IconButton aria-label="settings">
-                        {/* <MoreVertIcon /> */}
-                      </IconButton>
-                    }
+                    action={<IconButton aria-label="settings">{/* <MoreVertIcon /> */}</IconButton>}
                     title={caseall.name}
-                    subheader={moment(caseall.createdAt).format("MMMM DD, YYYY")}
+                    subheader={moment(caseall.createdAt).format('MMMM DD, YYYY')}
                   />
                   <CardContent>
                     <Typography variant="body2" color="text.primary">
@@ -139,16 +304,11 @@ const TableViewPage = ({ counter, caseall, rerender }) => {
                         Type: {caseall.type},<br></br>
                         SubType: {caseall.subcategory}
                       </div>
-                      <div>
-                        ProjectType: {caseall.projecttype}
-                      </div>
-                      <div>
-                        EmployementYear: {caseall.employementyear}
-                      </div>
+                      <div>ProjectType: {caseall.projecttype}</div>
+                      <div>EmployementYear: {caseall.employementyear}</div>
                       <div>
                         Contact: {caseall.contact} <br></br> Email: {caseall.email}
                       </div>
-                      
                     </Typography>
                   </CardContent>
                 </Card>
@@ -165,90 +325,99 @@ const TableViewPage = ({ counter, caseall, rerender }) => {
                   </TableHead>
                   <TableBody>
                     {[...caseall.urls].map((file, _) => {
-                      if (typeof file === "object") {
-                        return <TableRow key={"table_" + _}>
-                          <TableCell>{_ + 1}</TableCell>
-                          <TableCell align='left'>{caseall.name}</TableCell>
-                          <TableCell align='left'>{caseall.name}</TableCell>
-                          <TableCell align='left'>{caseall.email}</TableCell>
-                          <TableCell align='right'>
-                            <Button variant="outlined">
-                              <PreviewIcon onClick={() => {
-                                var a = document.createElement("a");
-                                a.href = file.url;
-                                a.download = file.name;
-                                a.target = "_blank";
-                                a.click();
-                              }} />
-                              
-                            </Button>
-                           
-                            
-                          </TableCell>
-                          <TableCell align='right'>
-                            
-                            <Button variant="outlined" color='error'>
-                              <DeleteIcon color='error' onClick={() => {
-                                handleDeleteFile(_,caseall._id)
-                                
-                              }} />
-                              
-                            </Button>
-                            
-                          </TableCell>
-                        </TableRow>
+                      if (typeof file === 'object') {
+                        return (
+                          <TableRow key={'table_' + _}>
+                            <TableCell>{_ + 1}</TableCell>
+                            <TableCell align="left">{caseall.name}</TableCell>
+                            <TableCell align="left">{caseall.name}</TableCell>
+                            <TableCell align="left">{caseall.email}</TableCell>
+                            <TableCell align="right">
+                              <Button variant="outlined">
+                                <PreviewIcon
+                                  onClick={() => {
+                                    var a = document.createElement('a');
+                                    a.href = file.url;
+                                    a.download = file.name;
+                                    a.target = '_blank';
+                                    a.click();
+                                  }}
+                                />
+                              </Button>
+                            </TableCell>
+                            <TableCell align="right">
+                              <Button variant="outlined" color="error">
+                                <DeleteIcon
+                                  color="error"
+                                  onClick={() => {
+                                    handleDeleteFile(_, caseall._id);
+                                  }}
+                                />
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        );
                       } else {
-                        return <TableRow key={"table_" + _}>
-                          <TableCell>{_ + 1}</TableCell>
-                          <TableCell align='left'>File</TableCell>
-                          <TableCell align='right'>
-                            <Button>
-                              <PreviewIcon onClick={() => {
-                                var a = document.createElement("a");
-                                a.href = file;
-                                a.download = "File";
-                                a.target = "_blank";
-                                a.click();
-                              }} />
-                            </Button>
-                          </TableCell>
-                        </TableRow>
+                        return (
+                          <TableRow key={'table_' + _}>
+                            <TableCell>{_ + 1}</TableCell>
+                            <TableCell align="left">File</TableCell>
+                            <TableCell align="right">
+                              <Button>
+                                <PreviewIcon
+                                  onClick={() => {
+                                    var a = document.createElement('a');
+                                    a.href = file;
+                                    a.download = 'File';
+                                    a.target = '_blank';
+                                    a.click();
+                                  }}
+                                />
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        );
                       }
                     })}
-                    {[...caseall.urls].length < 1 ?
+                    {[...caseall.urls].length < 1 ? (
                       <TableRow>
                         <TableCell>No Files Found!</TableCell>
-                      </TableRow> :
-                      null
-                    }
+                      </TableRow>
+                    ) : null}
                   </TableBody>
                 </Table>
               </DialogContent>
-              : <DialogContent>
-                  <TextField id="outlined-basic" onChange={setFormProp} defaultValue={caseall.name} style={{minWidth: '100%', marginBottom: '20px'}} name="name" label="Casename" variant="outlined" />
-                  {/* <TextField id="outlined-basic" onChange={setFormProp} defaultValue={caseall.type} style={{minWidth: '100%', marginBottom: '20px'}} name="type" label="Type" variant="outlined" /> */}
-                  <select
-                    id="outlined-basic"
-                    style={{
-                      width: '100%',
-                      padding: '12px',
-                      border: '1px solid #000000',
-                      borderRadius: '10px'
-                    }}
-                    // defaultValue={caseall.type}
-                    defaultValue={formData.type}
-                    name="type"
-                    onChange={setFormProp}
-                  >
-                    <option >
-                      Select the Type
-                    </option>
-                    <option value="Employee">Employee</option>
-                    <option value="Self-Employed">Self-Employed</option>
-                  </select>
+            ) : (
+              <DialogContent>
+                <TextField
+                  id="outlined-basic"
+                  onChange={setFormProp}
+                  defaultValue={caseall.name}
+                  style={{ minWidth: '100%', marginBottom: '20px' }}
+                  name="name"
+                  label="Casename"
+                  variant="outlined"
+                />
+                {/* <TextField id="outlined-basic" onChange={setFormProp} defaultValue={caseall.type} style={{minWidth: '100%', marginBottom: '20px'}} name="type" label="Type" variant="outlined" /> */}
+                <select
+                  id="outlined-basic"
+                  style={{
+                    width: '100%',
+                    padding: '12px',
+                    border: '1px solid #000000',
+                    borderRadius: '10px'
+                  }}
+                  // defaultValue={caseall.type}
+                  defaultValue={formData.type}
+                  name="type"
+                  onChange={setFormProp}
+                >
+                  <option>Select the Type</option>
+                  <option value="Employee">Employee</option>
+                  <option value="Self-Employed">Self-Employed</option>
+                </select>
 
-
-                  <select
+                <select
                   style={{
                     width: '100%',
                     padding: '12px',
@@ -258,37 +427,75 @@ const TableViewPage = ({ counter, caseall, rerender }) => {
                     borderRadius: '10px'
                   }}
                   onChange={setFormProp}
-                  >
-                <option>
-                  Select the Sub Category
-                </option>
-                <option value="Sdn Bhd">Sdn Bhd</option>
-                <option value="Sole proprietorship">Sole proprietorship</option>
-                <option value="Basic salary">Basic salary</option>
-                <option value="Basic + Commission / Allowance">
-                  Basic + Commission / Allowance
-                </option>
-                <option value="Full commission earner">Full commission earner</option>
+                >
+                  <option>Select the Sub Category</option>
+                  <option value="Sdn Bhd">Sdn Bhd</option>
+                  <option value="Sole proprietorship">Sole proprietorship</option>
+                  <option value="Basic salary">Basic salary</option>
+                  <option value="Basic + Commission / Allowance">
+                    Basic + Commission / Allowance
+                  </option>
+                  <option value="Full commission earner">Full commission earner</option>
                 </select>
-                  <TextField id="outlined-basic" onChange={setFormProp} defaultValue={caseall.contact} style={{minWidth: '100%', marginBottom: '20px'}} name="contact" label="Contact" variant="outlined" />
-                  <TextField id="outlined-basic" onChange={setFormProp} defaultValue={caseall.email} style={{minWidth: '100%', marginBottom: '20px'}} name="email" label="Email" variant="outlined" />
-                  
+                <TextField
+                  id="outlined-basic"
+                  onChange={setFormProp}
+                  defaultValue={caseall.contact}
+                  style={{ minWidth: '100%', marginBottom: '20px' }}
+                  name="contact"
+                  label="Contact"
+                  variant="outlined"
+                />
+                <TextField
+                  id="outlined-basic"
+                  onChange={setFormProp}
+                  defaultValue={caseall.email}
+                  style={{ minWidth: '100%', marginBottom: '20px' }}
+                  name="email"
+                  label="Email"
+                  variant="outlined"
+                />
               </DialogContent>
-            }
+            )}
 
             <DialogActions>
-              <Button onClick={() => {setEdit(false); setOpen(false);}} autoFocus>Close</Button>
+              <Button
+                onClick={() => {
+                  setEdit(false);
+                  setOpen(false);
+                }}
+                autoFocus
+              >
+                Close
+              </Button>
               {!edit ? (
                 <Button onClick={() => setEdit(true)}>Edit</Button>
-              ): (
+              ) : (
                 <Button onClick={updateCase}>Update</Button>
-              ) 
-              }
+              )}
             </DialogActions>
           </Dialog>
-          <Button><PreviewIcon onClick={() => setOpen(true)} /></Button>
+          <Button>
+            <PreviewIcon onClick={() => setOpen(true)} />
+          </Button>
           {/* </IconButton> */}
         </TableCell>
+        {/* <TableCell align="center">
+        <Button
+           
+           variant="outlined"
+            color="primary"
+            onClick={()=>{
+              setCommentBoxData(caseall);
+              handleClickOpenCommentBox();
+
+            
+            }}
+            
+          >
+           Add Comment
+          </Button>
+        </TableCell> */}
       </TableRow>
     </>
   );
@@ -306,12 +513,12 @@ const UploadFile = ({ file, setFile, setURL, urls }) => {
         name: file.name,
         url: url
       });
-      console.log(urls)
-      console.log("urls")
-      console.log(nurls)
+      console.log(urls);
+      console.log('urls');
+      console.log(nurls);
 
       setFile(null);
-      
+
       setURL(nurls);
     }
   }, [url]);
@@ -319,13 +526,21 @@ const UploadFile = ({ file, setFile, setURL, urls }) => {
   return <span></span>;
 };
 
-const ShowServicesList = ({ allCase, getAllCase }) => {
+const ShowServicesList = ({ allCase, getAllCase, rejData }) => {
   var counter = 0;
   return (
     <>
       {allCase.map((caseall) => {
         counter = counter + 1;
-        return <TableViewPage caseall={caseall} rerender={getAllCase} counter={counter} key={caseall._id} />;
+        return (
+          <TableViewPage
+            caseall={caseall}
+            rerender={getAllCase}
+            counter={counter}
+            key={caseall._id}
+            rejData={rejData}
+          />
+        );
       })}
     </>
   );
@@ -344,6 +559,7 @@ const CasePage = () => {
   const [name, setname] = React.useState('');
   const [contact, setcontact] = React.useState('');
   const [email, setemail] = React.useState('');
+  const [rejData, setrejData] = React.useState('');
 
   const [loading, setloading] = React.useState(true);
   const [allCase, setallCase] = React.useState([]);
@@ -358,13 +574,12 @@ const CasePage = () => {
     }
 
     const file = e.target.files[0] ?? null;
-    console.log(file)
+    console.log(file);
 
     if (file) {
-      
       setCurrentFile({
-        name: e.target.parentElement.querySelector('p').innerText.replace('Please Upload', ""),
-        file: file,
+        name: e.target.parentElement.querySelector('p').innerText.replace('Please Upload', ''),
+        file: file
       });
     }
   };
@@ -424,8 +639,8 @@ const CasePage = () => {
         email,
         urls
       };
-      console.log("After ---")
-      console.log(urls)
+      console.log('After ---');
+      console.log(urls);
       const res = await fetch(`${API_SERVICE}/addcasepropertyagent`, {
         method: 'POST',
         headers: {
@@ -447,12 +662,17 @@ const CasePage = () => {
 
   React.useEffect(() => {
     getAllCase();
+    console.log(rejData);
   }, []);
 
   const getAllCase = async () => {
     try {
       const res = await fetch(`${API_SERVICE}/getcase`);
       const caseall = await res.json();
+      const rejectionData = await axios.get(
+        'http://localhost:8080/api/v1/main/getrejectionContent'
+      );
+      setrejData(rejectionData);
 
       setallCase(caseall);
       setloading(false);
@@ -485,9 +705,7 @@ const CasePage = () => {
             }}
             onChange={(e) => setprojecttype(e.target.value)}
           >
-            <option >
-              Select the Type
-            </option>
+            <option>Select the Type</option>
             <option value="Sub-sales">Sub-sales</option>
             <option value="Project">Project</option>
             {/* {console.log(getInputProps())} */}
@@ -590,9 +808,7 @@ const CasePage = () => {
             }}
             onChange={(e) => changeEmployeeType(e.target.value)}
           >
-            <option >
-              Select the Type
-            </option>
+            <option>Select the Type</option>
             <option value="Employee">Employee</option>
             <option value="Self-Employed">Self-Employed</option>
           </select>
@@ -609,9 +825,7 @@ const CasePage = () => {
                 }}
                 onChange={(e) => setsubcategory(e.target.value)}
               >
-                <option>
-                  Select the Sub Category
-                </option>
+                <option>Select the Sub Category</option>
                 <option value="Sdn Bhd">Sdn Bhd</option>
                 <option value="Sole proprietorship">Sole proprietorship</option>
               </select>
@@ -628,9 +842,7 @@ const CasePage = () => {
                 }}
                 onChange={(e) => setsubcategory(e.target.value)}
               >
-                <option >
-                  Select the Sub Category
-                </option>
+                <option>Select the Sub Category</option>
                 <option value="Basic salary">Basic salary</option>
                 <option value="Basic + Commission / Allowance">
                   Basic + Commission / Allowance
@@ -648,9 +860,7 @@ const CasePage = () => {
                 }}
                 onChange={(e) => setemployementyear(e.target.value)}
               >
-                <option >
-                  Select employement year
-                </option>
+                <option>Select employement year</option>
                 <option value="Less than 1 Year">Less than 1 Year</option>
                 <option value="1 Year">1 Year</option>
                 <option value="2 Year">2 Year</option>
@@ -1384,11 +1594,18 @@ const CasePage = () => {
                   <TableCell align="center">Case Name</TableCell>
                   <TableCell align="center">Submitted On</TableCell>
                   <TableCell align="center">Type</TableCell>
+                  <TableCell align="center">Status</TableCell>
                   <TableCell align="center">Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {loading === true ? <TableRow><TableCell>Loading...</TableCell></TableRow> : <ShowServicesList getAllCase={getAllCase} allCase={allCase} />}
+                {loading === true ? (
+                  <TableRow>
+                    <TableCell>Loading...</TableCell>
+                  </TableRow>
+                ) : (
+                  <ShowServicesList getAllCase={getAllCase} allCase={allCase} rejData={rejData} />
+                )}
               </TableBody>
             </Table>
           </TableContainer>

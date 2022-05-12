@@ -168,14 +168,6 @@ export default function NavSection({ navConfig, ...other }) {
         {navConfig.map((item) => {
           console.log(item.title)
           if(user?.usertype==="Banker"){
-            if(item.title==="bank" ){
-
-    
-              return(
-                <NavItem key={item.title} item={item} active={match} />
-              )
-
-            }
             if(item.title==="bank reports" ){
 
         
@@ -184,15 +176,29 @@ export default function NavSection({ navConfig, ...other }) {
               )
 
             }
-            if(item.title==="login" ){
+            if(item.title==="dashboard" ){
 
-          
+    
               return(
                 <NavItem key={item.title} item={item} active={match} />
               )
 
             }
-            if(item.title==="register" ){
+            if(item.title==="bank" ){
+
+    
+              return(
+                <NavItem key={item.title} item={item} active={match} />
+              )
+
+            }
+            
+            
+            
+
+          }
+          else if(user?.usertype==="Finance Consultant"){
+            if(item.title==="finance consultant reports" ){
 
            
               return(
@@ -200,10 +206,14 @@ export default function NavSection({ navConfig, ...other }) {
               )
 
             }
-            
+            if(item.title==="dashboard" ){
 
-          }
-          else if(user?.usertype==="Finance Consultant"){
+    
+              return(
+                <NavItem key={item.title} item={item} active={match} />
+              )
+
+            }
             if(item.title==="finance consultant" ){
 
            
@@ -220,7 +230,13 @@ export default function NavSection({ navConfig, ...other }) {
               )
 
             }
-            if(item.title==="finance consultant reports" ){
+            
+           
+            
+
+          }
+          else if(user?.usertype==="Property Agent"){
+            if(item.title==="Report" ){
 
            
               return(
@@ -228,26 +244,14 @@ export default function NavSection({ navConfig, ...other }) {
               )
 
             }
-            if(item.title==="login" ){
+            if(item.title==="dashboard" ){
 
-         
+    
               return(
                 <NavItem key={item.title} item={item} active={match} />
               )
 
             }
-            if(item.title==="register" ){
-
-             
-              return(
-                <NavItem key={item.title} item={item} active={match} />
-              )
-
-            }
-            
-
-          }
-          else if(user?.usertype==="Property Agent"){
             if(item.title==="case" ){
 
           
@@ -256,37 +260,54 @@ export default function NavSection({ navConfig, ...other }) {
               )
 
             }
-            if(item.title==="viewcase" ){
-
+            
            
-              return(
-                <NavItem key={item.title} item={item} active={match} />
-              )
-
-            }
-            if(item.title==="login" ){
-
-         
-              return(
-                <NavItem key={item.title} item={item} active={match} />
-              )
-
-            }
-            if(item.title==="register" ){
-
-             
-              return(
-                <NavItem key={item.title} item={item} active={match} />
-              )
-
-            }
+            
 
           }
           else{
+            if(item.title==="admin award reports" ){
+
+        
+              return(
+                <NavItem key={item.title} item={item} active={match} />
+              )
+
+            }
+            if(item.title==="dashboard" ){
+
+    
+              return(
+                <NavItem key={item.title} item={item} active={match} />
+              )
+
+            }
        
-            return(
-              <NavItem key={item.title} item={item} active={match} />
-            )
+            if(item.title==="admin awards" ){
+
+    
+              return(
+                <NavItem key={item.title} item={item} active={match} />
+              )
+
+            }
+            
+            if(item.title==="user" ){
+
+        
+              return(
+                <NavItem key={item.title} item={item} active={match} />
+              )
+
+            }
+            if(item.title==="user management" ){
+
+        
+              return(
+                <NavItem key={item.title} item={item} active={match} />
+              )
+
+            }
 
           }
           })}

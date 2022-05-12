@@ -28,6 +28,14 @@ const financeConsultantSchema = new mongoose.Schema({
   urls: {
     type: Array,
     default: []
+  },
+  action:{
+    type:Boolean,
+    default: false
+  },
+  modified:{
+    type:Boolean,
+    default: false
   }
 });
 

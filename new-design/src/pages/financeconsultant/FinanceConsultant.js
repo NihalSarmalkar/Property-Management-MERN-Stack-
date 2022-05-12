@@ -21,6 +21,7 @@ import TextField from '@mui/material/TextField';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useDropzone } from 'react-dropzone';
 import { API_SERVICE } from '../../config/URI';
+import { Link } from "react-router-dom";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -119,7 +120,11 @@ const TableViewPage = ({ counter, caseall, rerender }) => {
         <TableCell component="th" scope="row">
           {counter}
         </TableCell>
-        <TableCell align="center">{caseall.name}</TableCell>
+        <TableCell align="center"><Link
+              to={`/dashboard/viewcase?id=${caseall._id}&type=${caseall.usertype}&name=${caseall.name}`}
+              style={{ textDecoration: "none",color:"black" }}
+            >{caseall.name}
+            </Link></TableCell>
         <TableCell align="center">
           <p>{date.replace(/(.*:\d+).*/g, '$1')}</p>
         </TableCell>

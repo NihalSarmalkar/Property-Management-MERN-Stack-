@@ -51,14 +51,23 @@ const Bank = () => {
   const [rejectionReasonDialog, setRejectionReasonDialog] = React.useState(false);
   const [status, setStatus] = React.useState('');
   const [lawyer, setLawyer] = React.useState('');
+  const [casedata, setcaseData] = useState({});
   const [LawyersDialog, setLawyersDialog] = React.useState(false);
   const [allCase, setallCase] = useState([]);
   const [formdata, setFormData] = useState({});
+  const [content , setcontent] = useState({});
 
   const getAllCase = async (month) => {
     try {
-      const res = await axios.get('http://localhost:8080/api/v1/main/getcase');
-      setallCase(res.data.reverse());
+      const resCase = await axios.get('http://localhost:8080/api/v1/main/getcase');
+      const resFinanceConsultant = await axios.get(
+        'http://localhost:8080/api/v1/main/getallfinanceconsutant'
+      );
+      const data1 = resCase.data;
+      const data2 = resFinanceConsultant.data;
+      const resData = data1.concat(data2);
+
+      setallCase(resData.reverse());
     } catch (err) {
       console.log(err);
     }
@@ -66,7 +75,6 @@ const Bank = () => {
 
   useEffect(() => {
     getAllCase();
-    console.log(allCase.length);
   }, []);
 
   const handleClickOpenreview = () => {
@@ -87,17 +95,71 @@ const Bank = () => {
     setStatus('');
   };
 
-  const handleAccept = async (id) => {
-    console.log('handleAccept');
-    var newdata = {
-      action: true
-    };
+  const handleRejection = async (id, userType) => {
+    if (userType == 'Finance Consultant') {
+      console.log('Finance Consultant');
+      console.log(userType);
+      var newdata = {
+        modified: true
+      };
 
-    const newresponse = await axios.put(
-      `http://localhost:8080/api/v1/main/updateone/${id}`,
-      newdata
-    );
-    getAllCase();
+      const newresponse = await axios.put(
+        `http://localhost:8080/api/v1/main/putonefinanceconsutant/${id}`,
+        newdata
+      );
+      getAllCase();
+    } else {
+      console.log('handlemodified');
+      console.log(userType);
+      var newdata = {
+        modified: true
+      };
+
+      const newresponse = await axios.put(
+        `http://localhost:8080/api/v1/main/updateone/${id}`,
+        newdata
+      );
+      getAllCase();
+    }
+  };
+
+  const submitRejection = async (caseId) => {
+    try {
+      const data = {
+        caseId,
+        content
+      };
+
+      const res = await axios.post('http://localhost:8080/api/v1/main/rejectionContent', data);
+
+      setRejectionReasonDialog(false);
+    } catch (err) {}
+  };
+
+  const handleAccept = async (id, userType) => {
+    if (userType == 'Finance Consultant') {
+      console.log('Finance Consultant');
+      var newdata = {
+        action: true
+      };
+
+      const newresponse = await axios.put(
+        `http://localhost:8080/api/v1/main/putonefinanceconsutant/${id}`,
+        newdata
+      );
+      getAllCase();
+    } else {
+      console.log('Not Finance Consultant');
+      var newdata = {
+        action: true
+      };
+
+      const newresponse = await axios.put(
+        `http://localhost:8080/api/v1/main/updateone/${id}`,
+        newdata
+      );
+      getAllCase();
+    }
   };
   return (
     <>
@@ -142,28 +204,24 @@ const Bank = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-
-              {formdata.urls?.map((file, _) => {
-                      if (typeof file === "object") {
-                        return <TableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                {formdata.urls?.map((file, _) => {
+                  if (typeof file === 'object') {
+                    return (
+                      <TableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                         <TableCell component="th" scope="row">
-                        {file.name}
+                          {file.name}
                         </TableCell>
                         <TableCell align="center">
                           <a href={file.url}>
-                          <Button color="primary" size="small" >
-                            Download
-                          </Button>
+                            <Button color="primary" size="small">
+                              Download
+                            </Button>
                           </a>
-
-                          
-
                         </TableCell>
                       </TableRow>
-                      }
-                    })}
-                    
-
+                    );
+                  }
+                })}
 
                 {/* <TableRow key={1} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                   <TableCell component="th" scope="row">
@@ -299,14 +357,21 @@ const Bank = () => {
           <Typography sx={{ mt: 2, mb: 2 }} variant="h6">
             Rejection Reason
           </Typography>
-          <TextField color="secondary" focused fullWidth multiline rows="4" />
+          <TextField color="secondary" focused fullWidth multiline rows="4" 
+          onChange={(e) => setcontent(e.target.value)}
+          />
         </DialogContent>
 
         <DialogActions>
           <Button color="inherit" onClick={() => setRejectionReasonDialog(false)}>
             Cancel
           </Button>
-          <Button onClick={() => setRejectionReasonDialog(false)} autoFocus>
+          <Button
+            onClick={() => {
+              submitRejection(casedata._id);
+            }}
+            autoFocus
+          >
             Submit
           </Button>
         </DialogActions>
@@ -419,11 +484,79 @@ const Bank = () => {
                   <TableCell align="center">Case Name</TableCell>
                   <TableCell align="center">Submitted On</TableCell>
                   <TableCell align="center">Type</TableCell>
+                  <TableCell align="center">User Type</TableCell>
                   <TableCell align="center">Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {allCase.map((entry, _) => (
+                {allCase.map((entry, _) => {
+                  if (entry.modified == false) {
+                    return (
+                      <TableRow
+                        key={entry.id}
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                      >
+                        <TableCell component="th" scope="row">
+                          {_ + 1}
+                        </TableCell>
+                        <TableCell align="center">{entry.name}</TableCell>
+                        <TableCell align="center">{entry.createdAt}</TableCell>
+                        <TableCell align="center">{entry.type}</TableCell>
+                        <TableCell align="center">{entry.usertype}</TableCell>
+                        {entry.action ? (
+                          <TableCell align="center">
+                            <Tooltip title="Review Case">
+                              <IconButton
+                                onClick={() => {
+                                  setFormData(entry);
+
+                                  handleClickOpenreview();
+                                }}
+                                color="primary"
+                                aria-label="upload picture"
+                                component="span"
+                              >
+                                <RemoveRedEyeIcon />
+                              </IconButton>
+                            </Tooltip>{' '}
+                          </TableCell>
+                        ) : (
+                          <TableCell align="center">
+                            <Tooltip title="Accept">
+                              <IconButton
+                                onClick={() => {
+                                  handleAccept(entry._id, entry.usertype);
+                                }}
+                                color="secondary"
+                                aria-label="upload picture"
+                                component="span"
+                              >
+                                <DoneIcon />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Reject">
+                              <IconButton
+                                // onClick={() => setRejectionReasonDialog(true)}
+
+                                onClick={() => {
+                                  setcaseData(entry);
+                                  setRejectionReasonDialog(true);
+                                  handleRejection(entry._id, entry.usertype);
+                                }}
+                                sx={{ color: 'red' }}
+                                aria-label="upload picture"
+                                component="span"
+                              >
+                                <CloseIcon />
+                              </IconButton>
+                            </Tooltip>
+                          </TableCell>
+                        )}
+                      </TableRow>
+                    );
+                  }
+                })}
+                {/* {allCase.map((entry, _) => (
                   <TableRow
                     key={entry.id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -434,6 +567,7 @@ const Bank = () => {
                     <TableCell align="center">{entry.name}</TableCell>
                     <TableCell align="center">{entry.createdAt}</TableCell>
                     <TableCell align="center">{entry.type}</TableCell>
+                    <TableCell align="center">{entry.usertype}</TableCell>
                     {entry.action ? (
                       <TableCell align="center">
                         <Tooltip title="Review Case">
@@ -456,7 +590,7 @@ const Bank = () => {
                         <Tooltip title="Accept">
                           <IconButton
                             onClick={() => {
-                              handleAccept(entry._id);
+                              handleAccept(entry._id,entry.usertype);
                             }}
                             color="secondary"
                             aria-label="upload picture"
@@ -467,7 +601,10 @@ const Bank = () => {
                         </Tooltip>
                         <Tooltip title="Reject">
                           <IconButton
-                            onClick={() => setRejectionReasonDialog(true)}
+                            // onClick={() => setRejectionReasonDialog(true)}
+                            onClick={()=>{
+                              handleRejection(entry._id,entry.usertype)
+                            }}
                             sx={{ color: 'red' }}
                             aria-label="upload picture"
                             component="span"
@@ -478,7 +615,7 @@ const Bank = () => {
                       </TableCell>
                     )}
                   </TableRow>
-                ))}
+                ))} */}
                 {/* {loading === true ? <TableRow><TableCell>Loading...</TableCell></TableRow> : <ShowServicesList getAllCase={getAllCase} allCase={allCase} openreview={openreview} />} */}
               </TableBody>
             </Table>

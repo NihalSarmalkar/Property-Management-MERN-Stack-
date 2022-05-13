@@ -54,9 +54,11 @@ import { useStorage } from '../../hooks/useStorage';
 
 
 
-const TableViewPage = ({ counter, caseall, rerender }) => {
+const TableViewPage = ({ counter, caseall, rerender,rejData }) => {
   const [open, setOpen] = useState(false);
   const [edit, setEdit] = useState(false);
+  const [rejjdata, setrejjData] = useState('');
+  const [openreview, setOpenreview] = React.useState(false);
   console.log("caseall")
   console.log(caseall)
 
@@ -72,6 +74,24 @@ const TableViewPage = ({ counter, caseall, rerender }) => {
 
     setFormData(oldFormData);
   }
+  const handleCancel = () => {
+    setOpenreview(false);
+  };
+
+  const getcommentData = async (id)=>{
+    rejData.data.map((file, _) => {
+                    
+      if (id === file.caseId) {
+        setrejjData(file.content)
+
+      }
+    });
+
+  }
+  const handleClickOpenreview = () => {
+    setOpenreview(true);
+  };
+
 
   
   
@@ -116,6 +136,21 @@ const TableViewPage = ({ counter, caseall, rerender }) => {
 
   return (
     <>
+    <Dialog
+        open={openreview}
+        onClose={handleCancel}
+        aria-labelledby="alert-dialog-title"
+        fullWidth
+        maxWidth="md"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Rjection Comment</DialogTitle>
+        <DialogContent>
+          <Typography sx={{ mt: 2 }} variant="h6">
+          Comment : {rejjdata}
+          </Typography>
+        </DialogContent>
+      </Dialog>
       <TableRow key={caseall._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
         <TableCell component="th" scope="row">
           {counter}
@@ -129,6 +164,40 @@ const TableViewPage = ({ counter, caseall, rerender }) => {
           <p>{date.replace(/(.*:\d+).*/g, '$1')}</p>
         </TableCell>
         <TableCell align="center">{caseall.type}</TableCell>
+        {(() => {
+          if (caseall.action) {
+            return <TableCell align="center">Accepted</TableCell>;
+          } else {
+            if (!caseall.modified) {
+              return <TableCell align="center">Not Specified</TableCell>;
+            }
+            return (
+              <>
+              <TableCell align="center">Rejected 
+                        <>
+                        <Tooltip title="Review Case">
+                            <IconButton
+                              onClick={() => {
+                                // setrejjData(file.content);
+                                getcommentData(caseall._id)
+
+                                handleClickOpenreview();
+                              }}
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              <RemoveRedEyeIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </>
+                        
+                     </TableCell>
+                
+              </>
+            );
+          }
+        })()}
         <TableCell align="center">
           {/* <IconButton color="primary"> */}
           <Dialog
@@ -319,13 +388,13 @@ const TableViewPage = ({ counter, caseall, rerender }) => {
     </>
   );
 };
-const ShowServicesList = ({ allCase, getAllCase }) => {
+const ShowServicesList = ({ allCase, getAllCase,rejData }) => {
   var counter = 0;
   return (
     <>
       {allCase.map((caseall) => {
         counter = counter + 1;
-        return <TableViewPage caseall={caseall} rerender={getAllCase} counter={counter} key={caseall._id} />;
+        return <TableViewPage caseall={caseall} rerender={getAllCase} counter={counter} key={caseall._id} rejData={rejData} />;
       })}
     </>
   );
@@ -350,6 +419,7 @@ const Financeconsultant = () => {
   const [LawyersDialog, setLawyersDialog] = React.useState(false);
   const [openreview, setOpenreview] = React.useState(false);
   const [openlogs, setOpenlogs] = React.useState(false);
+  const [rejData, setrejData] = React.useState('');
   const [openchats, setOpenchats] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
   const [status, setStatus] = React.useState('Select Status');
@@ -474,6 +544,10 @@ const Financeconsultant = () => {
       console.log("getAllCase")
       console.log(res.data)
       setallCase(res.data.reverse())
+      const rejectionData = await axios.get(
+        'http://localhost:8080/api/v1/main/getrejectionContent'
+      );
+      setrejData(rejectionData);
 
       
       setloading(false);
@@ -484,6 +558,9 @@ const Financeconsultant = () => {
 
   useEffect(() => {
     getAllCase();
+    console.log("------");
+
+    console.log(rejData);
   },[]);
 
   
@@ -1413,11 +1490,12 @@ const Financeconsultant = () => {
                   <TableCell align="center">Case Name</TableCell>
                   <TableCell align="center">Submitted On</TableCell>
                   <TableCell align="center">Type</TableCell>
+                  <TableCell align="center">Status</TableCell>
                   <TableCell align="center">Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {loading === true ? <TableRow><TableCell>Loading...</TableCell></TableRow> : <ShowServicesList getAllCase={getAllCase} allCase={allCase} />}
+                {loading === true ? <TableRow><TableCell>Loading...</TableCell></TableRow> : <ShowServicesList getAllCase={getAllCase} allCase={allCase} rejData={rejData}/>}
               </TableBody>
             </Table>
           </TableContainer>

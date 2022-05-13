@@ -93,6 +93,17 @@ const TableViewPage = ({ counter, caseall, rerender, rejData }) => {
     }
   };
 
+  const getcommentData = async (id)=>{
+    rejData.data.map((file, _) => {
+                    
+      if (id === file.caseId) {
+        setrejjData(file.content)
+
+      }
+    });
+
+  }
+
   const submitComment = async(caseId,type,name)=>{
     console.log(caseId)
     console.log(type)
@@ -198,10 +209,10 @@ const TableViewPage = ({ counter, caseall, rerender, rejData }) => {
         maxWidth="md"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">Submitted Case</DialogTitle>
+        <DialogTitle id="alert-dialog-title">Rjection Comment</DialogTitle>
         <DialogContent>
           <Typography sx={{ mt: 2 }} variant="h6">
-            Type:{rejjdata}
+          Comment : {rejjdata}
           </Typography>
         </DialogContent>
       </Dialog>
@@ -235,17 +246,13 @@ const TableViewPage = ({ counter, caseall, rerender, rejData }) => {
             }
             return (
               <>
-              <TableCell align="center">Rejected {(() => {
-                  rejData.data.map((file, _) => {
-                    
-                    if (caseall._id === file.caseId) {
-                   
-                      return (
+              <TableCell align="center">Rejected 
                         <>
                         <Tooltip title="Review Case">
                             <IconButton
                               onClick={() => {
-                                setrejjData(file.content);
+                                // setrejjData(file.content);
+                                getcommentData(caseall._id)
 
                                 handleClickOpenreview();
                               }}
@@ -258,16 +265,7 @@ const TableViewPage = ({ counter, caseall, rerender, rejData }) => {
                           </Tooltip>
                         </>
                         
-                      )
-                      
-                          
-                       
-                          
-                     
-
-                    }
-                  });
-                })()}</TableCell>
+                     </TableCell>
                 
               </>
             );

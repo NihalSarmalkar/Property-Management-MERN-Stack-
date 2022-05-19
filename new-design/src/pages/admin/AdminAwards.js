@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 // import { DashboardLayout } from '../components/dashboard-layout';
 import { useEffect, useState } from "react";
-import { API_SERVICE } from '../../config/URI';
+
 import Avatar from '@mui/material/Avatar';
 import moment from 'moment'
 import { red } from '@mui/material/colors';
@@ -45,6 +45,7 @@ import { Sales } from 'src/components/charts/DonutChart';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useStorage } from '../../hooks/useStorage';
 import { async } from '@firebase/util';
+import { API_SERVICE } from '../../config/URI';
 
 
 const statusArray = [
@@ -97,7 +98,7 @@ const TableViewPage = ({ counter, caseall, rerender }) => {
     setFormData(oldFormData);
   }
   const handledelete=async(id)=>{
-    await axios.delete("http://localhost:8080/api/v1/main/deladminawards/"+id);
+    await axios.delete(`${API_SERVICE}/deladminawards/${id}`);
 
     // console.log("res")
     // allCase.push(res)
@@ -123,7 +124,7 @@ const TableViewPage = ({ counter, caseall, rerender }) => {
     }
 
     console.log(statuss)
-    const res =await axios.put(`http://localhost:8080/api/v1/main/updateadminawards/${id}`,newdata);
+    const res =await axios.put(`${API_SERVICE}/updateadminawards/${id}`,newdata);
 
     console.log(res)
 
@@ -137,12 +138,12 @@ const TableViewPage = ({ counter, caseall, rerender }) => {
 
   const handleDeleteFile = async (file,id)=>{
    
-    const res =await axios.get("http://localhost:8080/api/v1/main/getonefinanceconsutant/"+ id);
+    const res =await axios.get(`${API_SERVICE}/getonefinanceconsutant/i${id}`);
    
     res.data.urls.splice(file,1)
   
    
-    const newresponse = await axios.put(`http://localhost:8080/api/v1/main/putonefinanceconsutant/${id}`,res.data);
+    const newresponse = await axios.put(`${API_SERVICE}/putonefinanceconsutant/${id}`,res.data);
     if (await newresponse) {
       rerender();
       setEdit(false);
@@ -441,7 +442,7 @@ const AdminAwards = () => {
     console.log(typeof(type))
    
 
-    const res =await axios.post("http://localhost:8080/api/v1/main/addadminawards",data);
+    const res =await axios.post(`${API_SERVICE}/addadminawards`,data);
 
     console.log("res")
     allCase.push(res)
@@ -460,7 +461,7 @@ const AdminAwards = () => {
   };
   const getAllCase = async () => {
     try {
-      const res =await axios.get("http://localhost:8080/api/v1/main/getadminawards");
+      const res =await axios.get(`${API_SERVICE}/getadminawards`);
       console.log("getAllCase")
       console.log(res.data)
       setallCase(res.data.reverse())
@@ -478,7 +479,7 @@ const AdminAwards = () => {
     }
 
     console.log(statuss)
-    const res =await axios.put(`http://localhost:8080/api/v1/main/updateadminawards/${id}`,newdata);
+    const res =await axios.put(`${API_SERVICE}/updateadminawards/${id}`,newdata);
 
     console.log(res)
 
@@ -517,7 +518,7 @@ const AdminAwards = () => {
   };
 
   const handledelete=async(id)=>{
-    await axios.delete("http://localhost:8080/api/v1/main/deladminawards/"+id);
+    await axios.delete(`${API_SERVICE}/deladminawards/${id}`);
 
     // console.log("res")
     // allCase.push(res)

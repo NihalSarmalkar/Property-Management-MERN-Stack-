@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { API_SERVICE } from '../../config/URI';
 import {
   Box,
   Container,
@@ -59,9 +59,9 @@ const Bank = () => {
 
   const getAllCase = async (month) => {
     try {
-      const resCase = await axios.get('http://localhost:8080/api/v1/main/getcase');
+      const resCase = await axios.get(`${API_SERVICE}/getcase`);
       const resFinanceConsultant = await axios.get(
-        'http://localhost:8080/api/v1/main/getallfinanceconsutant'
+        `${API_SERVICE}/getallfinanceconsutant`
       );
       const data1 = resCase.data;
       const data2 = resFinanceConsultant.data;
@@ -104,7 +104,7 @@ const Bank = () => {
       };
 
       const newresponse = await axios.put(
-        `http://localhost:8080/api/v1/main/putonefinanceconsutant/${id}`,
+        `${API_SERVICE}/putonefinanceconsutant/${id}`,
         newdata
       );
       getAllCase();
@@ -116,7 +116,7 @@ const Bank = () => {
       };
 
       const newresponse = await axios.put(
-        `http://localhost:8080/api/v1/main/updateone/${id}`,
+        `${API_SERVICE}/updateone/${id}`,
         newdata
       );
       getAllCase();
@@ -130,7 +130,7 @@ const Bank = () => {
         content
       };
 
-      const res = await axios.post('http://localhost:8080/api/v1/main/rejectionContent', data);
+      const res = await axios.post(`${API_SERVICE}/rejectionContent`, data);
 
       setRejectionReasonDialog(false);
     } catch (err) {}
@@ -144,7 +144,7 @@ const Bank = () => {
       };
 
       const newresponse = await axios.put(
-        `http://localhost:8080/api/v1/main/putonefinanceconsutant/${id}`,
+        `${API_SERVICE}/putonefinanceconsutant/${id}`,
         newdata
       );
       getAllCase();
@@ -155,7 +155,7 @@ const Bank = () => {
       };
 
       const newresponse = await axios.put(
-        `http://localhost:8080/api/v1/main/updateone/${id}`,
+        `${API_SERVICE}/updateone/${id}`,
         newdata
       );
       getAllCase();

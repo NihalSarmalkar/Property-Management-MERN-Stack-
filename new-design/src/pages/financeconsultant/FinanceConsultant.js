@@ -14,6 +14,7 @@ import {
   Radio,
   Autocomplete
 } from '@mui/material';
+
 import LinkIcon from '@mui/icons-material/Link';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -99,12 +100,12 @@ const TableViewPage = ({ counter, caseall, rerender,rejData }) => {
 
   const handleDeleteFile = async (file,id)=>{
    
-    const res =await axios.get("http://localhost:8080/api/v1/main/getonefinanceconsutant/"+ id);
+    const res =await axios.get(`${API_SERVICE}/getonefinanceconsutant/${id}`);
    
     res.data.urls.splice(file,1)
   
    
-    const newresponse = await axios.put(`http://localhost:8080/api/v1/main/putonefinanceconsutant/${id}`,res.data);
+    const newresponse = await axios.put(`${API_SERVICE}/putonefinanceconsutant/${id}`,res.data);
     if (await newresponse) {
       rerender();
       setEdit(false);
@@ -114,7 +115,7 @@ const TableViewPage = ({ counter, caseall, rerender,rejData }) => {
   }
 
   const updateCase = async function () {
-    const res =await axios.get("http://localhost:8080/api/v1/main/getallfinanceconsutant");
+    const res =await axios.get(`${API_SERVICE}/getallfinanceconsutant`);
     const request = await fetch(`${API_SERVICE}/updatefinanceconsutant`, {
       method: "POST",
       headers: {
@@ -525,12 +526,12 @@ const Financeconsultant = () => {
 
   const handleDeleteFile = async (file,id)=>{
    
-    const res =await axios.get("http://localhost:8080/api/v1/main/getone/"+ id);
+    const res =await axios.get(`${API_SERVICE}/getone/${id}`);
    
     res.data.urls.splice(file,1)
   
    
-    const newresponse = await axios.put(`http://localhost:8080/api/v1/main/updateone/${id}`,res.data);
+    const newresponse = await axios.put(`${API_SERVICE}/updateone/${id}`,res.data);
     if (await newresponse) {
     
       setEdit(false);
@@ -540,12 +541,12 @@ const Financeconsultant = () => {
   }
   const getAllCase = async () => {
     try {
-      const res =await axios.get("http://localhost:8080/api/v1/main/getallfinanceconsutant");
+      const res =await axios.get(`${API_SERVICE}/getallfinanceconsutant`);
       console.log("getAllCase")
       console.log(res.data)
       setallCase(res.data.reverse())
       const rejectionData = await axios.get(
-        'http://localhost:8080/api/v1/main/getrejectionContent'
+        `${API_SERVICE}/getrejectionContent`
       );
       setrejData(rejectionData);
 
@@ -621,7 +622,7 @@ const Financeconsultant = () => {
       };
       console.log("After ---")
       console.log(urls)
-      const res =await axios.post("http://localhost:8080/api/v1/main/addfinanceconsutant",data);
+      const res =await axios.post(`${API_SERVICE}/addfinanceconsutant`,data);
       console.log(res)
       allCase.push(res)
       console.log(allCase)

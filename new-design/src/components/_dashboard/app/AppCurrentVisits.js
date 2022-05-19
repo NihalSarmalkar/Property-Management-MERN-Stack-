@@ -6,6 +6,7 @@ import { Card, CardHeader } from '@mui/material';
 // utils
 import { fNumber } from '../../../utils/formatNumber';
 //
+import Typography from '@mui/material/Typography';
 import { BaseOptionChart } from '../../charts';
 
 // ----------------------------------------------------------------------
@@ -65,7 +66,28 @@ export default function AppCurrentVisits() {
     <Card>
       <CardHeader title="Success Rate" />
       <ChartWrapperStyle dir="ltr">
-        <ReactApexChart type="pie" series={CHART_DATA} options={chartOptions} height={280} />
+      {/* {(() => {
+          if(fi!== undefined){
+            <Typography sx={{ mt: 2 }} variant="h6">
+          Comment : {fi.type}
+          </Typography>
+            
+          }
+          else if(pro!== undefined){
+            <Typography sx={{ mt: 2 }} variant="h6">
+          Comment : {pro.type}
+          </Typography>
+
+          }
+          else{
+
+      
+          }
+
+          
+        })()} */}
+          <ReactApexChart type="pie" series={CHART_DATA} options={chartOptions} height={280} />
+      
       </ChartWrapperStyle>
     </Card>
   );

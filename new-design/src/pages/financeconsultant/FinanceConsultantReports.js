@@ -1,7 +1,7 @@
 import React from 'react';
 import { CSVLink } from 'react-csv';
 import moment from 'moment';
-
+import { API_SERVICE } from '../../config/URI';
 import {
   Box,
   Container,
@@ -97,12 +97,12 @@ const FinanceConsultantReports = () => {
       if(month)
       {
 
-        const res =await axios.get("http://localhost:8080/api/v1/main/getallfinanceconsutant?month="+month);
+        const res =await axios.get(`${API_SERVICE}/getallfinanceconsutant?month=${month}`);
         setallCase(res.data.reverse())
         setallCasedemo(res.data.reverse())
       }
       else{
-        const res =await axios.get("http://localhost:8080/api/v1/main/getallfinanceconsutant");
+        const res =await axios.get(`${API_SERVICE}/getallfinanceconsutant`);
         setallCase(res.data.reverse())
         setallCasedemo(res.data.reverse())
       }

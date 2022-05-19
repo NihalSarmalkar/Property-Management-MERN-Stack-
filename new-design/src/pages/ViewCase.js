@@ -5,6 +5,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import CardContent from '@mui/material/CardContent';
 import { useState } from 'react';
+import { API_SERVICE } from '../config/URI';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -58,7 +59,7 @@ const ViewCase = () => {
       if(queryParams.get('type')==="Property Agent"){
         console.log()
 
-        const dataone = await axios.get('http://localhost:8080/api/v1/main/getone/'+queryParams.get('id'));
+        const dataone = await axios.get(`${API_SERVICE}/getone/${queryParams.get('id')}`);
      
         setallCase1(dataone)
 
@@ -67,7 +68,7 @@ const ViewCase = () => {
       if(queryParams.get('type')==="Finance Consultant"){
         console.log("Finance Consultant")
 
-        const dataone = await axios.get('http://localhost:8080/api/v1/main/getonefinanceconsutant/'+queryParams.get('id'));
+        const dataone = await axios.get(`${API_SERVICE}/getonefinanceconsutant${queryParams.get('id')}`);
       
         setallCase1(dataone)
 
@@ -80,7 +81,7 @@ const ViewCase = () => {
       console.log("------");
       console.log(allCase1.data);
       console.log("------");
-      const resCase = await axios.get('http://localhost:8080/api/v1/main/getComment');
+      const resCase = await axios.get(`${API_SERVICE}/getComment`);
    
       let result = [];
       resCase.data.map((i, _) => {
@@ -125,7 +126,7 @@ const ViewCase = () => {
         starValue
       };
 
-      await axios.post('http://localhost:8080/api/v1/main/postComment', data);
+      await axios.post(`${API_SERVICE}/postComment`, data);
       handleClose();
       getAllCase();
       

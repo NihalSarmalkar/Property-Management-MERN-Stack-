@@ -78,12 +78,12 @@ const TableViewPage = ({ counter, caseall, rerender, rejData }) => {
   }
 
   const handleDeleteFile = async (file, id) => {
-    const res = await axios.get('http://localhost:8080/api/v1/main/getone/' + id);
+    const res = await axios.get(`${API_SERVICE}/getone/${id}`);
 
     res.data.urls.splice(file, 1);
 
     const newresponse = await axios.put(
-      `http://localhost:8080/api/v1/main/updateone/${id}`,
+      `${API_SERVICE}/updateone/${id}`,
       res.data
     );
     if (await newresponse) {
@@ -117,7 +117,7 @@ const TableViewPage = ({ counter, caseall, rerender, rejData }) => {
         starValue
       };
 
-      await axios.post('http://localhost:8080/api/v1/main/postComment', data);
+      await axios.post(`${API_SERVICE}/postComment`, data);
       handleCancelCommentBox();
       
     } catch (err) {
@@ -668,7 +668,7 @@ const CasePage = () => {
       const res = await fetch(`${API_SERVICE}/getcase`);
       const caseall = await res.json();
       const rejectionData = await axios.get(
-        'http://localhost:8080/api/v1/main/getrejectionContent'
+        `${API_SERVICE}/getrejectionContent`
       );
       setrejData(rejectionData);
 

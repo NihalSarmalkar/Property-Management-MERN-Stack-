@@ -17,6 +17,7 @@ import {
   Select,
   Autocomplete
 } from '@mui/material';
+import { API_SERVICE } from '../config/URI';
 import { DateRangePicker } from '@mui/lab';
 
 import DialogActions from '@mui/material/DialogActions';
@@ -55,7 +56,7 @@ const UserManagement = () => {
 
   const getAllCase = async (month) => {
     try {
-      const res = await axios.get('http://localhost:8080/api/v1/main/getusers');
+      const res = await axios.get(`${API_SERVICE}/getusers`);
       setallCase(res.data.reverse());
     } catch (err) {
       console.log(err);
@@ -95,7 +96,7 @@ const UserManagement = () => {
 
    
 
-    const res =await axios.post("http://localhost:8080/api/v1/main/adduser",data);
+    const res =await axios.post(`${API_SERVICE}/adduser`,data);
 
     console.log("res")
     allCase.push(res)
@@ -130,7 +131,7 @@ const UserManagement = () => {
 
   const handledeleteUser = async(id)=>{
     console.log(id)
-    await axios.delete(`http://localhost:8080/api/v1/main/deluser/${id}`);
+    await axios.delete(`${API_SERVICE}/deluser/${id}`);
     getAllCase();
     console.log(id)
   }

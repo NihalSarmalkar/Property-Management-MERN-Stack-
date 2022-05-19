@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { CSVLink } from 'react-csv';
+import { API_SERVICE } from '../../config/URI';
 import {
   Box,
   Container,
@@ -93,12 +94,12 @@ const AdminAwardReports = () => {
       if(month)
       {
 
-        const res =await axios.get("http://localhost:8080/api/v1/main/getallfinanceconsutant?month="+month);
+        const res =await axios.get(`${API_SERVICE}/getallfinanceconsutant?month=${month}`);
         setallCase(res.data.reverse())
         setallCasedemo(res.data.reverse())
       }
       else{
-        const res =await axios.get("http://localhost:8080/api/v1/main/getallfinanceconsutant");
+        const res =await axios.get(`${API_SERVICE}/getallfinanceconsutant`);
         setallCase(res.data.reverse())
         setallCasedemo(res.data.reverse())
       }
@@ -106,12 +107,12 @@ const AdminAwardReports = () => {
       if(month)
       {
 
-        const res =await axios.get("http://localhost:8080/api/v1/main/getcase?month="+month);
+        const res =await axios.get(`${API_SERVICE}/getcase?month=${month}`);
         setallCase1(res.data.reverse())
         setallCasedemo1(res.data.reverse())
       }
       else{
-        const res =await axios.get("http://localhost:8080/api/v1/main/getcase");
+        const res =await axios.get(`${API_SERVICE}/getcase`);
         setallCase1(res.data.reverse())
         setallCasedemo1(res.data.reverse())
       }

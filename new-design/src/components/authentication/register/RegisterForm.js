@@ -4,7 +4,7 @@ import { Icon } from '@iconify/react';
 import { useFormik, Form, FormikProvider } from 'formik';
 import eyeFill from '@iconify/icons-eva/eye-fill';
 import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
-
+import { API_SERVICE } from '../../../config/URI';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 // material
@@ -56,7 +56,7 @@ export default function RegisterForm() {
     
     try {
       
-      const res = await axios.post('http://localhost:8080/api/v1/main/register', data);
+      const res = await axios.post(`${API_SERVICE}/register`, data);
       navigate("/login");
     } catch (err) {
       

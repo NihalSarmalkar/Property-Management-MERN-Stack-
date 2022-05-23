@@ -4,6 +4,7 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { useContext, useRef } from 'react';
 import { Icon } from '@iconify/react';
+import { API_SERVICE } from '../../../config/URI';
 import eyeFill from '@iconify/icons-eva/eye-fill';
 import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
 import axios from 'axios';
@@ -56,7 +57,7 @@ export default function LoginForm() {
     dispatch({ type: 'LOGIN_START' });
     try {
       
-      const res = await axios.post('http://localhost:8080/api/v1/main/login', data);
+      const res = await axios.post(`${API_SERVICE}/login`, data);
       console.log("res")
       console.log(res)
       dispatch({ type: 'LOGIN_SUCCESS', payload: res.data });

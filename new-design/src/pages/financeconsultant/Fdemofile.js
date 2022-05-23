@@ -19,7 +19,7 @@ import TextField from '@mui/material/TextField';
 import DialogTitle from '@mui/material/DialogTitle';
 import PreviewIcon from '@mui/icons-material/Preview';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { API_SERVICE } from '../config/URI';
+import { API_SERVICE } from '../../config/URI';
 
 import { useDropzone } from 'react-dropzone';
 import { useStorage } from '../hooks/useStorage';
@@ -58,12 +58,12 @@ const TableViewPage = ({ counter, caseall, rerender }) => {
 
   const handleDeleteFile = async (file,id)=>{
    
-    const res =await axios.get("http://localhost:8080/api/v1/main/getone/"+ id);
+    const res =await axios.get(`${API_SERVICE}/getone/${id}`);
    
     res.data.urls.splice(file,1)
   
    
-    const newresponse = await axios.put(`http://localhost:8080/api/v1/main/updateone/${id}`,res.data);
+    const newresponse = await axios.put(`${API_SERVICE}/updateone/${id}`,res.data);
     if (await newresponse) {
       rerender();
       setEdit(false);

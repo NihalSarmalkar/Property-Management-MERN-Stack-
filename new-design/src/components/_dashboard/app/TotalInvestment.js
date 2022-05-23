@@ -4,6 +4,7 @@ import appleFilled from '@iconify/icons-ant-design/apple-filled';
 import { alpha, styled } from '@mui/material/styles';
 import { Card, Typography } from '@mui/material';
 // utils
+import { API_SERVICE } from '../../../config/URI';
 import { fShortenNumber } from '../../../utils/formatNumber';
 import { useEffect, useState } from "react";
 import axios from "axios"
@@ -44,7 +45,7 @@ export default function TotalInvestment() {
     try {
       
     
-        const res =await axios.get("http://localhost:8080/api/v1/main/getallfinanceconsutant");
+        const res =await axios.get(`${API_SERVICE}/getallfinanceconsutant`);
         setallCase(res.data.reverse())
        
   
